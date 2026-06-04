@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Track Shipment</title>
+</head>
+<body>
+
+<h1>Track Your Shipment</h1>
+
+<input type="text" id="lr" placeholder="Enter LR Number">
+
+<button onclick="track()">
+Track Shipment
+</button>
+
+<p id="result"></p>
+
+<script>
+
+function track(){
+
+let lr =
+document.getElementById("lr").value;
+
+document.getElementById("result").innerHTML =
+"Tracking feature will be connected with AIM Software soon.<br>LR No: " + lr;
+
+}
+
+</script>
+
+</body>
+</html>

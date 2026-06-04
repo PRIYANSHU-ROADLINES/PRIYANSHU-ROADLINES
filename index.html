@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIYANSHU ROADLINES</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f4f4;
+}
+
+header{
+    background:#000;
+    color:rgb(255, 0, 0);
+    font-size:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 100px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+}
+
+.logo img{
+    width:70px;
+    margin-right:15px;
+}
+
+.logo h1{
+    color:#ff0000;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+}
+
+nav ul li{
+    margin-left:20px;
+}
+
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.hero{
+    height:90vh;
+    background:linear-gradient(rgba(0,0,0,.6),
+    rgba(0,0,0,.6)),
+    url('https://images.unsplash.com/photo-1519003722824-194d4455a60c');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+}
+
+.hero-content h2{
+    font-size:55px;
+}
+
+.hero-content p{
+    font-size:22px;
+    margin:20px 0;
+}
+
+.btn{
+    background:#ff2d2d;
+    color:white;
+    padding:12px 25px;
+    text-decoration:none;
+    border-radius:5px;
+}
+
+.services{
+    padding:60px 20px;
+    text-align:center;
+}
+
+.services h2{
+    margin-bottom:30px;
+    color:#ff2d2d;
+}
+
+.service-box{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.about{
+    background:white;
+    padding:60px 20px;
+    text-align:center;
+}
+
+.contact{
+    padding:60px 20px;
+    text-align:center;
+}
+
+.contact p{
+    margin:10px;
+    font-size:18px;
+}
+
+footer{
+    background:#000;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+.logo img{
+    width:120px;
+    margin-right:15px;
+}
+.whatsapp{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#25D366;
+    color:white;
+    padding:15px 20px;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:bold;
+    z-index:1000;
+}
+#contact-form{
+    text-align:center;
+    padding:50px 20px;
+    background:white;
+}
+
+#contact-form input,
+#contact-form textarea{
+    width:80%;
+    max-width:500px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+#contact-form textarea{
+    height:120px;
+}
+
+#contact-form button{
+    background:#25D366;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+.call-btn{
+    position:fixed;
+    bottom:80px;
+    right:20px;
+    background:#ff2d2d;
+    color:white;
+    padding:15px 20px;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:bold;
+    z-index:1000;
+}
+
+.call-btn:hover{
+    background:#cc0000;
+}
+@media(max-width:768px){
+
+header{
+    flex-direction:column;
+}
+
+nav ul{
+    flex-direction:column;
+}
+
+.hero-content h2{
+    font-size:32px;
+}
+
+}
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    padding:50px;
+    background:#000;
+    color:white;
+    text-align:center;
+    flex-wrap:wrap;
+}
+
+.stats h2{
+    color:#ff2d2d;
+}
+
+
+.logo-img{
+    width:150px;
+    height:auto;
+}
+.top-btn{
+position:fixed;
+left:20px;
+bottom:20px;
+background:red;
+color:white;
+padding:15px;
+text-decoration:none;
+border-radius:50%;
+}
+
+#loader{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    color:white;
+}
+
+.loader-logo{
+    width:120px;
+    margin-bottom:15px;
+}
+
+#loader h2{
+    color:#ff2d2d;
+    margin-bottom:20px;
+}
+
+.spinner{
+    width:60px;
+    height:60px;
+    border:6px solid #444;
+    border-top:6px solid #ff2d2d;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin-bottom:15px;
+}
+
+@keyframes spin{
+    0%{
+        transform:rotate(0deg);
+    }
+    100%{
+        transform:rotate(360deg);
+    }
+}
+.contact-bg{
+
+height:500px;
+
+background-image:url("images/t1.png");
+
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+transition:1s;
+
+}
+
+.contact-overlay{
+
+background:rgba(0,0,0,0.7);
+
+padding:40px;
+
+border-radius:15px;
+
+text-align:center;
+
+color:white;
+
+max-width:700px;
+
+}
+.service-card{
+    transition:0.4s;
+}
+
+.service-card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+.call-btn{
+
+animation:pulse 1.5s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.1);
+}
+
+100%{
+transform:scale(1);
+}
+
+}
+
+header h1{
+    font-size:55px;
+    color:white;
+    animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+
+    from{
+        text-shadow:0 0 10px red;
+    }
+
+    to{
+        text-shadow:
+        0 0 20px red,
+        0 0 30px red;
+    }
+
+}
+
+</style>
+<link rel="icon" href="images/logo.png">
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-box">
+    <img src="images/logo.png" alt="PRIYANSHU ROADLINES Logo" class="logo-img">
+</div>
+<h1>PRIYANSHU ROADLINES</h1>
+</div>
+
+<nav>
+<ul>
+<li><a href="tracking.html">Track LR</a></li>
+<li><a href="services.html">Services</a></li>
+<li><a href="fleet.html">Fleet</a></li>
+<li><a href="about.html">About</a>
+</ul>
+</nav>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-content">
+<h2>FOR QUICK & SAFE SERVICE</h2>
+
+<p>Goods Transport • Logistics • Warehousing</p>
+
+<a href="quote.html" class="btn">Get Quote</a>
+</div>
+
+</section>
+
+<section class="services">
+
+<h2>Our Services</h2>
+
+<div class="service-box">
+
+<div class="card">
+<h3>🚚 Goods Transport</h3>
+<p>Fast and secure transportation across India.</p>
+</div>
+
+<div class="card">
+<h3>📦 Logistics</h3>
+<p>Efficient logistics management and supply chain solutions.</p>
+</div>
+
+<div class="card">
+<h3>🏢 Warehousing</h3>
+<p>Safe storage and inventory management services.</p>
+</div>
+
+<div class="card">
+<h3>🌍 Fleet Services</h3>
+<p>Professional fleet owners and transport contractors.</p>
+</div>
+
+</section>
+
+
+<section class="about">
+
+<h2>SPECIAL SERVICE</h2>
+
+<p>
+NOIDA, GHAZIABAD, DELHI, GURUGRAM, FARIDABAD, BADDI
+</p>
+<P>
+    PONTA SAHIB & KALAAMB
+</P>
+
+</section>
+
+
+
+<section class="contact-bg">
+
+<div class="contact-overlay">
+
+
+<h2>Contact Us</h2>
+
+<p><strong>Contact Person:</strong> Chandan Chaudhary</p>
+
+<p><strong>Phone:</strong> 8171703677</p>
+
+<p><strong>Email:</strong> priyanshuroadlines611@gmail.com</p>
+
+<p><strong>Office:</strong> Khasra No. 10, Krishna Khunj Colony,
+SIDCUL Bye Pass Road, Bahadrabad, Haridwar - 249402</p>
+
+
+
+</section>
+<section id="contact-form">
+
+<h2>Send Us Your Requirement</h2>
+
+<form action="https://formsubmit.co/priyanshuroadlines611@gmail.com" method="POST">
+
+<input type="text" name="name" placeholder="Your Name" required><br><br>
+
+<input type="text" name="phone" placeholder="Phone Number" required><br><br>
+
+<textarea name="message" placeholder="Enter your transport requirement" required></textarea><br><br>
+
+<button type="submit">Send Inquiry</button>
+
+<input type="hidden" name="_subject" value="New Inquiry from PRIYANSHU ROADLINES Website">
+
+<input type="hidden" name="_captcha" value="false">
+
+</form>
+
+</section>
+<section class="stats">
+
+<div>
+<h2>5000+</h2>
+<p>Deliveries Completed</p>
+</div>
+
+<div>
+<h2>100+</h2>
+<p>Business Clients</p>
+</div>
+
+<div>
+<h2>24*7</h2>
+<p>Support Available</p>
+</div>
+
+<div>
+<h2>all India</h2>
+<p>Service Network</p>
+</div>
+
+</section>
+
+
+    <div id="loader">
+
+        <img src="images/logo.png" alt="Logo" class="loader-logo">
+
+        <h2>PRIYANSHU ROADLINES</h2>
+
+        <div class="spinner"></div>
+
+        <p>Loading...</p>
+
+    </div>
+
+<footer>
+
+<p>© 2026 PRIYANSHU ROADLINES | All Rights Reserved</p>
+
+</footer>
+<a href="tel:8171703677" class="call-btn">
+    📞 Call Now
+</a>
+<a href="https://wa.me/918171703677" class="whatsapp" target="_blank">
+    WhatsApp Us
+</a>
+<footer>
+
+
+
+</footer>
+<a href="#" class="top-btn">⬆</a>
+<script>
+
+
+
+window.addEventListener("load", function(){
+
+    setTimeout(function(){
+
+        document.getElementById("loader").style.display = "none";
+
+    }, 2000);
+
+});
+
+
+let images = [
+
+"images/t1.png",
+
+"images/t2.png",
+
+"images/t3.png",
+
+"images/t4.png"
+
+];
+
+let current = 0;
+
+setInterval(function(){
+
+current++;
+
+if(current >= images.length){
+
+current = 0;
+
+}
+
+document.querySelector(".contact-bg")
+.style.backgroundImage =
+"url('" + images[current] + "')";
+
+},3000);
+
+
+
+
+</script>
+</body>
+</html>
