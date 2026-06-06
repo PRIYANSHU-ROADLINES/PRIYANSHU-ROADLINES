@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRIYANSHU ROADLINES POD SYSTEM</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+}
+
+header{
+    background:#000;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+h1{
+    color:red;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin:20px 0;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+input,select,textarea{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+button{
+    background:red;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#cc0000;
+}
+
+#adminPanel{
+    display:none;
+}
+
+img{
+    max-width:100%;
+    border-radius:10px;
+}
+
+.status{
+    padding:5px 10px;
+    border-radius:5px;
+    color:white;
+}
+
+.pending{
+    background:orange;
+}
+
+.delivered{
+    background:blue;
+}
+
+.completed{
+    background:green;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>PRIYANSHU ROADLINES POD SYSTEM</h1>
+</header>
+
+<div class="container">
+
+<!-- PUBLIC SEARCH -->
+
+<div class="card">
+<h2>Search POD</h2>
+
+<input type="text" id="searchGR" placeholder="Enter GR Number">
+
+<button onclick="searchPOD()">Search</button>
+
+<div id="result"></div>
+
+</div>
+
+<!-- LOGIN -->
+
+<div class="card" id="loginBox">
+
+<h2>Admin Login</h2>
+
+<input type="email" id="email" placeholder="Email">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div id="adminPanel">
+
+<div class="card">
+
+<h2>Upload POD</h2>
+
+<input type="text" id="grNo" placeholder="GR Number *" required>
+
+<input type="text" id="vehicleNo" placeholder="Vehicle Number">
+
+<input type="text" id="driverName" placeholder="Driver Name">
+
+<input type="text" id="driverMobile" placeholder="Driver Mobile">
+
+<input type="text" id="partyName" placeholder="Party Name">
+
+<input type="date" id="deliveryDate">
+
+<textarea id="remarks" placeholder="Remarks"></textarea>
+
+<select id="status">
+<option value="Completed">Completed</option>
+<option value="Pending">Pending</option>
+<option value="Delivered">Delivered</option>
+</select>
+
+<input type="file" id="podImage">
+
+<button onclick="uploadPOD()">Save POD</button>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+<div class="card">
+
+<h2>Recent PODs</h2>
+
+<div id="recentPods"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module" src="pod.js"></script>
+
+</body>
+</html>
