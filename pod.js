@@ -64,7 +64,7 @@ onAuthStateChanged(auth, (user) => {
   const loginBox = document.getElementById("loginBox");
 
   if (user) {
-
+    isAdminLoggedIn = true;
     adminPanel.style.display = "block";
 
     if(loginBox){
@@ -74,7 +74,7 @@ onAuthStateChanged(auth, (user) => {
     loadRecentPods();
 
   } else {
-
+    isAdminLoggedIn = false;
     adminPanel.style.display = "none";
 
     if(loginBox){
@@ -181,10 +181,10 @@ window.uploadPOD = async function () {
 };
 
 // Search POD
+
 window.searchPOD = async function () {
 
-  const grNo =
-    document.getElementById("searchGR").value.trim();
+  const grNo = document.getElementById("searchGR").value.trim();
 
   if (!grNo) {
     alert("Enter GR Number");
@@ -201,6 +201,17 @@ window.searchPOD = async function () {
   }
 
   const data = snap.data();
+
+  let deleteButton = "";
+
+  if (isAdminLoggedIn) {
+    deleteButton = `
+      <br><br>
+      <button onclick="deletePOD('${data.grNo}')">
+        Delete POD
+      </button>
+    `;
+  }
 
   result.innerHTML = `
     <h3>GR Number: ${data.grNo}</h3>
@@ -223,44 +234,13 @@ window.searchPOD = async function () {
 
     <br><br>
 
-   let deleteButton = "";
+    <a href="${data.imageUrl}" target="_blank">
+      Download POD
+    </a>
 
-  if (isAdminLoggedIn) {
-      deleteButton = `
-       <br><br>
-      <button onclick="deletePOD('${data.grNo}')">
-         Delete POD
-      </button>
-      `;
-    }
-
-result.innerHTML = `
-  <h3>GR Number: ${data.grNo}</h3>
-
-  <p><b>Status:</b> ${data.status}</p>
-
-  <p><b>Vehicle:</b> ${data.vehicleNo || "-"}</p>
-
-  <p><b>Driver:</b> ${data.driverName || "-"}</p>
-
-  <p><b>Mobile:</b> ${data.driverMobile || "-"}</p>
-
-  <p><b>Party:</b> ${data.partyName || "-"}</p>
-
-  <p><b>Delivery Date:</b> ${data.deliveryDate || "-"}</p>
-
-  <p><b>Remarks:</b> ${data.remarks || "-"}</p>
-
-  <img src="${data.imageUrl}" width="400">
-
-  <br><br>
-
-  <a href="${data.imageUrl}" target="_blank">
-    Download POD
-  </a>
-
-  ${deleteButton}
-`;
+    ${deleteButton}
+  `;
+};
 
 <br><br>
 
