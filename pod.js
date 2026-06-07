@@ -225,14 +225,14 @@ window.searchPOD = async function () {
 
    let deleteButton = "";
 
-if (isAdminLoggedIn) {
-  deleteButton = `
-    <br><br>
-    <button onclick="deletePOD('${data.grNo}')">
-      Delete POD
-    </button>
-  `;
-}
+  if (isAdminLoggedIn) {
+      deleteButton = `
+       <br><br>
+      <button onclick="deletePOD('${data.grNo}')">
+         Delete POD
+      </button>
+      `;
+    }
 
 result.innerHTML = `
   <h3>GR Number: ${data.grNo}</h3>
@@ -321,15 +321,3 @@ window.deletePOD = async function(grNo){
     alert(error.message);
 
   }
-}
-async function loadRecentPods() {
-
-   // existing code
-
-}
-
-window.deletePOD = async function(grNo){
-
-   // delete code
-
-}
