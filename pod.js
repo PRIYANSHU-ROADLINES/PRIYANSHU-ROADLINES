@@ -322,3 +322,14 @@ window.deletePOD = async function(grNo){
 
   }
 }
+async function loadRecentPods() {
+
+   // existing code
+
+}
+
+window.deletePOD = async function(grNo){
+
+   // delete code
+
+}
