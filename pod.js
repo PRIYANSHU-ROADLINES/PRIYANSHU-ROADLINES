@@ -58,31 +58,29 @@ window.logout = async function () {
 // Auth State
 onAuthStateChanged(auth, (user) => {
 
-  console.log("Auth User:", user);
-
   const adminPanel = document.getElementById("adminPanel");
   const loginBox = document.getElementById("loginBox");
-
-  console.log("adminPanel =", adminPanel);
-  console.log("loginBox =", loginBox);
 
   if (user) {
 
     adminPanel.style.display = "block";
-    loginBox.style.display = "none";
 
-    console.log("Admin Panel Opened");
+    if(loginBox){
+      loginBox.style.display = "none";
+    }
 
     loadRecentPods();
 
   } else {
 
     adminPanel.style.display = "none";
-    loginBox.style.display = "block";
 
-    console.log("Login Required");
+    if(loginBox){
+      loginBox.style.display = "block";
+    }
   }
 });
+
 // Upload POD
 window.uploadPOD = async function () {
 
