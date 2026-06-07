@@ -242,14 +242,6 @@ window.searchPOD = async function () {
   `;
 };
 
-<br><br>
-
-<button onclick="deletePOD('${data.grNo}')">
-  Delete POD
-</button>
-  `;
-};
-
 // Recent POD List
 async function loadRecentPods() {
 
