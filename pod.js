@@ -1,6 +1,4 @@
 // Firebase Imports
-alert("POD JS LOADED");
-console.log("POD JS LOADED");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
   getAuth,
