@@ -63,31 +63,38 @@ onAuthStateChanged(auth, (user) => {
   const adminPanel = document.getElementById("adminPanel");
   const loginBox = document.getElementById("loginBox");
   const searchPanel = document.getElementById("searchPanel");
-  
-if (user) {
 
-  isAdminLoggedIn = true;
+  if (user) {
 
-  adminPanel.style.display = "block";
-  searchPanel.style.display = "block";
+    isAdminLoggedIn = true;
 
-  if(loginBox){
-    loginBox.style.display = "none";
+    adminPanel.style.display = "block";
+
+    if (searchPanel) {
+      searchPanel.style.display = "block";
+    }
+
+    if (loginBox) {
+      loginBox.style.display = "none";
+    }
+
+    loadRecentPods();
+
+  } else {
+
+    isAdminLoggedIn = false;
+
+    adminPanel.style.display = "none";
+
+    if (searchPanel) {
+      searchPanel.style.display = "none";
+    }
+
+    if (loginBox) {
+      loginBox.style.display = "block";
+    }
   }
-
-  loadRecentPods();
-
-} else {
-
-  isAdminLoggedIn = false;
-
-  adminPanel.style.display = "none";
-  searchPanel.style.display = "none";
-
-  if(loginBox){
-    loginBox.style.display = "block";
-  }
-}
+});
   
 // Upload POD
 window.uploadPOD = async function () {
