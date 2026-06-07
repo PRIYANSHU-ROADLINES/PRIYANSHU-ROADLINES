@@ -12,6 +12,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  deleteDoc,
   collection,
   getDocs,
   serverTimestamp
@@ -31,6 +32,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 signOut(auth);
 const db = getFirestore(app);
+let isAdminLoggedIn = false;
 
 // Cloudinary
 const CLOUD_NAME = "de3ipfolr";
@@ -221,9 +223,50 @@ window.searchPOD = async function () {
 
     <br><br>
 
-    <a href="${data.imageUrl}" target="_blank">
-      Download POD
-    </a>
+   let deleteButton = "";
+
+if (isAdminLoggedIn) {
+  deleteButton = `
+    <br><br>
+    <button onclick="deletePOD('${data.grNo}')">
+      Delete POD
+    </button>
+  `;
+}
+
+result.innerHTML = `
+  <h3>GR Number: ${data.grNo}</h3>
+
+  <p><b>Status:</b> ${data.status}</p>
+
+  <p><b>Vehicle:</b> ${data.vehicleNo || "-"}</p>
+
+  <p><b>Driver:</b> ${data.driverName || "-"}</p>
+
+  <p><b>Mobile:</b> ${data.driverMobile || "-"}</p>
+
+  <p><b>Party:</b> ${data.partyName || "-"}</p>
+
+  <p><b>Delivery Date:</b> ${data.deliveryDate || "-"}</p>
+
+  <p><b>Remarks:</b> ${data.remarks || "-"}</p>
+
+  <img src="${data.imageUrl}" width="400">
+
+  <br><br>
+
+  <a href="${data.imageUrl}" target="_blank">
+    Download POD
+  </a>
+
+  ${deleteButton}
+`;
+
+<br><br>
+
+<button onclick="deletePOD('${data.grNo}')">
+  Delete POD
+</button>
   `;
 };
 
@@ -254,4 +297,28 @@ async function loadRecentPods() {
       </div>
     `;
   });
+}
+window.deletePOD = async function(grNo){
+
+  const confirmDelete = confirm(
+    "Are you sure you want to delete this POD?"
+  );
+
+  if(!confirmDelete) return;
+
+  try{
+
+    await deleteDoc(doc(db,"pods",grNo));
+
+    alert("POD Deleted Successfully");
+
+    document.getElementById("result").innerHTML = "";
+
+    loadRecentPods();
+
+  }catch(error){
+
+    alert(error.message);
+
+  }
 }
