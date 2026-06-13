@@ -1,37 +1,327 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>services</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Services - Priyanshu Roadlines</title>
+
 <style>
-    footer{
-    background:#000;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+}
+
+/* Hero Section */
+
+.hero{
+    background:
+    linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+    url('https://images.unsplash.com/photo-1566576912321-d58ddd7a6088');
+    background-size:cover;
+    background-position:center;
+    text-align:center;
+    color:white;
+    padding:120px 20px;
+}
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:22px;
+}
+
+/* Container */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:60px 20px;
+}
+
+.section-title{
+    text-align:center;
+    color:#003366;
+    font-size:38px;
+    margin-bottom:40px;
+}
+
+/* Intro */
+
+.intro{
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    text-align:center;
+    line-height:1.8;
+    margin-bottom:50px;
+}
+
+/* Services */
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+}
+
+.service-card{
+    background:white;
+    padding:35px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.service-card:hover{
+    transform:translateY(-8px);
+}
+
+.service-card h3{
+    color:#003366;
+    margin:15px 0;
+}
+
+.service-icon{
+    font-size:50px;
+}
+
+/* Why Choose Us */
+
+.why-us{
+    margin-top:70px;
+}
+
+.features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.feature{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    text-align:center;
+}
+
+/* Stats */
+
+.stats{
+    background:#003366;
+    color:white;
+    padding:60px 20px;
+    margin-top:70px;
+}
+
+.stats-container{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    text-align:center;
+}
+
+.stat h2{
+    font-size:45px;
+}
+
+.stat p{
+    margin-top:10px;
+}
+
+/* Button */
+
+.home-btn{
+    display:inline-block;
+    margin-top:50px;
+    background:#003366;
+    color:white;
+    text-decoration:none;
+    padding:14px 30px;
+    border-radius:6px;
+}
+
+.btn-container{
+    text-align:center;
+}
+
+/* Footer */
+
+footer{
+    background:#111;
     color:white;
     text-align:center;
-    padding:30px;
+    padding:40px 20px;
 }
+
+footer p{
+    margin:10px 0;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+    font-size:38px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+.stat{
+    margin:20px;
+}
+
+}
+
 </style>
 </head>
 <body>
 
-<h1>SERVICES WE PROVIDES</h1>
+<section class="hero">
+    <h1>OUR SERVICES</h1>
+    <p>Reliable Transportation & Logistics Solutions Across India</p>
+</section>
 
-<p>
-we provide transportation facility ALL OVER India
-</p>
-<p>🚚 Goods Transportation</p>
-<p>📦 Logistics Management</p>
+<div class="container">
 
-<p>🏢 Warehousing</p>
+<div class="intro">
+    <h2 class="section-title">What We Offer</h2>
+   
+    <p>
+    Priyanshu Roadlines provides safe, fast and reliable transportation
+    services throughout India. We are committed to delivering goods
+    efficiently while ensuring complete customer satisfaction.
+    </p>
+    <P>
+        Special service :- Noida, Ghaziabad, Delhi, Gurugram, Faridabad, Ponta sahib, Baddi & Kalaamb
+    </P>
+</div>
 
-<p>🚛 Full Truck Load (FTL)</p>
+<h2 class="section-title">Our Services</h2>
 
-<p>📍 All India Delivery</p>
-</p>
+<div class="service-grid">
 
-<a href="index.html">Back to Home</a>
+    <div class="service-card">
+        <div class="service-icon">🚚</div>
+        <h3>Goods Transportation</h3>
+        <p>Safe and timely transportation of goods across India.</p>
+    </div>
+
+    <div class="service-card">
+        <div class="service-icon">📦</div>
+        <h3>Logistics Management</h3>
+        <p>Professional logistics planning and supply chain support.</p>
+    </div>
+
+    <div class="service-card">
+        <div class="service-icon">🏢</div>
+        <h3>Warehousing</h3>
+        <p>Secure storage solutions for industrial and commercial goods.</p>
+    </div>
+
+    <div class="service-card">
+        <div class="service-icon">🚛</div>
+        <h3>Full Truck Load (FTL)</h3>
+        <p>Dedicated truck services for large-volume shipments.</p>
+    </div>
+
+    <div class="service-card">
+        <div class="service-icon">📍</div>
+        <h3>All India Delivery</h3>
+        <p>Efficient transportation network covering all major locations.</p>
+    </div>
+
+    <div class="service-card">
+        <div class="service-icon">⏱️</div>
+        <h3>On-Time Delivery</h3>
+        <p>Ensuring your goods reach their destination without delay.</p>
+    </div>
+
+</div>
+
+<div class="why-us">
+
+<h2 class="section-title">Why Choose Us?</h2>
+
+<div class="features">
+
+<div class="feature">
+<h3>✔ Safe Transportation</h3>
+<p>Your goods are handled with care and responsibility.</p>
+</div>
+
+<div class="feature">
+<h3>✔ Nationwide Coverage</h3>
+<p>Transportation services available throughout India.</p>
+</div>
+
+<div class="feature">
+<h3>✔ Experienced Management</h3>
+<p>Backed by 21+ years of transport industry experience.</p>
+</div>
+
+<div class="feature">
+<h3>✔ Customer Satisfaction</h3>
+<p>Focused on building long-term relationships with clients.</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<section class="stats">
+
+<div class="stats-container">
+
+<div class="stat">
+<h2>2023</h2>
+<p>Company Started</p>
+</div>
+
+<div class="stat">
+<h2>21+</h2>
+<p>Years Experience</p>
+</div>
+
+<div class="stat">
+<h2>24/7</h2>
+<p>Support</p>
+</div>
+
+<div class="stat">
+<h2>India</h2>
+<p>Nationwide Service</p>
+</div>
+
+</div>
+
+</section>
+
+<div class="btn-container">
+<a href="index.html" class="home-btn">Back To Home</a>
+</div>
+
 <footer>
 
-<h3>PRIYANSHU ROADLINES</h3>
+<h2>PRIYANSHU ROADLINES</h2>
 
 <p>Goods Transport • Logistics • Warehousing</p>
 
@@ -39,6 +329,11 @@ we provide transportation facility ALL OVER India
 
 <p>📧 priyanshuroadlines611@gmail.com</p>
 
+<p>© 2026 Priyanshu Roadlines. All Rights Reserved.</p>
+<a href="https://wa.me/918171703677" class="whatsapp" target="_blank">
+    WhatsApp Us
+</a>
 </footer>
+
 </body>
 </html>
