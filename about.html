@@ -1,56 +1,344 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>About Us</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Priyanshu Roadlines</title>
+
 <style>
-    footer{
-    background:#000;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+}
+
+/* Hero Section */
+
+.hero{
+    background:
+    linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+    url('https://images.unsplash.com/photo-1519003722824-194d4455a60c');
+    background-size:cover;
+    background-position:center;
     color:white;
     text-align:center;
-    padding:30px;
+    padding:120px 20px;
 }
-.map-container{
+
+.hero h1{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:22px;
+}
+
+/* Container */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:50px 20px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:30px;
+    color:#003366;
+    font-size:36px;
+}
+
+/* About */
+
+.about{
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    line-height:1.8;
+}
+
+/* Cards */
+
+.cards{
     display:flex;
-    width: 100;
+    gap:25px;
+    flex-wrap:wrap;
     justify-content:center;
-    margin:40px 0;
+    margin-top:40px;
 }
+
+.card{
+    background:white;
+    width:500px;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card h2{
+    color:#003366;
+    margin-bottom:15px;
+}
+
+/* Services */
+
+.services{
+    margin-top:60px;
+}
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.service-box{
+    background:white;
+    padding:30px;
+    text-align:center;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* Stats */
+
+.stats{
+    background:#003366;
+    color:white;
+    padding:60px 20px;
+    margin-top:60px;
+}
+
+.stats-container{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-around;
+    text-align:center;
+    flex-wrap:wrap;
+}
+
+.stat h2{
+    font-size:45px;
+}
+
+.stat p{
+    font-size:18px;
+}
+
+/* Map */
+
+.map-section{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.map-section iframe{
+    width:100%;
+    max-width:1200px;
+    height:450px;
+    border-radius:12px;
+}
+
+/* Button */
+
+.home-btn{
+    display:inline-block;
+    margin-top:30px;
+    background:#003366;
+    color:white;
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:5px;
+}
+
+/* Footer */
+
+footer{
+    background:#111;
+    color:white;
+    text-align:center;
+    padding:40px 20px;
+}
+
+footer p{
+    margin:10px 0;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+    font-size:38px;
+}
+
+.hero p{
+    font-size:18px;
+}
+
+.card{
+    width:100%;
+}
+
+}
+
 </style>
 </head>
 <body>
 
-<h1>About PRIYANSHU ROADLINES</h1>
+<section class="hero">
+    <h1>PRIYANSHU ROADLINES</h1>
+    <p>Fast • Safe • Reliable Transport Services Across India</p>
+</section>
+
+<div class="container">
+
+<h2 class="section-title">About Us</h2>
+
+<div class="about">
 
 <p>
-PRIYANSHU ROADLINES is a trusted transport and logistics company
-providing reliable transportation, warehousing and logistics
-solutions. We are committed to safe delivery, timely service
-and customer satisfaction.
+<strong>PRIYANSHU ROADLINES</strong> was established in <strong>2023</strong> with a vision to provide reliable, safe and efficient transportation services across India.
 </p>
-<p>
-    Mission:
-To provide safe and timely transportation.
-</p>
-<p>
-Vision:
-To become a trusted logistics partner.
-</p>
-<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3925.9883500951114!2d78.04652645544067!3d29.92922617344943!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sKhasra%20No.%2010%2C%20Krishna%20Kunj%20Colony%2C%20SIDCUL%20Bye%20Pass%20Road%2C%20Bahadrabad%2C%20Haridwar!5e1!3m2!1sen!2sin!4v1780481198195!5m2!1sen!2sin" 
-width="800" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" >
 
+<br>
+
+<p>
+The Proprietor of Priyanshu Roadlines, <strong>Mr. Chandan Chaudhary</strong>, brings more than <strong>21 years of experience</strong> in the transportation and logistics industry. His expertise and dedication have helped the company build strong relationships with customers and business partners.
+</p>
+
+<br>
+
+<p>
+We provide fast and safe transportation services all over India. Our commitment to timely deliveries, customer satisfaction and secure handling of goods makes us a trusted logistics partner for businesses.
+</p>
+
+<br>
+
+<p>
+Currently, we are proudly providing transportation services to several reputed companies including <strong>Luxor Writing Pvt. Ltd.</strong>, <strong>Forace Polymer Pvt. Ltd.</strong> and many others.
+</p>
+
+<br>
+
+<p>
+At Priyanshu Roadlines, we are committed to making sure your packages and consignments arrive quickly, safely and efficiently.
+</p>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h2>Our Mission</h2>
+<p>
+To provide safe, timely and cost-effective transportation services while maintaining the highest standards of customer satisfaction and reliability.
+</p>
+</div>
+
+<div class="card">
+<h2>Our Vision</h2>
+<p>
+To become one of India's most trusted logistics and transportation partners by delivering excellence in every shipment.
+</p>
+</div>
+
+</div>
+
+<div class="services">
+
+<h2 class="section-title">Our Services</h2>
+
+<div class="service-grid">
+
+<div class="service-box">
+🚚 Transportation Services
+</div>
+
+<div class="service-box">
+📦 Logistics Solutions
+</div>
+
+<div class="service-box">
+🏭 Industrial Goods Transport
+</div>
+
+<div class="service-box">
+🚛 Nationwide Delivery
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<section class="stats">
+
+<div class="stats-container">
+
+<div class="stat">
+<h2>21+</h2>
+<p>Years Industry Experience</p>
+</div>
+
+<div class="stat">
+<h2>2023</h2>
+<p>Company Established</p>
+</div>
+
+<div class="stat">
+<h2>24/7</h2>
+<p>Customer Support</p>
+</div>
+
+<div class="stat">
+<h2>India</h2>
+<p>Nationwide Service</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="map-section">
+
+<h2 class="section-title">Our Location</h2>
+
+<iframe src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3925.9883500951114!2d78.04652645544067!3d29.92922617344943!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sKhasra%20No.%2010%2C%20Krishna%20Kunj%20Colony%2C%20SIDCUL%20Bye%20Pass%20Road%2C%20Bahadrabad%2C%20Haridwar!5e1!3m2!1sen!2sin!4v1780481198195!5m2!1sen!2sin"
+allowfullscreen=""
+loading="lazy">
 </iframe>
 
-<a href="index.html">Back to Home</a>
+<br>
+
+<a href="index.html" class="home-btn">Back To Home</a>
+
+</section>
+
 <footer>
 
-<h3>PRIYANSHU ROADLINES</h3>
+<h2>PRIYANSHU ROADLINES</h2>
 
-<p>Goods Transport • Logistics • Warehousing</p>
+<p>Goods Transport • Logistics • Nationwide Delivery</p>
 
 <p>📞 8171703677</p>
 
 <p>📧 priyanshuroadlines611@gmail.com</p>
 
+<p>© 2026 Priyanshu Roadlines. All Rights Reserved.</p>
+
 </footer>
+
 </body>
 </html>
