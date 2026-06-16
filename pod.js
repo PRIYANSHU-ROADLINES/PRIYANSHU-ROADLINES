@@ -98,7 +98,83 @@ onAuthStateChanged(auth, (user) => {
 });
   
 // Upload POD
+async function compressImage(file) {
+
+  return new Promise((resolve) => {
+
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = function(event) {
+
+      const img = new Image();
+
+      img.src = event.target.result;
+
+      img.onload = function() {
+
+        const canvas =
+        document.createElement("canvas");
+
+        const MAX_WIDTH = 1200;
+
+        let width = img.width;
+        let height = img.height;
+
+        if(width > MAX_WIDTH){
+
+          height =
+          height * (MAX_WIDTH / width);
+
+          width = MAX_WIDTH;
+
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx =
+        canvas.getContext("2d");
+
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          width,
+          height
+        );
+
+        canvas.toBlob(
+
+          (blob) => {
+
+            resolve(blob);
+
+          },
+
+          "image/jpeg",
+
+          0.7
+
+        );
+
+      };
+
+    };
+
+  });
+
+}
 window.uploadPOD = async function () {
+  const saveButton =
+document.querySelector(
+'button[onclick="uploadPOD()"]'
+);
+
+saveButton.disabled = true;
+saveButton.innerText =
+"Uploading...";
 
   const grNo = document.getElementById("grNo").value.trim();
 
@@ -108,6 +184,8 @@ window.uploadPOD = async function () {
   }
 
   const file = document.getElementById("podImage").files[0];
+  const compressedFile =
+await compressImage(file);
 
   if (!file) {
     alert("Please select POD image");
@@ -136,7 +214,11 @@ saveButton.innerText = "Uploading...";
     // Upload Image to Cloudinary
     const formData = new FormData();
 
-    formData.append("file", file);
+    formData.append(
+  "file",
+  compressedFile,
+  "pod.jpg"
+);
     formData.append("upload_preset", UPLOAD_PRESET);
 
     const uploadResponse = await fetch(
@@ -181,7 +263,10 @@ saveButton.innerText = "Uploading...";
 
       createdAt: serverTimestamp()
     });
+    saveButton.disabled = false;
 
+saveButton.innerText =
+"Save POD";
     alert("POD Saved Successfully");
     
 
@@ -197,6 +282,10 @@ saveButton.innerText = "Uploading...";
     loadRecentPods();
 
   } catch (error) {
+    saveButton.disabled = false;
+
+saveButton.innerText =
+"Save POD";
     alert(error.message);
   }
 };
