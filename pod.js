@@ -1,3 +1,5 @@
+let editMode = false;
+let currentGR = "";
 // Firebase Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
@@ -177,20 +179,70 @@ saveButton.innerText =
 "Uploading...";
 
   const grNo = document.getElementById("grNo").value.trim();
+if(editMode){
 
+  await setDoc(doc(db,"pods",currentGR),{
+
+    grNo: currentGR,
+
+    vehicleNo:
+      document.getElementById("vehicleNo").value || "",
+
+    driverName:
+      document.getElementById("driverName").value || "",
+
+    driverMobile:
+      document.getElementById("driverMobile").value || "",
+
+    partyName:
+      document.getElementById("partyName").value || "",
+
+    deliveryDate:
+      document.getElementById("deliveryDate").value || "",
+
+    remarks:
+      document.getElementById("remarks").value || "",
+
+    status:
+      document.getElementById("status").value
+
+  },{merge:true});
+
+  alert("POD Updated Successfully");
+document.getElementById("grNo").value = "";
+document.getElementById("vehicleNo").value = "";
+document.getElementById("driverName").value = "";
+document.getElementById("driverMobile").value = "";
+document.getElementById("partyName").value = "";
+document.getElementById("deliveryDate").value = "";
+document.getElementById("remarks").value = "";
+  editMode = false;
+  currentGR = "";
+
+  document.querySelector(
+  'button[onclick="uploadPOD()"]'
+  ).innerText = "Save POD";
+
+  loadRecentPods();
+  loadDashboard();
+saveButton.disabled = false;
+saveButton.innerText = "Save POD";
+  return;
+}
   if (!grNo) {
     alert("GR Number is required");
     return;
   }
 
   const file = document.getElementById("podImage").files[0];
-  const compressedFile =
-await compressImage(file);
 
-  if (!file) {
-    alert("Please select POD image");
-    return;
-  }
+if (!file) {
+  alert("Please select POD image");
+  return;
+}
+
+const compressedFile = await compressImage(file);
+    
 
   // Duplicate Check
   const existing = await getDoc(doc(db, "pods", grNo));
@@ -349,6 +401,11 @@ window.searchPOD = async function () {
     </a>
 
     ${deleteButton}
+    ${isAdminLoggedIn ? `
+<button onclick="editPOD('${data.grNo}')">
+Edit POD
+</button>
+` : ""}
   `;
 };
 async function loadDashboard() {
@@ -469,3 +526,49 @@ window.downloadExcel = async function(){
   );
 
 }
+window.editPOD = async function(grNo){
+
+  const snap =
+  await getDoc(doc(db,"pods",grNo));
+
+  if(!snap.exists()) return;
+
+  const data = snap.data();
+
+  document.getElementById("grNo").value =
+  data.grNo || "";
+
+  document.getElementById("vehicleNo").value =
+  data.vehicleNo || "";
+
+  document.getElementById("driverName").value =
+  data.driverName || "";
+
+  document.getElementById("driverMobile").value =
+  data.driverMobile || "";
+
+  document.getElementById("partyName").value =
+  data.partyName || "";
+
+  document.getElementById("deliveryDate").value =
+  data.deliveryDate || "";
+
+  document.getElementById("remarks").value =
+  data.remarks || "";
+
+  document.getElementById("status").value =
+  data.status || "Pending";
+
+  document
+  .getElementById("adminPanel")
+  .scrollIntoView({
+      behavior:"smooth"
+  });
+
+editMode = true;
+currentGR = grNo;
+
+document.querySelector(
+'button[onclick="uploadPOD()"]'
+).innerText = "Save Changes";
+  });
