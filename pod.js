@@ -126,7 +126,13 @@ window.uploadPOD = async function () {
   }
 
   try {
+    const saveButton =
+document.querySelector(
+'button[onclick="uploadPOD()"]'
+);
 
+saveButton.disabled = true;
+saveButton.innerText = "Uploading...";
     // Upload Image to Cloudinary
     const formData = new FormData();
 
@@ -177,6 +183,7 @@ window.uploadPOD = async function () {
     });
 
     alert("POD Saved Successfully");
+    
 
     document.getElementById("grNo").value = "";
     document.getElementById("vehicleNo").value = "";
