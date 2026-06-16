@@ -79,6 +79,7 @@ onAuthStateChanged(auth, (user) => {
     }
 
     loadRecentPods();
+    loadDashboard();
 
   } else {
 
@@ -254,7 +255,41 @@ window.searchPOD = async function () {
     ${deleteButton}
   `;
 };
+async function loadDashboard() {
 
+  const snapshot = await getDocs(collection(db,"pods"));
+
+  let total = 0;
+  let completed = 0;
+  let pending = 0;
+  let delivered = 0;
+
+  snapshot.forEach((docItem)=>{
+
+    total++;
+
+    const pod = docItem.data();
+
+    if(pod.status === "Completed"){
+      completed++;
+    }
+
+    if(pod.status === "Pending"){
+      pending++;
+    }
+
+    if(pod.status === "Delivered"){
+      delivered++;
+    }
+
+  });
+
+  document.getElementById("totalPods").innerText = total;
+  document.getElementById("completedPods").innerText = completed;
+  document.getElementById("pendingPods").innerText = pending;
+  document.getElementById("deliveredPods").innerText = delivered;
+
+}
 // Recent POD List
 async function loadRecentPods() {
 
