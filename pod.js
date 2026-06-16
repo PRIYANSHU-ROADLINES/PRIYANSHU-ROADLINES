@@ -17,7 +17,7 @@ import {
   getDocs,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
+import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
 // Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
@@ -342,3 +342,34 @@ window.deletePOD = async function(grNo){
 
   }
   };
+window.downloadExcel = async function(){
+
+  const snapshot =
+  await getDocs(collection(db,"pods"));
+
+  let data = [];
+
+  snapshot.forEach((docItem)=>{
+
+    data.push(docItem.data());
+
+  });
+
+  const worksheet =
+  XLSX.utils.json_to_sheet(data);
+
+  const workbook =
+  XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "POD Report"
+  );
+
+  XLSX.writeFile(
+    workbook,
+    "POD_Report.xlsx"
+  );
+
+}
