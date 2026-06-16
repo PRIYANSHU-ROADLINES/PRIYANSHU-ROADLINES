@@ -1,31 +1,291 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Track Shipment</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track GR | Priyanshu Roadlines</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+}
+
+header{
+    background:#000;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+header h1{
+    color:red;
+    margin:0;
+}
+
+.container{
+    max-width:800px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-bottom:15px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:red;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    background:#cc0000;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:5px;
+    color:white;
+    font-weight:bold;
+}
+
+.completed{
+    background:green;
+}
+
+.pending{
+    background:orange;
+}
+
+.delivered{
+    background:blue;
+}
+
+#result{
+    margin-top:20px;
+}
+
+.notfound{
+    background:#fff3cd;
+    padding:15px;
+    border-radius:8px;
+    color:#856404;
+}
+
+.details p{
+    margin:10px 0;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#666;
+}
+
+</style>
 </head>
+
 <body>
 
-<h1>Track Your Shipment</h1>
+<header>
+    <h1>PRIYANSHU ROADLINES</h1>
+    <p>Track Your Shipment</p>
+</header>
 
-<input type="text" id="lr" placeholder="Enter LR Number">
+<div class="container">
 
-<button onclick="track()">
-Track Shipment
-</button>
+    <div class="card">
 
-<p id="result"></p>
+        <h2>Track GR</h2>
 
-<script>
+        <input
+        type="text"
+        id="grNumber"
+        placeholder="Enter GR Number">
 
-function track(){
+        <button onclick="trackGR()">
+            TRACK NOW
+        </button>
 
-let lr =
-document.getElementById("lr").value;
+        <div id="result"></div>
 
-document.getElementById("result").innerHTML =
-"Tracking feature will be connected with AIM Software soon.<br>LR No: " + lr;
+    </div>
 
+</div>
+
+<div class="footer">
+📞 Customer Support: 9910292626
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc
 }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
+  authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
+  projectId: "priyanshu-roadlines-pod",
+  storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
+  messagingSenderId: "735411516260",
+  appId: "1:735411516260:web:397d6a80141f032c0a0071"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.trackGR = async function(){
+
+    const grNo =
+    document.getElementById("grNumber").value.trim();
+
+    const result =
+    document.getElementById("result");
+
+    if(!grNo){
+        alert("Please Enter GR Number");
+        return;
+    }
+
+    result.innerHTML =
+    "<p>Searching shipment...</p>";
+
+    try{
+
+        const snap =
+        await getDoc(doc(db,"pods",grNo));
+
+        if(!snap.exists()){
+
+            result.innerHTML = `
+            <div class="notfound">
+
+            <h3>Shipment Not Found</h3>
+
+            <p>
+            We apologize for the inconvenience.
+            </p>
+
+            <p>
+            The GR Number entered by you
+            could not be found in our records.
+            </p>
+
+            <p>
+            Please verify the GR Number
+            or contact our office.
+            </p>
+
+            <p>
+            📞 9910292626
+            </p>
+
+            <p>
+            Thank you for choosing
+            Priyanshu Roadlines.
+            </p>
+
+            </div>
+            `;
+
+            return;
+        }
+
+        const data = snap.data();
+
+        let statusClass = "";
+
+        if(data.status === "Completed"){
+            statusClass = "completed";
+        }
+        else if(data.status === "Pending"){
+            statusClass = "pending";
+        }
+        else{
+            statusClass = "delivered";
+        }
+
+        result.innerHTML = `
+
+        <div class="details">
+
+        <h3>Shipment Details</h3>
+
+        <p>
+        <b>GR Number:</b>
+        ${data.grNo}
+        </p>
+
+        <p>
+        <b>Status:</b>
+        <span class="status ${statusClass}">
+        ${data.status}
+        </span>
+        </p>
+
+        <p>
+        <b>Vehicle Number:</b>
+        ${data.vehicleNo || "-"}
+        </p>
+
+        <p>
+        <b>Party Name:</b>
+        ${data.partyName || "-"}
+        </p>
+
+        <p>
+        <b>Delivery Date:</b>
+        ${data.deliveryDate || "-"}
+        </p>
+
+        <p>
+        <b>Remarks:</b>
+        ${data.remarks || "-"}
+        </p>
+
+        </div>
+
+        `;
+
+    }
+    catch(error){
+
+        result.innerHTML = `
+        <div class="notfound">
+        Error: ${error.message}
+        </div>
+        `;
+
+    }
+
+};
 
 </script>
 
