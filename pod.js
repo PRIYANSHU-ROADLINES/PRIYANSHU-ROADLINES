@@ -572,3 +572,26 @@ document.querySelector(
 'button[onclick="uploadPOD()"]'
 ).innerText = "Save Changes";
   };
+window.toggleRecentPods = function(){
+
+  const podList =
+  document.getElementById("recentPods");
+
+  const btn =
+  event.target;
+
+  if(podList.style.display === "none"){
+
+    podList.style.display = "block";
+
+    btn.innerText = "Hide POD List";
+
+  }else{
+
+    podList.style.display = "none";
+
+    btn.innerText = "View All PODs";
+
+  }
+
+};
