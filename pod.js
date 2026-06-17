@@ -571,4 +571,4 @@ currentGR = grNo;
 document.querySelector(
 'button[onclick="uploadPOD()"]'
 ).innerText = "Save Changes";
-  });
+  };
