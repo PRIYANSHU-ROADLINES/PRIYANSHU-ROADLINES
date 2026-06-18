@@ -61,7 +61,7 @@ window.login = async function () {
 
     const user = userCredential.user;
     if (
-  user.email !== "YOUR_EMAIL@gmail.com"
+  user.email !== "  priyanshuroadlines611@gmail.com"
    ) {
 
   alert("Access Denied");
