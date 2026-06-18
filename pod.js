@@ -60,16 +60,7 @@ window.login = async function () {
       );
 
     const user = userCredential.user;
-    if (
-  user.email !== "  priyanshuroadlines611@gmail.com"
-   ) {
-
-  alert("Access Denied");
-
-  await signOut(auth);
-
-  return;
-   }
+    
 
     await user.reload();
 
