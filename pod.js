@@ -6,8 +6,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
-  sendEmailVerification
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 import {
@@ -60,24 +59,7 @@ window.login = async function () {
       );
 
     const user = userCredential.user;
-    console.log("Logged in email:", user.email);
-alert("Logged in email: " + user.email);
-    
-
-    await user.reload();
-
-    if (!user.emailVerified) {
-
-      await sendEmailVerification(user);
-
-      alert(
-        "Your email is not verified. A verification email has been sent. Please verify your email and login again."
-      );
-
-      await signOut(auth);
-
-      return;
-    }
+   
 
     alert("Login Successful");
 
