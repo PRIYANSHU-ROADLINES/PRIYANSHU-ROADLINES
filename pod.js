@@ -43,31 +43,58 @@ const UPLOAD_PRESET = "pod_upload";
 
 // Login
 window.login = async function () {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+
+  const email =
+    document.getElementById("email").value;
+
+  const password =
+    document.getElementById("password").value;
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    const user = auth.currentUser;
 
-if (!user.emailVerified) {
+    const userCredential =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-  await sendEmailVerification(user);
+    const user = userCredential.user;
+    if (
+  user.email !== "YOUR_EMAIL@gmail.com"
+   ) {
 
-  alert(
-    "Verification email sent. Please verify your email first."
-  );
+  alert("Access Denied");
 
   await signOut(auth);
 
   return;
-}
-    alert("Login Successful");
-  } catch (err) {
-    alert(err.message);
-  }
-};
+   }
 
+    await user.reload();
+
+    if (!user.emailVerified) {
+
+      await sendEmailVerification(user);
+
+      alert(
+        "Your email is not verified. A verification email has been sent. Please verify your email and login again."
+      );
+
+      await signOut(auth);
+
+      return;
+    }
+
+    alert("Login Successful");
+
+  } catch (err) {
+
+    alert(err.message);
+
+  }
+
+};
 // Logout
 window.logout = async function () {
   await signOut(auth);
