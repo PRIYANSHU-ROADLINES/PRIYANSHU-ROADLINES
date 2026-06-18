@@ -6,7 +6,8 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 import {
@@ -47,6 +48,20 @@ window.login = async function () {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
+    const user = auth.currentUser;
+
+if (!user.emailVerified) {
+
+  await sendEmailVerification(user);
+
+  alert(
+    "Verification email sent. Please verify your email first."
+  );
+
+  await signOut(auth);
+
+  return;
+}
     alert("Login Successful");
   } catch (err) {
     alert(err.message);
