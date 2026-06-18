@@ -60,6 +60,8 @@ window.login = async function () {
       );
 
     const user = userCredential.user;
+    console.log("Logged in email:", user.email);
+alert("Logged in email: " + user.email);
     
 
     await user.reload();
