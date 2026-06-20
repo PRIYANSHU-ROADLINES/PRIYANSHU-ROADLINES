@@ -95,12 +95,18 @@ onAuthStateChanged(auth, (user) => {
   const adminPanel = document.getElementById("adminPanel");
   const loginBox = document.getElementById("loginBox");
   const searchPanel = document.getElementById("searchPanel");
-
+  const loginHistorySection =
+  document.getElementById("loginHistorySection");
+  
   if (user) {
 
     isAdminLoggedIn = true;
 
     adminPanel.style.display = "block";
+    if(loginHistorySection){
+  loginHistorySection.style.display = "block";
+}
+    
 
     if (searchPanel) {
       searchPanel.style.display = "block";
@@ -118,6 +124,9 @@ onAuthStateChanged(auth, (user) => {
     isAdminLoggedIn = false;
 
     adminPanel.style.display = "none";
+    if(loginHistorySection){
+  loginHistorySection.style.display = "none";
+}
 
     if (searchPanel) {
       searchPanel.style.display = "none";
