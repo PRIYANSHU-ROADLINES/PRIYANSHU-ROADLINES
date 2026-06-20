@@ -40,7 +40,7 @@ const auth = getAuth(app);
 signOut(auth);
 const db = getFirestore(app);
 let isAdminLoggedIn = false;
-function getDeviceId() {
+window.getDeviceId = function() {
 
   let deviceId =
     localStorage.getItem("deviceId");
