@@ -712,3 +712,26 @@ window.loadLoginHistory = async function () {
   });
 
 };
+let logoutTimer;
+
+function resetLogoutTimer() {
+
+    clearTimeout(logoutTimer);
+
+    logoutTimer = setTimeout(async () => {
+
+        alert("Session expired. Please login again.");
+
+        await signOut(auth);
+
+        window.location.href = "index.html";
+
+    }, 5 * 60 * 1000);
+
+}
+
+document.addEventListener("mousemove", resetLogoutTimer);
+document.addEventListener("keydown", resetLogoutTimer);
+document.addEventListener("click", resetLogoutTimer);
+
+resetLogoutTimer();
