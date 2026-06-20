@@ -13,6 +13,7 @@ import {
   getFirestore,
   doc,
   setDoc,
+  updateDoc,
   getDoc,
   deleteDoc,
   collection,
@@ -39,6 +40,29 @@ const auth = getAuth(app);
 signOut(auth);
 const db = getFirestore(app);
 let isAdminLoggedIn = false;
+function getDeviceId() {
+
+  let deviceId =
+    localStorage.getItem("deviceId");
+
+  if (!deviceId) {
+
+    deviceId =
+      "device_" +
+      Math.random()
+      .toString(36)
+      .substring(2,15);
+
+    localStorage.setItem(
+      "deviceId",
+      deviceId
+    );
+
+  }
+
+  return deviceId;
+
+}
 
 // Cloudinary
 const CLOUD_NAME = "de3ipfolr";
