@@ -22,8 +22,10 @@ import {
   orderBy,
   query,
   limit,
+  where,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
 // Firebase Config
 const firebaseConfig = {
@@ -87,6 +89,37 @@ window.login = async function () {
   );
 
 const user = userCredential.user;
+    const deviceId = getDeviceId();
+
+const trustedQuery = query(
+  collection(db, "trustedDevices"),
+  where("deviceId", "==", deviceId),
+  where("approved", "==", true)
+);
+
+const trustedSnapshot =
+  await getDocs(trustedQuery);
+
+if (trustedSnapshot.empty) {
+
+  await addDoc(
+    collection(db, "pendingDevices"),
+    {
+      email: user.email,
+      deviceId: deviceId,
+      device: navigator.userAgent,
+      createdAt: serverTimestamp()
+    }
+  );
+
+  await signOut(auth);
+
+  alert(
+    "Device Approval Required. Contact Administrator."
+  );
+
+  return;
+}
 
 await addDoc(
   collection(db, "loginHistory"),
