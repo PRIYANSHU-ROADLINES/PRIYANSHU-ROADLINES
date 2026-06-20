@@ -17,6 +17,10 @@ import {
   deleteDoc,
   collection,
   getDocs,
+  addDoc,
+  orderBy,
+  query,
+  limit,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
@@ -51,17 +55,26 @@ window.login = async function () {
 
   try {
 
-    const userCredential =
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+   const userCredential =
+  await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
 
-    const user = userCredential.user;
-   
+const user = userCredential.user;
 
-    alert("Login Successful");
+await addDoc(
+  collection(db, "loginHistory"),
+  {
+    email: user.email,
+    loginTime: serverTimestamp(),
+    device: navigator.userAgent
+  }
+);
+
+alert("Login Successful");
+      
 
   } catch (err) {
 
@@ -599,4 +612,37 @@ window.toggleRecentPods = function () {
   } else {
     podList.style.display = "none";
   }
+};
+window.loadLoginHistory = async function () {
+
+  const q = query(
+    collection(db, "loginHistory"),
+    orderBy("loginTime", "desc"),
+    limit(20)
+  );
+
+  const snapshot = await getDocs(q);
+
+  const box =
+    document.getElementById("loginHistoryBox");
+
+  box.innerHTML = "";
+
+  snapshot.forEach((docItem) => {
+
+    const data = docItem.data();
+
+    box.innerHTML += `
+      <div style="
+        border:1px solid #ddd;
+        padding:10px;
+        margin:5px;
+        border-radius:5px;
+      ">
+        <b>Email:</b> ${data.email}<br>
+        <b>Device:</b> ${data.device}
+      </div>
+    `;
+  });
+
 };
