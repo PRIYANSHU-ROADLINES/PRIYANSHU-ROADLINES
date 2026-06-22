@@ -23,7 +23,8 @@ import {
   query,
   limit,
   where,
-  serverTimestamp
+  serverTimestamp,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import * as XLSX from "https://cdn.sheetjs.com/xlsx-0.20.2/package/xlsx.mjs";
@@ -742,17 +743,22 @@ window.loadLoginHistory = async function () {
 
     const data = docItem.data();
 
-    box.innerHTML += `
-      <div style="
-        border:1px solid #ddd;
-        padding:10px;
-        margin:5px;
-        border-radius:5px;
-      ">
-        <b>Email:</b> ${data.email}<br>
-        <b>Device:</b> ${data.device}
-      </div>
-    `;
+   box.innerHTML += `
+  <div style="
+    border:1px solid #ddd;
+    padding:10px;
+    margin:5px;
+    border-radius:5px;
+  ">
+    <b>Email:</b> ${data.email}<br>
+    <b>Device:</b> ${data.device}<br><br>
+
+    <button onclick="deleteLoginHistory('${docItem.id}')">
+      Delete
+    </button>
+
+  </div>
+`;
   });
 
 };
@@ -1016,5 +1022,51 @@ window.unblockDevice = async function(docId){
   alert("Device Unblocked");
 
   loadTrustedDevices();
+
+};
+window.deleteLoginHistory = async function(docId){
+
+  const confirmDelete =
+  confirm("Delete this login history?");
+
+  if(!confirmDelete) return;
+
+  await deleteDoc(
+    doc(db,"loginHistory",docId)
+  );
+
+  alert("History Deleted");
+
+  loadLoginHistory();
+
+};
+window.deleteAllLoginHistory = async function(){
+
+  const confirmDelete =
+  confirm(
+    "Delete ALL login history?"
+  );
+
+  if(!confirmDelete) return;
+
+  const snapshot =
+  await getDocs(
+    collection(db,"loginHistory")
+  );
+
+  const batch =
+  writeBatch(db);
+
+  snapshot.forEach((docItem)=>{
+
+    batch.delete(docItem.ref);
+
+  });
+
+  await batch.commit();
+
+  alert("All Login History Deleted");
+
+  loadLoginHistory();
 
 };
