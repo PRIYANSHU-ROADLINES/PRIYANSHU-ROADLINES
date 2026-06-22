@@ -211,6 +211,7 @@ if(deviceApprovalSection){
     if (searchPanel) {
       searchPanel.style.display = "block";
     }
+    
 
     if (loginBox) {
       loginBox.style.display = "none";
@@ -1134,5 +1135,14 @@ window.deleteAllLoginHistory = async function(){
   alert("All Login History Deleted");
 
   loadLoginHistory();
+
+};
+window.handleSearchEnter = function(event){
+
+  if(event.key === "Enter"){
+
+    searchPOD();
+
+  }
 
 };
