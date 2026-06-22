@@ -908,7 +908,9 @@ window.loadTrustedDevices = async function () {
         ${data.deviceName}<br>
 
         <b>Status:</b>
-        ${data.status}<br>
+        ${data.status === "Blocked"
+ ? "🔴 Blocked"
+ : "🟢 Active"}</p>
 
         <b>Login Count:</b>
         ${data.loginCount || 0}<br>
