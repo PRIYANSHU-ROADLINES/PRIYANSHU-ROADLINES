@@ -85,6 +85,35 @@ img{
 .completed{
     background:green;
 }
+#watermark{
+
+position:fixed;
+
+top:50%;
+
+left:50%;
+
+transform:
+translate(-50%,-50%);
+
+width:350px;
+
+height:350px;
+
+background-image:
+url("YOUR_LOGO_URL");
+
+background-size:contain;
+
+background-repeat:no-repeat;
+
+opacity:0.08;
+
+pointer-events:none;
+
+z-index:-1;
+
+}
 </style>
 </head>
 
@@ -178,15 +207,13 @@ Download POD Report
 <div class="card">
 
 <h2>Recent PODs</h2>
-
-<button id="viewPodsBtn" onclick="toggleRecentPods()">
-  View All PODs
+<button onclick="toggleRecentPods()">
+📦 Recent PODs
 </button>
 
-<div id="recentPods" style="display:none;"></div>
-    
+<div id="recentPods" style="display:none;">
 </div>
-    
+
 <div id="loginHistorySection" style="display:none;">
 
   <h3>Recent Login Activity</h3>
@@ -194,37 +221,40 @@ Download POD Report
 Delete All History
 </button>
 
-  <button onclick="loadLoginHistory()">
-    View Login History
-  </button>
+  <button onclick="toggleLoginHistory()">
+📜 Login History
+</button>
 
-  <div id="loginHistoryBox"></div>
-
+<div
+id="loginHistoryBox"
+style="display:none;">
 </div>
 <div id="deviceApprovalSection" style="display:none;">
 
   <h3>Pending Device Requests</h3>
 
-  <button onclick="loadPendingDevices()">
-    View Pending Devices
-  </button>
+  <button onclick="togglePendingDevices()">
+📱 Pending Devices
+</button>
 
-  <div id="pendingDevicesBox"></div>
-
+<div
+id="pendingDevicesBox"
+style="display:none;">
 </div>
+ 
     <div id="trustedDevicesSection" style="display:none;">
 
   <h3>Trusted Devices</h3>
+<button onclick="toggleTrustedDevices()">
+🔐 Trusted Devices
+</button>
 
-  <button onclick="loadTrustedDevices()">
-    View Trusted Devices
-  </button>
-
-  <div id="trustedDevicesBox"></div>
-
+<div
+id="trustedDevicesBox"
+style="display:none;">
 </div>
-    
-
+  
+<div id="watermark"></div>
 
 <script type="module" src="pod.js"></script>
 
