@@ -895,8 +895,14 @@ onclick="renameDevice('${docItem.id}')">
 Rename Device
 </button>
 <button
-onclick="blockDevice('${docItem.id}')">
-Block Device
+onclick="${data.status === 'Blocked'
+  ? `unblockDevice('${docItem.id}')`
+  : `blockDevice('${docItem.id}')`}">
+
+${data.status === 'Blocked'
+  ? 'Unblock Device'
+  : 'Block Device'}
+
 </button>
 
         <button
@@ -969,6 +975,25 @@ window.blockDevice = async function(docId){
   );
 
   alert("Device Blocked");
+
+  loadTrustedDevices();
+
+};
+window.unblockDevice = async function(docId){
+
+  const confirmUnblock =
+  confirm("Unblock this device?");
+
+  if(!confirmUnblock) return;
+
+  await updateDoc(
+    doc(db,"trustedDevices",docId),
+    {
+      status:"Active"
+    }
+  );
+
+  alert("Device Unblocked");
 
   loadTrustedDevices();
 
