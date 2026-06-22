@@ -120,11 +120,6 @@ if (trustedSnapshot.empty) {
 
   return;
 }
-    const trustedDoc =
-trustedSnapshot.docs[0];
-
-const trustedData =
-trustedDoc.data();
 
 if(trustedData.status === "Blocked"){
 
@@ -838,14 +833,16 @@ window.approveDevice = async function(docId){
   const data = snap.data();
 
   await addDoc(
-    collection(db,"trustedDevices"),
-    {
-      approved:true,
-      deviceId:data.deviceId,
-      deviceName:data.device
-    }
-  );
-
+  collection(db,"trustedDevices"),
+  {
+    approved:true,
+    deviceId:data.deviceId,
+    deviceName:data.device,
+    status:"Active",
+    loginCount:0,
+    lastLogin:"Never"
+  }
+);
   await deleteDoc(pendingRef);
 
   alert("Device Approved Successfully");
