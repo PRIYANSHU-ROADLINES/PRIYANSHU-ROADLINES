@@ -130,9 +130,13 @@ z-index:-1;
 <div class="card" id="searchPanel" style="display:none;">
 <h2>Search POD</h2>
 
-<input type="text" id="searchGR" placeholder="Enter GR Number">
+<input
+type="text"
+id="searchGR"
+placeholder="Enter GR Number"
+onkeypress="handleSearchEnter(event)">
 
-<button onclick="searchPOD()">Search</button>
+<button onclick="🔍 Search()">Search</button>
 
 <div id="result"></div>
 
