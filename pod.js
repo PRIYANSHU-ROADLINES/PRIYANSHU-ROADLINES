@@ -713,17 +713,17 @@ document.querySelector(
 'button[onclick="uploadPOD()"]'
 ).innerText = "Save Changes";
   };
+window.toggleRecentPods = function(){
 
-window.toggleRecentPods = function () {
+  const box =
+  document.getElementById("recentPods");
 
-  const podList = document.getElementById("recentPods");
+  box.style.display =
+  box.style.display === "none"
+  ? "block"
+  : "none";
 
-  if (podList.style.display === "none") {
-    podList.style.display = "block";
-  } else {
-    podList.style.display = "none";
-  }
-};
+}
 window.loadLoginHistory = async function () {
 
   const q = query(
@@ -762,6 +762,27 @@ window.loadLoginHistory = async function () {
   });
 
 };
+window.toggleLoginHistory =
+async function(){
+
+  const box =
+  document.getElementById(
+    "loginHistoryBox"
+  );
+
+  if(box.style.display === "none"){
+
+    box.style.display = "block";
+
+    await loadLoginHistory();
+
+  }else{
+
+    box.style.display = "none";
+
+  }
+
+}
 let logoutTimer;
 
 function resetLogoutTimer() {
@@ -877,6 +898,27 @@ window.rejectDevice = async function(docId){
   loadPendingDevices();
 
 };
+window.togglePendingDevices =
+async function(){
+
+  const box =
+  document.getElementById(
+    "pendingDevicesBox"
+  );
+
+  if(box.style.display === "none"){
+
+    box.style.display = "block";
+
+    await loadPendingDevices();
+
+  }else{
+
+    box.style.display = "none";
+
+  }
+
+}
 window.loadTrustedDevices = async function () {
 
   const snapshot =
@@ -945,6 +987,28 @@ ${data.status === 'Blocked'
   });
 
 };
+window.toggleTrustedDevices =
+async function(){
+
+  const box =
+  document.getElementById(
+    "trustedDevicesBox"
+  );
+
+  if(box.style.display === "none"){
+
+    box.style.display = "block";
+
+    await loadTrustedDevices();
+
+  }else{
+
+    box.style.display = "none";
+
+  }
+
+}
+
 window.removeDevice = async function(docId){
 
   const confirmDelete =
