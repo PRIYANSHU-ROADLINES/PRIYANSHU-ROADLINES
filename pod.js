@@ -39,7 +39,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-signOut(auth);
+
 const db = getFirestore(app);
 let isAdminLoggedIn = false;
 window.getDeviceId = function() {
@@ -120,6 +120,14 @@ if (trustedSnapshot.empty) {
 
   return;
 }
+const trustedDoc =
+trustedSnapshot.docs[0];
+
+const trustedData =
+trustedDoc.data();
+
+console.log("Trusted Device Data:");
+console.log(trustedData);
 
 if(trustedData.status === "Blocked"){
 
@@ -131,13 +139,7 @@ if(trustedData.status === "Blocked"){
 
   return;
 }
-
 alert("Login Successful");
-const trustedDoc =
-trustedSnapshot.docs[0];
-
-const trustedData =
-trustedDoc.data();
 
 await updateDoc(
   doc(
