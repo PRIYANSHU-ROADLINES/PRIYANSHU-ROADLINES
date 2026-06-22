@@ -101,6 +101,22 @@ const trustedSnapshot =
   await getDocs(trustedQuery);
 
 if (trustedSnapshot.empty) {
+  const trustedDoc =
+trustedSnapshot.docs[0];
+
+const trustedData =
+trustedDoc.data();
+
+if(trustedData.status === "Blocked"){
+
+  await signOut(auth);
+
+  alert(
+    "This device has been blocked by Admin."
+  );
+
+  return;
+}
 
   await addDoc(
     collection(db, "pendingDevices"),
@@ -504,7 +520,9 @@ window.searchPOD = async function () {
   result.innerHTML = `
     <h3>GR Number: ${data.grNo}</h3>
 
-    <p><b>Status:</b> ${data.status}</p>
+    <p><b>Status:</b> ${data.status === "Blocked"
+ ? "🔴 Blocked"
+ : "🟢 Active"}</p>
 
     <p><b>Vehicle:</b> ${data.vehicleNo || "-"}</p>
 
@@ -878,6 +896,11 @@ window.loadTrustedDevices = async function () {
 onclick="renameDevice('${docItem.id}')">
 Rename Device
 </button>
+<button
+onclick="blockDevice('${docItem.id}')">
+Block Device
+</button>
+
         <button
         onclick="removeDevice('${docItem.id}')">
         Remove Access
@@ -929,6 +952,25 @@ window.renameDevice = async function(docId){
   );
 
   alert("Device Renamed");
+
+  loadTrustedDevices();
+
+};
+window.blockDevice = async function(docId){
+
+  const confirmBlock =
+  confirm("Block this device?");
+
+  if(!confirmBlock) return;
+
+  await updateDoc(
+    doc(db,"trustedDevices",docId),
+    {
+      status:"Blocked"
+    }
+  );
+
+  alert("Device Blocked");
 
   loadTrustedDevices();
 
