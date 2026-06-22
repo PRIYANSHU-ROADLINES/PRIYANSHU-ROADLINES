@@ -121,7 +121,9 @@ if (trustedSnapshot.empty) {
   return;
 }
 
-await addDoc(
+alert("Login Successful");
+
+addDoc(
   collection(db, "loginHistory"),
   {
     email: user.email,
@@ -129,8 +131,6 @@ await addDoc(
     device: navigator.userAgent
   }
 );
-
-alert("Login Successful");
       
 
   } catch (err) {
