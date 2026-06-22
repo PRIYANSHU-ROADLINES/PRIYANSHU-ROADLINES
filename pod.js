@@ -120,6 +120,8 @@ if (trustedSnapshot.empty) {
 
   return;
 }
+
+alert("Login Successful");
 const trustedDoc =
 trustedSnapshot.docs[0];
 
@@ -140,7 +142,6 @@ await updateDoc(
       new Date().toLocaleString()
   }
 );
-alert("Login Successful");
 
 addDoc(
   collection(db, "loginHistory"),
