@@ -101,22 +101,6 @@ const trustedSnapshot =
   await getDocs(trustedQuery);
 
 if (trustedSnapshot.empty) {
-  const trustedDoc =
-trustedSnapshot.docs[0];
-
-const trustedData =
-trustedDoc.data();
-
-if(trustedData.status === "Blocked"){
-
-  await signOut(auth);
-
-  alert(
-    "This device has been blocked by Admin."
-  );
-
-  return;
-}
 
   await addDoc(
     collection(db, "pendingDevices"),
@@ -132,6 +116,22 @@ if(trustedData.status === "Blocked"){
 
   alert(
     "Device Approval Required. Contact Administrator."
+  );
+
+  return;
+}
+    const trustedDoc =
+trustedSnapshot.docs[0];
+
+const trustedData =
+trustedDoc.data();
+
+if(trustedData.status === "Blocked"){
+
+  await signOut(auth);
+
+  alert(
+    "This device has been blocked by Admin."
   );
 
   return;
