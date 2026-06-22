@@ -812,6 +812,10 @@ window.loadPendingDevices = async function () {
         onclick="approveDevice('${docItem.id}')">
         Approve
         </button>
+        <button
+onclick="rejectDevice('${docItem.id}')">
+Reject
+</button>
 
       </div>
 
@@ -847,6 +851,22 @@ window.approveDevice = async function(docId){
   await deleteDoc(pendingRef);
 
   alert("Device Approved Successfully");
+
+  loadPendingDevices();
+
+};
+window.rejectDevice = async function(docId){
+
+  const confirmReject =
+  confirm("Reject this device request?");
+
+  if(!confirmReject) return;
+
+  await deleteDoc(
+    doc(db,"pendingDevices",docId)
+  );
+
+  alert("Device Request Rejected");
 
   loadPendingDevices();
 
