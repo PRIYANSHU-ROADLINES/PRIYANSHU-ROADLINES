@@ -875,6 +875,10 @@ window.loadTrustedDevices = async function () {
         ${data.lastLogin || "Never"}<br><br>
 
         <button
+onclick="renameDevice('${docItem.id}')">
+Rename Device
+</button>
+        <button
         onclick="removeDevice('${docItem.id}')">
         Remove Access
         </button>
@@ -906,6 +910,25 @@ window.removeDevice = async function(docId){
   alert(
     "Device Removed Successfully"
   );
+
+  loadTrustedDevices();
+
+};
+window.renameDevice = async function(docId){
+
+  const newName =
+  prompt("Enter new device name");
+
+  if(!newName) return;
+
+  await updateDoc(
+    doc(db,"trustedDevices",docId),
+    {
+      deviceName:newName
+    }
+  );
+
+  alert("Device Renamed");
 
   loadTrustedDevices();
 
