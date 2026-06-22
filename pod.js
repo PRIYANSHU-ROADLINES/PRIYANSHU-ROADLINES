@@ -154,6 +154,8 @@ onAuthStateChanged(auth, (user) => {
   const searchPanel = document.getElementById("searchPanel");
   const loginHistorySection =
   document.getElementById("loginHistorySection");
+  const deviceApprovalSection =
+document.getElementById("deviceApprovalSection");
   
   if (user) {
 
@@ -162,6 +164,12 @@ onAuthStateChanged(auth, (user) => {
     adminPanel.style.display = "block";
     if(loginHistorySection){
   loginHistorySection.style.display = "block";
+  if(deviceApprovalSection){
+  deviceApprovalSection.style.display = "block";
+}
+      if(deviceApprovalSection){
+  deviceApprovalSection.style.display = "none";
+}
 }
     
 
@@ -735,3 +743,73 @@ document.addEventListener("keydown", resetLogoutTimer);
 document.addEventListener("click", resetLogoutTimer);
 
 resetLogoutTimer();
+window.loadPendingDevices = async function () {
+
+  const snapshot =
+  await getDocs(collection(db,"pendingDevices"));
+
+  const box =
+  document.getElementById("pendingDevicesBox");
+
+  box.innerHTML = "";
+
+  snapshot.forEach((docItem)=>{
+
+    const data = docItem.data();
+
+    box.innerHTML += `
+
+      <div style="
+        border:1px solid #ddd;
+        padding:10px;
+        margin:10px;
+        border-radius:5px;
+      ">
+
+        <b>Email:</b>
+        ${data.email}<br>
+
+        <b>Device ID:</b>
+        ${data.deviceId}<br><br>
+
+        <button
+        onclick="approveDevice('${docItem.id}')">
+        Approve
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+};
+
+window.approveDevice = async function(docId){
+
+  const pendingRef =
+  doc(db,"pendingDevices",docId);
+
+  const snap =
+  await getDoc(pendingRef);
+
+  if(!snap.exists()) return;
+
+  const data = snap.data();
+
+  await addDoc(
+    collection(db,"trustedDevices"),
+    {
+      approved:true,
+      deviceId:data.deviceId,
+      deviceName:data.device
+    }
+  );
+
+  await deleteDoc(pendingRef);
+
+  alert("Device Approved Successfully");
+
+  loadPendingDevices();
+
+};
