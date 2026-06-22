@@ -120,7 +120,26 @@ if (trustedSnapshot.empty) {
 
   return;
 }
+const trustedDoc =
+trustedSnapshot.docs[0];
 
+const trustedData =
+trustedDoc.data();
+
+await updateDoc(
+  doc(
+    db,
+    "trustedDevices",
+    trustedDoc.id
+  ),
+  {
+    loginCount:
+      (trustedData.loginCount || 0) + 1,
+
+    lastLogin:
+      new Date().toLocaleString()
+  }
+);
 alert("Login Successful");
 
 addDoc(
