@@ -176,6 +176,8 @@ onAuthStateChanged(auth, (user) => {
   document.getElementById("loginHistorySection");
   const deviceApprovalSection =
 document.getElementById("deviceApprovalSection");
+  const trustedDevicesSection =
+document.getElementById("trustedDevicesSection");
   
   if (user) {
 
@@ -188,6 +190,9 @@ document.getElementById("deviceApprovalSection");
 
 if(deviceApprovalSection){
   deviceApprovalSection.style.display = "block";
+}
+    if(trustedDevicesSection){
+  trustedDevicesSection.style.display = "block";
 }
 
     if (searchPanel) {
