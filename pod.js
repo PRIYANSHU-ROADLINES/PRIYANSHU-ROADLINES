@@ -835,3 +835,78 @@ window.approveDevice = async function(docId){
   loadPendingDevices();
 
 };
+window.loadTrustedDevices = async function () {
+
+  const snapshot =
+  await getDocs(
+    collection(db,"trustedDevices")
+  );
+
+  const box =
+  document.getElementById(
+    "trustedDevicesBox"
+  );
+
+  box.innerHTML = "";
+
+  snapshot.forEach((docItem)=>{
+
+    const data = docItem.data();
+
+    box.innerHTML += `
+
+      <div style="
+        border:1px solid #ddd;
+        padding:10px;
+        margin:10px;
+        border-radius:5px;
+      ">
+
+        <b>Device:</b>
+        ${data.deviceName}<br>
+
+        <b>Status:</b>
+        ${data.status}<br>
+
+        <b>Login Count:</b>
+        ${data.loginCount || 0}<br>
+
+        <b>Last Login:</b>
+        ${data.lastLogin || "Never"}<br><br>
+
+        <button
+        onclick="removeDevice('${docItem.id}')">
+        Remove Access
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
+};
+window.removeDevice = async function(docId){
+
+  const confirmDelete =
+  confirm(
+    "Remove this device access?"
+  );
+
+  if(!confirmDelete) return;
+
+  await deleteDoc(
+    doc(
+      db,
+      "trustedDevices",
+      docId
+    )
+  );
+
+  alert(
+    "Device Removed Successfully"
+  );
+
+  loadTrustedDevices();
+
+};
