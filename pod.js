@@ -164,14 +164,11 @@ document.getElementById("deviceApprovalSection");
     adminPanel.style.display = "block";
     if(loginHistorySection){
   loginHistorySection.style.display = "block";
-  if(deviceApprovalSection){
+}
+
+if(deviceApprovalSection){
   deviceApprovalSection.style.display = "block";
 }
-      if(deviceApprovalSection){
-  deviceApprovalSection.style.display = "none";
-}
-}
-    
 
     if (searchPanel) {
       searchPanel.style.display = "block";
