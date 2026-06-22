@@ -128,9 +128,6 @@ trustedSnapshot.docs[0];
 const trustedData =
 trustedDoc.data();
 
-console.log("Trusted Device Data:");
-console.log(trustedData);
-
 if(trustedData.status === "Blocked"){
 
   await signOut(auth);
