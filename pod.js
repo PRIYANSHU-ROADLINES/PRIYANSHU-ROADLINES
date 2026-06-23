@@ -219,6 +219,7 @@ if(deviceApprovalSection){
 
     loadRecentPods();
     loadDashboard();
+    loadSystemStats();
 
   } else {
 
@@ -1153,11 +1154,106 @@ alert("Date Search Button Working");
 }
 async function loadSystemStats(){
 
-}
-window.toggleAllPods = function(){
+// Trusted Devices
+const trustedSnapshot =
+await getDocs(
+collection(db,"trustedDevices")
+);
+
+document.getElementById(
+"totalDevices"
+).innerText =
+trustedSnapshot.size;
+
+// Pending Requests
+const pendingSnapshot =
+await getDocs(
+collection(db,"pendingDevices")
+);
+
+document.getElementById(
+"pendingRequests"
+).innerText =
+pendingSnapshot.size;
+
+// Total Logins
+const loginSnapshot =
+await getDocs(
+collection(db,"loginHistory")
+);
+
+document.getElementById(
+"totalLogins"
+).innerText =
+loginSnapshot.size;
 
 }
+window.toggleAllPods = async function(){
 
+const box =
+document.getElementById("allPodsBox");
+
+if(box.style.display === "none"){
+
+box.style.display = "block";
+
+loadAllPods();
+
+}else{
+
+box.style.display = "none";
+
+}
+}
 window.loadAllPods = async function(){
+
+const snapshot =
+await getDocs(collection(db,"pods"));
+
+const box =
+document.getElementById("allPodsBox");
+
+box.innerHTML = "";
+
+snapshot.forEach((docItem)=>{
+
+const pod = docItem.data();
+
+box.innerHTML += `
+<div style="
+border:1px solid #ddd;
+padding:10px;
+margin:5px;
+border-radius:5px;
+">
+
+<b>GR:</b> ${pod.grNo}<br>
+
+<b>Party:</b> ${pod.partyName || "-"}<br>
+
+<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
+
+<b>Status:</b> ${pod.status}<br><br>
+
+<button onclick="searchFromList('${pod.grNo}')">
+View
+</button>
+
+</div>
+`;
+
+});
+
+}
+window.searchFromList = function(grNo){
+
+document.getElementById("searchGR").value = grNo;
+
+searchPOD();
+
+document.getElementById("searchPanel")
+.scrollIntoView({
+behavior:"smooth"
+});
 
 }
