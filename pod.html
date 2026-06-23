@@ -211,6 +211,16 @@ onkeypress="handleSearchEnter(event)">
 <p>Pending: <b id="pendingPods">0</b></p>
 
 <p>Delivered: <b id="deliveredPods">0</b></p>
+
+<p>Total Trusted Devices:
+<b id="totalDevices">0</b></p>
+
+<p>Pending Requests:
+<b id="pendingRequests">0</b></p>
+
+<p>Total Logins:
+<b id="totalLogins">0</b></p>
+
 <br>
 
 <button onclick="downloadExcel()">
@@ -257,6 +267,13 @@ Download POD Report
 </button>
 
 <div id="recentPods" style="display:none;">
+</div>
+<button onclick="toggleAllPods()">
+📋 View All PODs
+</button>
+
+<div id="allPodsBox"
+style="display:none;">
 </div>
 
 <div id="loginHistorySection" style="display:none;">
