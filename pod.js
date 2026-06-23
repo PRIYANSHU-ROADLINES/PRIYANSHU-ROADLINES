@@ -1146,3 +1146,18 @@ window.handleSearchEnter = function(event){
   }
 
 };
+window.searchByDate = async function(){
+
+alert("Date Search Button Working");
+
+}
+async function loadSystemStats(){
+
+}
+window.toggleAllPods = function(){
+
+}
+
+window.loadAllPods = async function(){
+
+}
