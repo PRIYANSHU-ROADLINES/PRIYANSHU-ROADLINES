@@ -1149,7 +1149,79 @@ window.handleSearchEnter = function(event){
 };
 window.searchByDate = async function(){
 
-alert("Date Search Button Working");
+const fromDate =
+document.getElementById("fromDate").value;
+
+const toDate =
+document.getElementById("toDate").value;
+
+if(!fromDate || !toDate){
+
+alert("Select both dates");
+
+return;
+
+}
+
+const snapshot =
+await getDocs(collection(db,"pods"));
+
+const resultBox =
+document.getElementById("result");
+
+resultBox.innerHTML = "";
+
+let found = false;
+
+snapshot.forEach((docItem)=>{
+
+const pod = docItem.data();
+
+if(
+pod.deliveryDate >= fromDate &&
+pod.deliveryDate <= toDate
+){
+
+found = true;
+
+resultBox.innerHTML += `
+
+<div style="
+border:1px solid #ddd;
+padding:10px;
+margin:10px 0;
+border-radius:5px;
+">
+
+<b>GR No:</b> ${pod.grNo}<br>
+
+<b>Party:</b> ${pod.partyName || "-"}<br>
+
+<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
+
+<b>Delivery Date:</b> ${pod.deliveryDate || "-"}<br>
+
+<b>Status:</b> ${pod.status || "-"}<br><br>
+
+<button
+onclick="searchFromList('${pod.grNo}')">
+View POD
+</button>
+
+</div>
+
+`;
+
+}
+
+});
+
+if(!found){
+
+resultBox.innerHTML =
+"<h3>No POD found in selected date range</h3>";
+
+}
 
 }
 async function loadSystemStats(){
