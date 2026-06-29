@@ -9,10 +9,73 @@
 content="width=device-width, initial-scale=1.0">
 
 <title>All PODs</title>
+<style>
 
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+}
+
+header{
+    background:black;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    width:90%;
+    max-width:1100px;
+    margin:20px auto;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+button{
+    background:red;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#cc0000;
+}
+
+</style>
 </head>
 
 <body>
+  <header>
+
+<h1>📋 PRIYANSHU ROADLINES</h1>
+
+<p>All POD Records</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+
 <h1>📋 All PODs</h1>
   <button onclick="window.location.href='index.html'">
 ⬅ Back to Dashboard
@@ -37,6 +100,7 @@ placeholder="Enter GR Number">
 <div id="allPodsContainer">
 
 </div>
+
 </body>
 
 </html>
