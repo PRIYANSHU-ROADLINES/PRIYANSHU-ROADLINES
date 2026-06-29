@@ -160,28 +160,8 @@ id="headerLogo">
 
 <div class="container">
 
-<!-- PUBLIC SEARCH -->
 
-<div class="card" id="searchPanel" style="display:none;">
-<input type="date" id="fromDate">
-<input type="date" id="toDate">
 
-<button onclick="searchByDate()">
-📅 Search By Date
-</button>
-<h2>Search POD</h2>
-
-<input
-type="text"
-id="searchGR"
-placeholder="Enter GR Number"
-onkeypress="handleSearchEnter(event)">
-
-<button onclick="SearchPod()">🔍 Search</button>
-
-<div id="result"></div>
-
-</div>
 
 <!-- LOGIN -->
 
@@ -268,7 +248,7 @@ Download POD Report
 
 <div id="recentPods" style="display:none;">
 </div>
-<button onclick="toggleAllPods()">
+<button onclick="window.location.href='allpods.html'">
 📋 View All PODs
 </button>
 
