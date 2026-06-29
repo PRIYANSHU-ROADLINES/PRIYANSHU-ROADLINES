@@ -29,12 +29,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const db = getFirestore(app);
 
 
 
 async function loadAllPods() {
   const snapshot = await getDocs(collection(db,"pods"));
+<div id="allPodsContainer"></div>
   const container =
 document.getElementById("allPodsContainer");
   container.innerHTML = "";
