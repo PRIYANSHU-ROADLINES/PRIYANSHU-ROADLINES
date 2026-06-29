@@ -34,9 +34,9 @@ const db = getFirestore(app);
 
 
 async function loadAllPods() {
-  const snapshot = await getDocs(collection(db,"pods"));
-<div id="allPodsContainer"></div>
-  const container =
+const snapshot = await getDocs(collection(db,"pods"));
+
+const container =
 document.getElementById("allPodsContainer");
   container.innerHTML = "";
   snapshot.forEach((docItem) => {
