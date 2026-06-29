@@ -34,5 +34,8 @@ const auth = getAuth(app);
 
 
 async function loadAllPods() {
+  const snapshot = await getDocs(collection(db,"pods"));
+  const container =
+document.getElementById("allPodsContainer");
 
 }
