@@ -105,21 +105,25 @@ id="searchGR"
 placeholder="Enter GR Number"
 onkeyup="searchPod()">
 
-<button>
+<button onclick="searchPod()">
 🔍 Search
 </button>
   <input type="date" id="fromDate">
 
 <input type="date" id="toDate">
 
-<button>
+<button onclick="searchByDate()">
 📅 Search By Date
 </button>
 <hr>
 
 <div id="allPodsContainer"></div>
+
+</div>
+</div>
+
 <script type="module" src="allpods.js"></script>
-    
+
 
 </body>
 
