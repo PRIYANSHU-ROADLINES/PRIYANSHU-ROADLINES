@@ -1335,37 +1335,16 @@ window.addEventListener("load", async function () {
 
     const gr = params.get("gr");
 
-    if (gr) {
+   if (gr) {
 
-        document.getElementById("searchGR").value = gr;
+    document.getElementById("searchPanel").style.display = "block";
 
-        await searchPOD();
+    document.getElementById("searchGR").value = gr;
 
-        document.getElementById("searchPanel").scrollIntoView({
-            behavior: "smooth"
-        });
+    await searchPOD();
 
-    }
+    document.getElementById("searchPanel").scrollIntoView({
+        behavior: "smooth"
+    });
 
-});
-// Auto open POD when coming from All POD page
-window.addEventListener("load", () => {
-
-    const params = new URLSearchParams(window.location.search);
-
-    const gr = params.get("gr");
-
-    if (gr) {
-
-        document.getElementById("searchGR").value = gr;
-
-        searchPOD();
-
-        document.getElementById("searchPanel")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-    }
-
-});
+}
