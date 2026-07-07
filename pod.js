@@ -1335,16 +1335,18 @@ window.addEventListener("load", async function () {
 
     const gr = params.get("gr");
 
-   if (gr) {
+    if (gr) {
 
-    document.getElementById("searchPanel").style.display = "block";
+        document.getElementById("searchPanel").style.display = "block";
 
-    document.getElementById("searchGR").value = gr;
+        document.getElementById("searchGR").value = gr;
 
-    await searchPOD();
+        await searchPOD();
 
-    document.getElementById("searchPanel").scrollIntoView({
-        behavior: "smooth"
-    });
+        document.getElementById("searchPanel").scrollIntoView({
+            behavior: "smooth"
+        });
 
-}
+    }
+
+});
