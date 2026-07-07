@@ -1348,3 +1348,24 @@ window.addEventListener("load", async function () {
     }
 
 });
+// Auto open POD when coming from All POD page
+window.addEventListener("load", () => {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const gr = params.get("gr");
+
+    if (gr) {
+
+        document.getElementById("searchGR").value = gr;
+
+        searchPOD();
+
+        document.getElementById("searchPanel")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+});
