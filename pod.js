@@ -1329,3 +1329,22 @@ behavior:"smooth"
 });
 
 }
+window.addEventListener("load", async function () {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const gr = params.get("gr");
+
+    if (gr) {
+
+        document.getElementById("searchGR").value = gr;
+
+        await searchPOD();
+
+        document.getElementById("searchPanel").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+});
