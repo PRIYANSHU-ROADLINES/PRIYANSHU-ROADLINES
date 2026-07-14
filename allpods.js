@@ -59,7 +59,7 @@ box-shadow:0 2px 10px rgba(0,0,0,.2);
 
 <b>Status:</b> ${pod.status}<br><br>
 
-<button onclick="window.location.href='index.html?gr=${pod.grNo}'">
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
 👁 View POD
 </button>
 
@@ -114,7 +114,7 @@ box-shadow:0 2px 10px rgba(0,0,0,.2);
 
 <b>Status:</b> ${pod.status}<br><br>
 
-<button onclick="window.location.href='index.html?gr=${pod.grNo}'">
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
 👁 View POD
 </button>
 
@@ -161,7 +161,7 @@ box-shadow:0 2px 10px rgba(0,0,0,.2);
 
 <b>Status:</b> ${pod.status}<br><br>
 
-<button onclick="window.location.href='index.html?gr=${pod.grNo}'">
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
 👁 View POD
 </button>
 
@@ -219,7 +219,7 @@ box-shadow:0 2px 10px rgba(0,0,0,.2);
 
 <b>Status:</b> ${pod.status}</br><br>
 
-<button onclick="window.location.href='index.html?gr=${pod.grNo}'">
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
 👁 View POD
 </button>
 
