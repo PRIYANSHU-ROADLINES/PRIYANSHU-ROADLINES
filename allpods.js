@@ -155,62 +155,29 @@ window.prevPage=function(){
 }
 
 loadAllPods();
-window.searchPod = async function () {
+window.searchPod = function () {
 
-  const gr = document
-    .getElementById("searchGR")
-    .value
-    .trim()
-    .toLowerCase();
+    const gr = document
+        .getElementById("searchGR")
+        .value
+        .trim()
+        .toLowerCase();
 
-  const snapshot =
-    await getDocs(collection(db, "pods"));
+    filteredPods = allPods.filter((pod) => {
 
-  const container =
-    document.getElementById("allPodsContainer");
+        return (
+            pod.grNo &&
+            pod.grNo.toLowerCase().includes(gr)
+        );
 
-  container.innerHTML = "";
+    });
 
-  snapshot.forEach((docItem) => {
+    currentPage = 1;
 
-    const pod = docItem.data();
+    renderPods();
 
-    if (
-      pod.grNo &&
-      pod.grNo.toLowerCase().includes(gr)
-    ) {
+}
 
-      container.innerHTML += `
-
-<div style="
-background:white;
-padding:15px;
-margin:15px 0;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,.2);
-">
-
-<b>GR No:</b> ${pod.grNo}<br>
-
-<b>Party:</b> ${pod.partyName || "-"}<br>
-
-<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
-
-<b>Status:</b> ${pod.status}<br><br>
-
-<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
-👁 View POD
-</button>
-
-</div>
-
-`;
-
-    }
-
-  });
-
-};
 window.filterStatus = async function(status){
 
 const snapshot =
