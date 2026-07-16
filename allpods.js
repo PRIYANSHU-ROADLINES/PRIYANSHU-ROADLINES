@@ -35,7 +35,9 @@ let filteredPods = [];
 let currentPage = 1;
 const recordsPerPage = 10;
 
-window.loadAllPods = async function () {
+
+
+async function loadAllPods() {
 
     const snapshot = await getDocs(collection(db, "pods"));
 
@@ -45,88 +47,93 @@ window.loadAllPods = async function () {
         allPods.push(docItem.data());
     });
 
-    allPods.sort((a, b) => b.grNo.localeCompare(a.grNo));
-
     filteredPods = [...allPods];
 
     currentPage = 1;
 
     renderPods();
 
-};
+}
 
 function renderPods() {
 
-    const container = document.getElementById("allPodsContainer");
+
+    const container =
+    document.getElementById("allPodsContainer");
 
     container.innerHTML = "";
 
-    const start = (currentPage - 1) * recordsPerPage;
-    const end = start + recordsPerPage;
+    const start =
+    (currentPage - 1) * recordsPerPage;
 
-    const pageData = filteredPods.slice(start, end);
+    const end =
+    start + recordsPerPage;
 
-    if (pageData.length === 0) {
-
-        container.innerHTML =
-        "<h3>No POD Found</h3>";
-
-        updatePagination();
-
-        return;
-
-    }
+    const pageData =
+    filteredPods.slice(start, end);
 
     pageData.forEach((pod) => {
 
-    container.innerHTML += `
-<div class="pod-card">
+        container.innerHTML += `
 
-<h3>🚚 GR ${pod.grNo}</h3>
+<div style="
+background:white;
+padding:15px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+">
 
-<p><b>Party:</b> ${pod.partyName || "-"}</p>
+<b>GR No:</b> ${pod.grNo}<br>
 
-<p><b>Vehicle:</b> ${pod.vehicleNo || "-"}</p>
+<b>Party:</b> ${pod.partyName || "-"}<br>
 
-<p><b>Status:</b> ${pod.status || "-"}</p>
+<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
 
-<p><b>Date:</b> ${pod.deliveryDate || "-"}</p>
+<b>Status:</b> ${pod.status}<br><br>
 
-<button class="view-btn"
-onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
-View POD
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
+👁 View POD
 </button>
 
 </div>
-`; 
-        
+
+`;
+
     });
 
-    updatePagination();
-
-}
-
-function updatePagination() {
-
-    const pageInfo =
-    document.getElementById("pageInfo");
-
-    if (!pageInfo) return;
-
     const totalPages =
     Math.ceil(filteredPods.length / recordsPerPage);
 
-    pageInfo.innerHTML =
-    `Page ${currentPage} of ${totalPages || 1}`;
+    container.innerHTML += `
+
+<div style="text-align:center;margin-top:20px;">
+
+<button
+onclick="prevPage()"
+${currentPage==1 ? "disabled" : ""}>
+Previous
+</button>
+
+<span style="margin:0 20px;">
+Page ${currentPage} of ${totalPages}
+</span>
+
+<button
+onclick="nextPage()"
+${currentPage==totalPages ? "disabled" : ""}>
+Next
+</button>
+
+</div>
+
+`;
 
 }
 
-window.nextPage = function () {
+window.nextPage=function(){
 
-    const totalPages =
-    Math.ceil(filteredPods.length / recordsPerPage);
-
-    if (currentPage < totalPages) {
+    if(currentPage < Math.ceil(filteredPods.length / recordsPerPage)){
 
         currentPage++;
 
@@ -134,134 +141,130 @@ window.nextPage = function () {
 
     }
 
-};
+}
 
-window.prevPage = function () {
+window.prevPage=function(){
 
-    if (currentPage > 1) {
+    if(currentPage > 1){
 
         currentPage--;
 
         renderPods();
 
     }
-  window.goToPage = function(page){
 
-    currentPage = page;
+}
+
+loadAllPods();
+window.searchPod = function () {
+
+    const gr = document
+        .getElementById("searchGR")
+        .value
+        .trim()
+        .toLowerCase();
+
+    filteredPods = allPods.filter((pod) => {
+
+        return (
+            pod.grNo &&
+            pod.grNo.toLowerCase().includes(gr)
+        );
+
+    });
+
+    currentPage = 1;
 
     renderPods();
 
 }
 
-};
+window.filterStatus = async function(status){
 
-window.liveSearch = function () {
+const snapshot =
+await getDocs(collection(db,"pods"));
 
-    const keyword =
-    document.getElementById("liveSearch")
-    .value
-    .toLowerCase()
-    .trim();
+const container =
+document.getElementById("allPodsContainer");
 
-    filteredPods = allPods.filter((pod) => {
+container.innerHTML = "";
 
-        return (
-            (pod.grNo || "").toLowerCase().includes(keyword) ||
-            (pod.partyName || "").toLowerCase().includes(keyword) ||
-            (pod.vehicleNo || "").toLowerCase().includes(keyword)
-        );
+snapshot.forEach((docItem)=>{
 
-    });
+const pod = docItem.data();
 
-    currentPage = 1;
+if(status==="All" || pod.status===status){
 
-    renderPods();
+container.innerHTML += `
 
-};
-
-window.searchByDate = async function () {
-
-    const fromDate =
-    document.getElementById("fromDate").value;
-
-    const toDate =
-    document.getElementById("toDate").value;
-
-    if (!fromDate || !toDate) {
-
-        alert("Select both dates");
-
-        return;
-
-    }
-
-    filteredPods = allPods.filter((pod) => {
-
-        return (
-            pod.deliveryDate &&
-            pod.deliveryDate >= fromDate &&
-            pod.deliveryDate <= toDate
-        );
-
-    });
-
-    currentPage = 1;
-
-    renderPods();
-
-};
-window.addEventListener("load", function () {
-    loadAllPods();
-});
-function updatePagination() {
-
-    const pageNumbers =
-    document.getElementById("pageNumbers");
-
-    const recordInfo =
-    document.getElementById("recordInfo");
-
-    pageNumbers.innerHTML = "";
-
-    const totalPages =
-    Math.ceil(filteredPods.length / recordsPerPage);
-
-    for(let i=1;i<=totalPages;i++){
-
-        pageNumbers.innerHTML += `
-
-<button
-onclick="goToPage(${i})"
-style="
-margin:3px;
-padding:8px 12px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-background:${i===currentPage ? '#0d6efd' : '#eee'};
-color:${i===currentPage ? 'white' : 'black'};
+<div style="
+background:white;
+padding:15px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
 ">
 
-${i}
+<b>GR No:</b> ${pod.grNo}<br>
 
+<b>Party:</b> ${pod.partyName || "-"}<br>
+
+<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
+
+<b>Status:</b> ${pod.status}<br><br>
+
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
+👁 View POD
 </button>
+
+</div>
 
 `;
 
+}
+
+});
+
+};
+window.searchPod = window.searchPod;
+window.filterStatus = window.filterStatus;
+window.searchByDate = async function () {
+
+    const fromDate = document.getElementById("fromDate").value;
+    const toDate = document.getElementById("toDate").value;
+
+    if (!fromDate || !toDate) {
+        alert("Please select both dates");
+        return;
     }
 
-    const start =
-    filteredPods.length===0
-    ?0
-    :(currentPage-1)*recordsPerPage+1;
+    const snapshot = await getDocs(collection(db, "pods"));
 
-    const end =
-    Math.min(
-        currentPage*recordsPerPage,
-        filteredPods.length
-    );
+    filteredPods = [];
 
-    recordInfo.innerHTML =
-    `Showing ${start}-${end} of ${filteredPods.length} PODs`;
+    snapshot.forEach((docItem) => {
+
+        const pod = docItem.data();
+
+        if (
+            pod.deliveryDate >= fromDate &&
+            pod.deliveryDate <= toDate
+        ) {
+            filteredPods.push(pod);
+        }
+
+    });
+
+    currentPage = 1;
+
+    renderPods();
+
+};
+
+
+
+
+
+    renderPagination();
 
 }
