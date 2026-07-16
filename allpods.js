@@ -145,6 +145,13 @@ window.prevPage = function () {
         renderPods();
 
     }
+  window.goToPage = function(page){
+
+    currentPage = page;
+
+    renderPods();
+
+}
 
 };
 
@@ -208,30 +215,53 @@ window.addEventListener("load", function () {
 });
 function updatePagination() {
 
-    const pageInfo =
-    document.getElementById("pageInfo");
+    const pageNumbers =
+    document.getElementById("pageNumbers");
 
     const recordInfo =
     document.getElementById("recordInfo");
 
+    pageNumbers.innerHTML = "";
+
     const totalPages =
     Math.ceil(filteredPods.length / recordsPerPage);
 
-    pageInfo.innerHTML =
-    `Page ${currentPage} of ${totalPages || 1}`;
+    for(let i=1;i<=totalPages;i++){
+
+        pageNumbers.innerHTML += `
+
+<button
+onclick="goToPage(${i})"
+style="
+margin:3px;
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+background:${i===currentPage ? '#0d6efd' : '#eee'};
+color:${i===currentPage ? 'white' : 'black'};
+">
+
+${i}
+
+</button>
+
+`;
+
+    }
 
     const start =
-    filteredPods.length === 0
-    ? 0
-    : ((currentPage - 1) * recordsPerPage) + 1;
+    filteredPods.length===0
+    ?0
+    :(currentPage-1)*recordsPerPage+1;
 
     const end =
     Math.min(
-        currentPage * recordsPerPage,
+        currentPage*recordsPerPage,
         filteredPods.length
     );
 
     recordInfo.innerHTML =
-    `Showing ${start} - ${end} of ${filteredPods.length} PODs`;
+    `Showing ${start}-${end} of ${filteredPods.length} PODs`;
 
 }
