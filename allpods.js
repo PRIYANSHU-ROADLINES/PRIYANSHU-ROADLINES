@@ -38,14 +38,42 @@ const recordsPerPage = 10;
 
 
 async function loadAllPods() {
-const snapshot = await getDocs(collection(db,"pods"));
 
-const container =
-document.getElementById("allPodsContainer");
-  container.innerHTML = "";
-  snapshot.forEach((docItem) => {
-    const pod = docItem.data();
-    container.innerHTML += `
+    const snapshot = await getDocs(collection(db, "pods"));
+
+    allPods = [];
+
+    snapshot.forEach((docItem) => {
+        allPods.push(docItem.data());
+    });
+
+    filteredPods = [...allPods];
+
+    currentPage = 1;
+
+    renderPods();
+
+}
+
+function renderPods() {
+
+    const container =
+    document.getElementById("allPodsContainer");
+
+    container.innerHTML = "";
+
+    const start =
+    (currentPage - 1) * recordsPerPage;
+
+    const end =
+    start + recordsPerPage;
+
+    const pageData =
+    filteredPods.slice(start, end);
+
+    pageData.forEach((pod) => {
+
+        container.innerHTML += `
 
 <div style="
 background:white;
@@ -71,9 +99,61 @@ box-shadow:0 2px 10px rgba(0,0,0,.2);
 
 `;
 
-});
+    });
+
+    const totalPages =
+    Math.ceil(filteredPods.length / recordsPerPage);
+
+    container.innerHTML += `
+
+<div style="text-align:center;margin-top:20px;">
+
+<button
+onclick="prevPage()"
+${currentPage==1 ? "disabled" : ""}>
+Previous
+</button>
+
+<span style="margin:0 20px;">
+Page ${currentPage} of ${totalPages}
+</span>
+
+<button
+onclick="nextPage()"
+${currentPage==totalPages ? "disabled" : ""}>
+Next
+</button>
+
+</div>
+
+`;
 
 }
+
+window.nextPage=function(){
+
+    if(currentPage < Math.ceil(filteredPods.length / recordsPerPage)){
+
+        currentPage++;
+
+        renderPods();
+
+    }
+
+}
+
+window.prevPage=function(){
+
+    if(currentPage > 1){
+
+        currentPage--;
+
+        renderPods();
+
+    }
+
+}
+
 loadAllPods();
 window.searchPod = async function () {
 
