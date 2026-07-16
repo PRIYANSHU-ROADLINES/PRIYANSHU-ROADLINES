@@ -1,40 +1,51 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
-    getFirestore,
-    collection,
-    getDocs
+  getFirestore,
+  doc,
+  setDoc,
+  updateDoc,
+  getDoc,
+  deleteDoc,
+  collection,
+  getDocs,
+  addDoc,
+  orderBy,
+  query,
+  limit,
+  where,
+  serverTimestamp,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 // Firebase Config
 const firebaseConfig = {
-    apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
-    authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
-    projectId: "priyanshu-roadlines-pod",
-    storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
-    messagingSenderId: "735411516260",
-    appId: "1:735411516260:web:397d6a80141f032c0a0071"
+  apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
+  authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
+  projectId: "priyanshu-roadlines-pod",
+  storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
+  messagingSenderId: "735411516260",
+  appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
-// Data
+const db = getFirestore(app);
 let allPods = [];
 let filteredPods = [];
-
-// Pagination
 let currentPage = 1;
 const recordsPerPage = 10;
 
-async function loadAllPods() {
+window.loadAllPods = async function () {
 
     const snapshot = await getDocs(collection(db, "pods"));
 
     allPods = [];
 
-    snapshot.forEach(doc => {
-        allPods.push(doc.data());
+    snapshot.forEach((docItem) => {
+        allPods.push(docItem.data());
     });
+
+    allPods.sort((a, b) => b.grNo.localeCompare(a.grNo));
 
     filteredPods = [...allPods];
 
@@ -42,7 +53,8 @@ async function loadAllPods() {
 
     renderPods();
 
-}
+};
+
 function renderPods() {
 
     const container = document.getElementById("allPodsContainer");
@@ -55,57 +67,64 @@ function renderPods() {
     const pageData = filteredPods.slice(start, end);
 
     if (pageData.length === 0) {
-        container.innerHTML = "<h3>No POD Found</h3>";
+
+        container.innerHTML =
+        "<h3>No POD Found</h3>";
+
         updatePagination();
+
         return;
+
     }
 
-    pageData.forEach(pod => {
+    pageData.forEach((pod) => {
 
-        container.innerHTML += `
+    container.innerHTML += `
+<div class="pod-card">
 
-<div style="
-background:white;
-padding:15px;
-margin:15px 0;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,.15);
-">
+<h3>🚚 GR ${pod.grNo}</h3>
 
-<b>GR No:</b> ${pod.grNo}<br>
+<p><b>Party:</b> ${pod.partyName || "-"}</p>
 
-<b>Party:</b> ${pod.partyName || "-"}<br>
+<p><b>Vehicle:</b> ${pod.vehicleNo || "-"}</p>
 
-<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
+<p><b>Status:</b> ${pod.status || "-"}</p>
 
-<b>Status:</b> ${pod.status || "-"}<br><br>
+<p><b>Date:</b> ${pod.deliveryDate || "-"}</p>
 
-<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
-👁 View POD
+<button class="view-btn"
+onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
+View POD
 </button>
 
 </div>
-
-`;
-
+`; 
+        
     });
 
     updatePagination();
 
 }
+
 function updatePagination() {
 
-    const pageInfo = document.getElementById("pageInfo");
+    const pageInfo =
+    document.getElementById("pageInfo");
 
-    const totalPages = Math.ceil(filteredPods.length / recordsPerPage);
+    if (!pageInfo) return;
+
+    const totalPages =
+    Math.ceil(filteredPods.length / recordsPerPage);
 
     pageInfo.innerHTML =
-        `Page ${currentPage} of ${totalPages || 1}`;
+    `Page ${currentPage} of ${totalPages || 1}`;
 
 }
+
 window.nextPage = function () {
 
-    const totalPages = Math.ceil(filteredPods.length / recordsPerPage);
+    const totalPages =
+    Math.ceil(filteredPods.length / recordsPerPage);
 
     if (currentPage < totalPages) {
 
@@ -128,84 +147,91 @@ window.prevPage = function () {
     }
 
 };
-function renderPods() {
 
-    const container = document.getElementById("allPodsContainer");
+window.liveSearch = function () {
 
-    container.innerHTML = "";
+    const keyword =
+    document.getElementById("liveSearch")
+    .value
+    .toLowerCase()
+    .trim();
 
-    const start = (currentPage - 1) * recordsPerPage;
-    const end = start + recordsPerPage;
+    filteredPods = allPods.filter((pod) => {
 
-    const pageData = filteredPods.slice(start, end);
+        return (
+            (pod.grNo || "").toLowerCase().includes(keyword) ||
+            (pod.partyName || "").toLowerCase().includes(keyword) ||
+            (pod.vehicleNo || "").toLowerCase().includes(keyword)
+        );
 
-    if (pageData.length === 0) {
-        container.innerHTML = "<h3>No POD Found</h3>";
-        updatePagination();
-        return;
-    }
-
-    pageData.forEach(pod => {
-
-        container.innerHTML += `
-<div style="
-background:white;
-padding:15px;
-margin:15px 0;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,.15);
-">
-
-<b>GR No:</b> ${pod.grNo}<br>
-<b>Party:</b> ${pod.partyName || "-"}<br>
-<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
-<b>Status:</b> ${pod.status || "-"}<br><br>
-
-<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
-👁 View POD
-</button>
-
-</div>
-`;
     });
 
-    updatePagination();
+    currentPage = 1;
 
-}
+    renderPods();
 
+};
+
+window.searchByDate = async function () {
+
+    const fromDate =
+    document.getElementById("fromDate").value;
+
+    const toDate =
+    document.getElementById("toDate").value;
+
+    if (!fromDate || !toDate) {
+
+        alert("Select both dates");
+
+        return;
+
+    }
+
+    filteredPods = allPods.filter((pod) => {
+
+        return (
+            pod.deliveryDate &&
+            pod.deliveryDate >= fromDate &&
+            pod.deliveryDate <= toDate
+        );
+
+    });
+
+    currentPage = 1;
+
+    renderPods();
+
+};
+window.addEventListener("load", function () {
+    loadAllPods();
+});
 function updatePagination() {
 
-    const pageInfo = document.getElementById("pageInfo");
+    const pageInfo =
+    document.getElementById("pageInfo");
 
-    const totalPages = Math.ceil(filteredPods.length / recordsPerPage);
+    const recordInfo =
+    document.getElementById("recordInfo");
+
+    const totalPages =
+    Math.ceil(filteredPods.length / recordsPerPage);
 
     pageInfo.innerHTML =
-        `Page ${currentPage} of ${totalPages || 1}`;
+    `Page ${currentPage} of ${totalPages || 1}`;
+
+    const start =
+    filteredPods.length === 0
+    ? 0
+    : ((currentPage - 1) * recordsPerPage) + 1;
+
+    const end =
+    Math.min(
+        currentPage * recordsPerPage,
+        filteredPods.length
+    );
+
+    recordInfo.innerHTML =
+    `Showing ${start} - ${end} of ${filteredPods.length} PODs`;
 
 }
-
-window.nextPage = function () {
-
-    const totalPages = Math.ceil(filteredPods.length / recordsPerPage);
-
-    if (currentPage < totalPages) {
-
-        currentPage++;
-
-        renderPods();
-
-    }
-
-};
-
-window.prevPage = function () {
-
-    if (currentPage > 1) {
-
-        currentPage--;
-
-        renderPods();
-
-    }
-
-};
