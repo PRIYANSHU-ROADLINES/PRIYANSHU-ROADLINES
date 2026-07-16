@@ -1277,114 +1277,44 @@ box.style.display = "none";
 
 }
 }
-let allPodsData = [];
-let currentPage = 1;
-const pageSize = 10;
-
 window.loadAllPods = async function(){
 
-    const snapshot = await getDocs(collection(db,"pods"));
+const snapshot =
+await getDocs(collection(db,"pods"));
 
-    allPodsData = [];
+const box =
+document.getElementById("allPodsBox");
 
-    snapshot.forEach(docItem=>{
-        allPodsData.push(docItem.data());
-    });
+box.innerHTML = "";
 
-    currentPage = 1;
+snapshot.forEach((docItem)=>{
 
-    renderAllPods();
+const pod = docItem.data();
 
-}
+box.innerHTML += `
+<div style="
+border:1px solid #ddd;
+padding:10px;
+margin:5px;
+border-radius:5px;
+">
 
-function renderAllPods(){
+<b>GR:</b> ${pod.grNo}<br>
 
-    const box = document.getElementById("allPodsBox");
+<b>Party:</b> ${pod.partyName || "-"}<br>
 
-    box.innerHTML = "";
+<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
 
-    let start = (currentPage-1)*pageSize;
-    let end = start + pageSize;
+<b>Status:</b> ${pod.status}<br><br>
 
-    let pageData = allPodsData.slice(start,end);
+<button onclick="searchFromList('${pod.grNo}')">
+View
+</button>
 
-    pageData.forEach(pod=>{
+</div>
+`;
 
-        box.innerHTML += `
-
-        <div style="
-        border:1px solid #ddd;
-        padding:10px;
-        margin:5px;
-        border-radius:5px;">
-
-        <b>GR:</b> ${pod.grNo}<br>
-
-        <b>Party:</b> ${pod.partyName || "-"}<br>
-
-        <b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
-
-        <b>Status:</b> ${pod.status}<br><br>
-
-        <button onclick="searchFromList('${pod.grNo}')">
-        View POD
-        </button>
-
-        </div>
-
-        `;
-
-    });
-
-    let totalPages = Math.ceil(allPodsData.length/pageSize);
-
-    box.innerHTML += `
-
-    <div style="margin-top:20px;text-align:center;">
-
-    <button
-    onclick="prevPage()"
-    ${currentPage==1?"disabled":""}>
-    Previous
-    </button>
-
-    <span style="margin:0 20px;">
-    Page ${currentPage} of ${totalPages}
-    </span>
-
-    <button
-    onclick="nextPage()"
-    ${currentPage==totalPages?"disabled":""}>
-    Next
-    </button>
-
-    </div>
-
-    `;
-
-}
-
-window.nextPage=function(){
-
-    if(currentPage<Math.ceil(allPodsData.length/pageSize)){
-
-        currentPage++;
-
-        renderAllPods();
-
-    }
-
-}
-
-window.prevPage=function(){
-
-    if(currentPage>1){
-
-        currentPage--;
-
-        renderAllPods();
-
-    }
+});
 
 }
 
