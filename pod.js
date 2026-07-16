@@ -427,35 +427,56 @@ saveButton.innerText = "Uploading...";
     const imageUrl = uploadData.secure_url;
 
     // Save Firestore
-    await setDoc(doc(db, "pods", grNo), {
+const now = new Date();
 
-      grNo,
+const uploadDate =
+String(now.getDate()).padStart(2, "0") + "-" +
+String(now.getMonth() + 1).padStart(2, "0") + "-" +
+now.getFullYear();
 
-      vehicleNo:
-        document.getElementById("vehicleNo").value || "",
+const uploadTime =
+now.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+});
 
-      driverName:
-        document.getElementById("driverName").value || "",
+await setDoc(doc(db, "pods", grNo), {
 
-      driverMobile:
-        document.getElementById("driverMobile").value || "",
+    grNo,
 
-      partyName:
-        document.getElementById("partyName").value || "",
+    vehicleNo:
+      document.getElementById("vehicleNo").value || "",
 
-      deliveryDate:
-        document.getElementById("deliveryDate").value || "",
+    driverName:
+      document.getElementById("driverName").value || "",
 
-      remarks:
-        document.getElementById("remarks").value || "",
+    driverMobile:
+      document.getElementById("driverMobile").value || "",
 
-      status:
-        document.getElementById("status").value,
+    partyName:
+      document.getElementById("partyName").value || "",
 
-      imageUrl,
+    deliveryDate:
+      document.getElementById("deliveryDate").value || "",
 
-      createdAt: serverTimestamp()
-    });
+    remarks:
+      document.getElementById("remarks").value || "",
+
+    status:
+      document.getElementById("status").value,
+
+    imageUrl,
+
+    createdAt: serverTimestamp(),
+
+    uploadDate: uploadDate,
+
+    uploadTime: uploadTime,
+
+    uploadedBy: auth.currentUser.email
+
+});
     saveButton.disabled = false;
 
 saveButton.innerText =
