@@ -264,7 +264,3 @@ window.searchByDate = async function () {
 
 
 
-
-    renderPagination();
-
-}
