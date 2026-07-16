@@ -259,3 +259,55 @@ window.searchByDate = async function () {
     renderPods();
 
 };
+
+const PODS_PER_PAGE = 10;
+
+let currentPage = 1;
+let filteredPods = [];
+
+function renderPods() {
+
+    const container =
+        document.getElementById("allPodsContainer");
+
+    container.innerHTML = "";
+
+    const start = (currentPage - 1) * PODS_PER_PAGE;
+    const end = start + PODS_PER_PAGE;
+
+    const podsToShow =
+        filteredPods.slice(start, end);
+
+    podsToShow.forEach((pod) => {
+
+        container.innerHTML += `
+
+<div style="
+background:white;
+padding:15px;
+margin:15px 0;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+">
+
+<b>GR No:</b> ${pod.grNo}<br>
+
+<b>Party:</b> ${pod.partyName || "-"}<br>
+
+<b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
+
+<b>Status:</b> ${pod.status}<br><br>
+
+<button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
+👁 View POD
+</button>
+
+</div>
+
+`;
+
+    });
+
+    renderPagination();
+
+}
