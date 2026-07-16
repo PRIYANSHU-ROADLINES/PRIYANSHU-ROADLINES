@@ -34,6 +34,10 @@ let allPods = [];
 let filteredPods = [];
 let currentPage = 1;
 const recordsPerPage = 10;
+let currentPage = 1;
+const itemsPerPage = 10;
+let filteredPods = [];
+
 
 
 
@@ -311,3 +315,66 @@ box-shadow:0 2px 10px rgba(0,0,0,.2);
     renderPagination();
 
 }
+function displayPage(page) {
+
+    currentPage = page;
+
+    const container = document.getElementById("allPodsContainer");
+    container.innerHTML = "";
+
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+
+    const pageItems = filteredPods.slice(start, end);
+
+    pageItems.forEach((pod) => {
+
+        container.innerHTML += `
+        <div style="
+        background:white;
+        padding:15px;
+        margin:15px 0;
+        border-radius:10px;
+        box-shadow:0 2px 10px rgba(0,0,0,.2);
+        ">
+
+        <b>GR No:</b> ${pod.grNo}<br>
+
+        <b>Party:</b> ${pod.partyName || "-"}<br>
+
+        <b>Vehicle:</b> ${pod.vehicleNo || "-"}<br>
+
+        <b>Status:</b> ${pod.status}<br><br>
+
+        <button onclick="window.location.href='viewpod.html?gr=${pod.grNo}'">
+        👁 View POD
+        </button>
+
+        </div>
+        `;
+    });
+
+    const totalPages = Math.ceil(filteredPods.length / itemsPerPage);
+
+    let pagination = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+
+        pagination += `
+        <button
+        onclick="displayPage(${i})"
+        style="
+        margin:5px;
+        padding:8px 12px;
+        ${i===page ? "background:#0d6efd;color:white;" : ""}
+        ">
+        ${i}
+        </button>
+        `;
+    }
+
+    document.getElementById("pagination").innerHTML = pagination;
+}
+
+window.displayPage = displayPage;
+
