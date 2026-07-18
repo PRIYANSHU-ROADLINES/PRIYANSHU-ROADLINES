@@ -1389,3 +1389,70 @@ if (
 ) {
     filteredPods.push(pod);
 }
+window.updateOldUploadDates = async function () {
+
+    const confirmUpdate = confirm(
+        "Update all old PODs with Upload Date & Time?"
+    );
+
+    if (!confirmUpdate) return;
+
+    try {
+
+        const snapshot = await getDocs(collection(db, "pods"));
+
+        const batch = writeBatch(db);
+
+        let updatedCount = 0;
+
+        snapshot.forEach((docItem) => {
+
+            const pod = docItem.data();
+
+            // Skip already updated PODs
+            if (pod.uploadDate) return;
+
+            // Skip if createdAt is missing
+            if (!pod.createdAt) return;
+
+            const date = pod.createdAt.toDate();
+
+            const uploadDate =
+                String(date.getDate()).padStart(2, "0") + "-" +
+                String(date.getMonth() + 1).padStart(2, "0") + "-" +
+                date.getFullYear();
+
+            const uploadTime =
+                date.toLocaleTimeString("en-IN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true
+                });
+
+            batch.update(doc(db, "pods", docItem.id), {
+
+                uploadDate: uploadDate,
+
+                uploadTime: uploadTime,
+
+                uploadedBy: auth.currentUser.email
+
+            });
+
+            updatedCount++;
+
+        });
+
+        await batch.commit();
+
+        alert(updatedCount + " old POD(s) updated successfully.");
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+};
