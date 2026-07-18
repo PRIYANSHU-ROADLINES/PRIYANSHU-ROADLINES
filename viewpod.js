@@ -84,3 +84,9 @@ Download POD
 `;
 
 }
+window.editPOD = function () {
+
+    window.location.href =
+        "pod.html?gr=" + currentGR;
+
+};
