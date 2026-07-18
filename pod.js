@@ -1373,4 +1373,55 @@ window.addEventListener("load", async function () {
     }
 
 });
+// ===============================
+// OPEN POD FOR EDIT FROM VIEW PAGE
+// ===============================
 
+const params = new URLSearchParams(window.location.search);
+const editGR = params.get("gr");
+
+if (editGR) {
+
+    editPODByGR(editGR);
+
+}
+
+async function editPODByGR(grNo) {
+
+    const snap = await getDoc(doc(db, "pods", grNo));
+
+    if (!snap.exists()) {
+
+        alert("POD Not Found");
+
+        return;
+
+    }
+
+    const pod = snap.data();
+
+    editMode = true;
+
+    currentGR = pod.grNo;
+
+    document.getElementById("grNo").value = pod.grNo || "";
+
+    document.getElementById("vehicleNo").value = pod.vehicleNo || "";
+
+    document.getElementById("driverName").value = pod.driverName || "";
+
+    document.getElementById("driverMobile").value = pod.driverMobile || "";
+
+    document.getElementById("partyName").value = pod.partyName || "";
+
+    document.getElementById("deliveryDate").value = pod.deliveryDate || "";
+
+    document.getElementById("remarks").value = pod.remarks || "";
+
+    document.getElementById("status").value = pod.status || "";
+
+    document.querySelector(
+        'button[onclick="uploadPOD()"]'
+    ).innerText = "Update POD";
+
+}
