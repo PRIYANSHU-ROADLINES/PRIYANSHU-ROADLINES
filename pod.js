@@ -220,12 +220,7 @@ if(deviceApprovalSection){
     loadRecentPods();
     loadDashboard();
     loadSystemStats();
-    const params = new URLSearchParams(window.location.search);
-const editGR = params.get("gr");
-
-if (editGR) {
-    await editPODByGR(editGR);
-}
+    
 
   } else {
 
