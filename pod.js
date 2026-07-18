@@ -220,6 +220,12 @@ if(deviceApprovalSection){
     loadRecentPods();
     loadDashboard();
     loadSystemStats();
+    const params = new URLSearchParams(window.location.search);
+const editGR = params.get("gr");
+
+if (editGR) {
+    await editPODByGR(editGR);
+}
 
   } else {
 
@@ -1376,15 +1382,6 @@ window.addEventListener("load", async function () {
 // ===============================
 // OPEN POD FOR EDIT FROM VIEW PAGE
 // ===============================
-
-const params = new URLSearchParams(window.location.search);
-const editGR = params.get("gr");
-
-if (editGR) {
-
-    editPODByGR(editGR);
-
-}
 
 async function editPODByGR(grNo) {
 
