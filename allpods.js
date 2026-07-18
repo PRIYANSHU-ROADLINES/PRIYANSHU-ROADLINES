@@ -246,12 +246,14 @@ window.searchByDate = async function () {
 
         const pod = docItem.data();
 
-        if (
-            pod.deliveryDate >= fromDate &&
-            pod.deliveryDate <= toDate
-        ) {
-            filteredPods.push(pod);
-        }
+      const uploadDate = (pod.uploadDate || "").split("-").reverse().join("-");
+
+if (
+    uploadDate >= fromDate &&
+    uploadDate <= toDate
+) {
+    filteredPods.push(pod);
+}
 
     });
 
