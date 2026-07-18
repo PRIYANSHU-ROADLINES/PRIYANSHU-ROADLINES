@@ -1381,14 +1381,7 @@ window.addEventListener("load", async function () {
     }
 
 });
-const uploadDate = (pod.uploadDate || "").split("-").reverse().join("-");
 
-if (
-    uploadDate >= fromDate &&
-    uploadDate <= toDate
-) {
-    filteredPods.push(pod);
-}
 window.updateOldUploadDates = async function () {
 
     const confirmUpdate = confirm(
