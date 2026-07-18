@@ -553,14 +553,6 @@ window.searchPOD = async function () {
     <p><b>Party:</b> ${data.partyName || "-"}</p>
 
     <p><b>Delivery Date:</b> ${data.deliveryDate || "-"}</p>
-    <p><b>Uploaded On:</b><br>
-${data.uploadDate || "-"}<br>
-${data.uploadTime || "-"}
-</p>
-
-<p><b>Uploaded By:</b>
-${data.uploadedBy || "-"}
-</p>
 
     <p><b>Remarks:</b> ${data.remarks || "-"}</p>
 
