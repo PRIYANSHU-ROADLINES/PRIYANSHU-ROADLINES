@@ -63,6 +63,12 @@ async function loadPOD(grNo){
 
 <p><b>Delivery Date :</b> ${data.deliveryDate || "-"}</p>
 
+<p><b>Upload Date :</b> ${data.uploadDate || "-"}</p>
+
+<p><b>Upload Time :</b> ${data.uploadTime || "-"}</p>
+
+<p><b>Uploaded By :</b> ${data.uploadedBy || "-"}</p>
+
 <p><b>Status :</b> ${data.status || "-"}</p>
 
 <p><b>Remarks :</b> ${data.remarks || "-"}</p>
