@@ -383,6 +383,20 @@ if (!file) {
 }
 
 const compressedFile = await compressImage(file);
+  <button
+onclick="updateOldUploadDates()"
+style="
+background:#ff9800;
+color:white;
+padding:10px 18px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+font-weight:bold;
+">
+🔄 Update Old Upload Dates
+</button>
     
 
   // Duplicate Check
@@ -698,20 +712,7 @@ window.downloadExcel = async function(){
   );
 
 }
-<button
-onclick="updateOldUploadDates()"
-style="
-background:#ff9800;
-color:white;
-padding:10px 18px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-margin-top:10px;
-font-weight:bold;
-">
-🔄 Update Old Upload Dates
-</button>
+
 window.editPOD = async function(grNo){
 
   const snap =
