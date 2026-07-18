@@ -80,6 +80,15 @@ async function loadPOD(grNo){
 <a href="${data.imageUrl}" target="_blank">
 Download POD
 </a>
+<br><br>
+
+<button onclick="editPOD()">
+✏ Edit POD
+</button>
+
+<button onclick="deletePOD()">
+🗑 Delete POD
+</button>
 
 `;
 
