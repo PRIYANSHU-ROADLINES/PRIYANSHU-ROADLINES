@@ -248,12 +248,6 @@ window.searchByDate = async function () {
 
       const uploadDate = (pod.uploadDate || "").split("-").reverse().join("-");
 
-if (
-    uploadDate >= fromDate &&
-    uploadDate <= toDate
-) {
-    filteredPods.push(pod);
-}
 
     });
 
