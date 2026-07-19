@@ -226,11 +226,11 @@ if(deviceApprovalSection){
     loadDashboard();
     loadSystemStats();
     
-    const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 const gr = params.get("gr");
 
-if (gr) {
-    await editPOD(gr);
+if (gr && typeof window.editPOD === "function") {
+    window.editPOD(gr);
 }
     
   } else {
