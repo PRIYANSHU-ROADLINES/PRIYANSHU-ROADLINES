@@ -220,6 +220,12 @@ if(deviceApprovalSection){
     loadRecentPods();
     loadDashboard();
     loadSystemStats();
+
+    if (editGR) {
+
+    editPODByGR(editGR);
+
+}
     
 
   } else {
@@ -1417,3 +1423,12 @@ async function editPODByGR(grNo) {
     ).innerText = "Update POD";
 
 }
+document
+.getElementById("adminPanel")
+.scrollIntoView({
+    behavior:"smooth"
+});
+
+document.querySelector(
+'button[onclick="uploadPOD()"]'
+).innerText = "Save Changes";
