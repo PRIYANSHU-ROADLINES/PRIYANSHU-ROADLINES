@@ -220,7 +220,9 @@ if(deviceApprovalSection){
     loadRecentPods();
     loadDashboard();
     loadSystemStats();
-
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const editGR = urlParams.get("gr");
     if (editGR) {
 
     editPODByGR(editGR);
@@ -1362,22 +1364,13 @@ behavior:"smooth"
 window.addEventListener("load", async function () {
 
     const params = new URLSearchParams(window.location.search);
+    const editGR = params.get("gr");
 
-    const gr = params.get("gr");
+    if (!editGR) return;
 
-    if (gr) {
+    if (!auth.currentUser) return;
 
-        document.getElementById("searchPanel").style.display = "block";
-
-        document.getElementById("searchGR").value = gr;
-
-        await searchPOD();
-
-        document.getElementById("searchPanel").scrollIntoView({
-            behavior: "smooth"
-        });
-
-    }
+    await editPODByGR(editGR);
 
 });
 // ===============================
