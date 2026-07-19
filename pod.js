@@ -226,15 +226,13 @@ if(deviceApprovalSection){
     loadDashboard();
     loadSystemStats();
     
-    const urlParams = new URLSearchParams(window.location.search);
-    const editGR = urlParams.get("gr");
-    if (editGR) {
+    const params = new URLSearchParams(window.location.search);
+const gr = params.get("gr");
 
-    editPODByGR(editGR);
-
+if (gr) {
+    await editPOD(gr);
 }
     
-
   } else {
 
     isAdminLoggedIn = false;
@@ -1378,49 +1376,7 @@ window.addEventListener("load", async function () {
     await editPODByGR(editGR);
 
 });
-// ===============================
-// OPEN POD FOR EDIT FROM VIEW PAGE
-// ===============================
 
-async function editPODByGR(grNo) {
-
-    const snap = await getDoc(doc(db, "pods", grNo));
-
-    if (!snap.exists()) {
-
-        alert("POD Not Found");
-
-        return;
-
-    }
-
-    const pod = snap.data();
-
-    editMode = true;
-
-    currentGR = pod.grNo;
-
-    document.getElementById("grNo").value = pod.grNo || "";
-
-    document.getElementById("vehicleNo").value = pod.vehicleNo || "";
-
-    document.getElementById("driverName").value = pod.driverName || "";
-
-    document.getElementById("driverMobile").value = pod.driverMobile || "";
-
-    document.getElementById("partyName").value = pod.partyName || "";
-
-    document.getElementById("deliveryDate").value = pod.deliveryDate || "";
-
-    document.getElementById("remarks").value = pod.remarks || "";
-
-    document.getElementById("status").value = pod.status || "";
-
-    document.querySelector(
-        'button[onclick="uploadPOD()"]'
-    ).innerText = "Update POD";
-
-}
 document
 .getElementById("adminPanel")
 .scrollIntoView({
@@ -1430,6 +1386,7 @@ document
 document.querySelector(
 'button[onclick="uploadPOD()"]'
 ).innerText = "Save Changes";
+document.getElementById("podImage").required = false;
 
 window.addEventListener("load", async function () {
 
