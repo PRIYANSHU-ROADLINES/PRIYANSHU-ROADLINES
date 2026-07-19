@@ -1425,3 +1425,28 @@ document
 document.querySelector(
 'button[onclick="uploadPOD()"]'
 ).innerText = "Save Changes";
+
+window.addEventListener("load", async function () {
+
+    const params = new URLSearchParams(window.location.search);
+
+    const gr = params.get("gr");
+
+    if (gr) {
+
+        document.getElementById("searchPanel").style.display = "block";
+
+        document.getElementById("searchGR").value = gr;
+
+        await searchPOD();
+
+        // Automatically open edit mode
+        await editPOD(gr);
+
+        document.getElementById("adminPanel").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+});
