@@ -18,7 +18,7 @@ appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
 const app = initializeApp(firebaseConfig);
-
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 const params = new URLSearchParams(window.location.search);
@@ -32,8 +32,21 @@ alert("GR Number Missing");
 history.back();
 
 }
+onAuthStateChanged(auth, (user) => {
 
-loadPOD();
+    if (!user) {
+
+        alert("Please login first.");
+
+        window.location.href = "pod.html";
+
+        return;
+    }
+
+    // User is logged in
+    loadPOD(grNo);
+
+});
 
 async function loadPOD(){
 
