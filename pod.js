@@ -217,7 +217,7 @@ if(deviceApprovalSection){
     loadRecentPods();
     loadDashboard();
     loadSystemStats();
-    console.log("User Logged In");
+    
 
     
   } else {
