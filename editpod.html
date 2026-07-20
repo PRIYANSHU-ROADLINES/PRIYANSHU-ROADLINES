@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit POD</title>
+
+<style>
+
+body{
+
+font-family:Arial;
+
+background:#f4f4f4;
+
+margin:0;
+
+padding:20px;
+
+}
+
+.container{
+
+max-width:700px;
+
+margin:auto;
+
+background:white;
+
+padding:20px;
+
+border-radius:10px;
+
+box-shadow:0 0 10px rgba(0,0,0,.2);
+
+}
+
+input,
+textarea,
+select{
+
+width:100%;
+
+padding:10px;
+
+margin:10px 0;
+
+}
+
+button{
+
+padding:12px 20px;
+
+border:none;
+
+cursor:pointer;
+
+margin-right:10px;
+
+}
+
+.save{
+
+background:green;
+
+color:white;
+
+}
+
+.delete{
+
+background:red;
+
+color:white;
+
+}
+
+.cancel{
+
+background:gray;
+
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Edit POD</h2>
+
+<input id="grNo" readonly>
+
+<input id="vehicleNo">
+
+<input id="driverName">
+
+<input id="driverMobile">
+
+<input id="partyName">
+
+<input type="date"
+id="deliveryDate">
+
+<textarea
+id="remarks"></textarea>
+
+<select id="status">
+
+<option>Completed</option>
+
+<option>Pending</option>
+
+<option>Delivered</option>
+
+</select>
+
+<p>
+<b>Upload Date:</b>
+
+<span id="uploadDate"></span>
+
+</p>
+
+<p>
+<b>Upload Time:</b>
+
+<span id="uploadTime"></span>
+
+</p>
+
+<p>
+<b>Uploaded By:</b>
+
+<span id="uploadedBy"></span>
+
+</p>
+
+<button class="save"
+onclick="updatePOD()">
+
+Save Changes
+
+</button>
+
+<button class="delete"
+onclick="deletePOD()">
+
+Delete POD
+
+</button>
+
+<button class="cancel"
+onclick="history.back()">
+
+Cancel
+
+</button>
+
+</div>
+
+<script type="module"
+src="editpod.js"></script>
+
+</body>
+
+</html>
