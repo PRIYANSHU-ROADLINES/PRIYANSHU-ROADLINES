@@ -1,5 +1,3 @@
-let editMode = false;
-let currentGR = "";
 // Firebase Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
@@ -322,64 +320,7 @@ saveButton.innerText =
 "Uploading...";
 
   const grNo = document.getElementById("grNo").value.trim();
-if(editMode){
 
-  await setDoc(doc(db,"pods",currentGR),{
-
-    grNo: currentGR,
-
-    vehicleNo:
-      document.getElementById("vehicleNo").value || "",
-
-    driverName:
-      document.getElementById("driverName").value || "",
-
-    driverMobile:
-      document.getElementById("driverMobile").value || "",
-
-    partyName:
-      document.getElementById("partyName").value || "",
-
-    deliveryDate:
-      document.getElementById("deliveryDate").value || "",
-
-    remarks:
-      document.getElementById("remarks").value || "",
-
-    status:
-      document.getElementById("status").value
-
-  },{merge:true});
-
-  alert("POD Updated Successfully");
-document.getElementById("grNo").value = "";
-document.getElementById("vehicleNo").value = "";
-document.getElementById("driverName").value = "";
-document.getElementById("driverMobile").value = "";
-document.getElementById("partyName").value = "";
-document.getElementById("deliveryDate").value = "";
-document.getElementById("remarks").value = "";
-  editMode = false;
-  currentGR = "";
-
-  document.querySelector(
-  'button[onclick="uploadPOD()"]'
-  ).innerText = "Save POD";
-
-  loadRecentPods();
-  loadDashboard();
-
-  const params = new URLSearchParams(window.location.search);
-const gr = params.get("gr");
-
-if (gr) {
-    await editPOD(gr);
-}
-  
-saveButton.disabled = false;
-saveButton.innerText = "Save POD";
-  return;
-}
   if (!grNo) {
     alert("GR Number is required");
     return;
@@ -576,9 +517,7 @@ window.searchPOD = async function () {
 
     ${deleteButton}
     ${isAdminLoggedIn ? `
-<button onclick="editPOD('${data.grNo}')">
-Edit POD
-</button>
+
 ` : ""}
   `;
 };
@@ -701,52 +640,7 @@ window.downloadExcel = async function(){
 
 }
 
-window.editPOD = async function(grNo){
 
-  const snap =
-  await getDoc(doc(db,"pods",grNo));
-
-  if(!snap.exists()) return;
-
-  const data = snap.data();
-
-  document.getElementById("grNo").value =
-  data.grNo || "";
-
-  document.getElementById("vehicleNo").value =
-  data.vehicleNo || "";
-
-  document.getElementById("driverName").value =
-  data.driverName || "";
-
-  document.getElementById("driverMobile").value =
-  data.driverMobile || "";
-
-  document.getElementById("partyName").value =
-  data.partyName || "";
-
-  document.getElementById("deliveryDate").value =
-  data.deliveryDate || "";
-
-  document.getElementById("remarks").value =
-  data.remarks || "";
-
-  document.getElementById("status").value =
-  data.status || "Pending";
-
-  document
-  .getElementById("adminPanel")
-  .scrollIntoView({
-      behavior:"smooth"
-  });
-
-editMode = true;
-currentGR = grNo;
-
-document.querySelector(
-'button[onclick="uploadPOD()"]'
-).innerText = "Save Changes";
-  };
 window.toggleRecentPods = function(){
 
   const box =
@@ -1362,51 +1256,3 @@ behavior:"smooth"
 });
 
 }
-window.addEventListener("load", async function () {
-
-    const params = new URLSearchParams(window.location.search);
-    const editGR = params.get("gr");
-
-    if (!editGR) return;
-
-    if (!auth.currentUser) return;
-
-    await editPODByGR(editGR);
-
-});
-
-document
-.getElementById("adminPanel")
-.scrollIntoView({
-    behavior:"smooth"
-});
-
-document.querySelector(
-'button[onclick="uploadPOD()"]'
-).innerText = "Save Changes";
-document.getElementById("podImage").required = false;
-
-window.addEventListener("load", async function () {
-
-    const params = new URLSearchParams(window.location.search);
-
-    const gr = params.get("gr");
-
-    if (gr) {
-
-        document.getElementById("searchPanel").style.display = "block";
-
-        document.getElementById("searchGR").value = gr;
-
-        await searchPOD();
-
-        // Automatically open edit mode
-        await editPOD(gr);
-
-        document.getElementById("adminPanel").scrollIntoView({
-            behavior: "smooth"
-        });
-
-    }
-
-});
