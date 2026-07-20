@@ -53,7 +53,7 @@ onAuthStateChanged(auth, (user) => {
 
 });
 
-async function loadPOD(){
+async function loadPOD(grNo){
 
 const snap = await getDoc(doc(db,"pods",grNo));
 
