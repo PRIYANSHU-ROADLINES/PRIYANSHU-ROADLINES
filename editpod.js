@@ -43,7 +43,7 @@ onAuthStateChanged(auth, (user) => {
 
         alert("Please login first.");
 
-        window.location.href = "pod.html";
+        window.location.replace("pod.html");
 
         return;
     }
