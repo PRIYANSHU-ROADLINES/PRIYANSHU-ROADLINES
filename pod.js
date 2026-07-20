@@ -516,9 +516,7 @@ window.searchPOD = async function () {
     </a>
 
     ${deleteButton}
-    ${isAdminLoggedIn ? `
-
-` : ""}
+   
   `;
 };
 async function loadDashboard() {
