@@ -85,3 +85,51 @@ document.getElementById("uploadedBy").innerText =
 data.uploadedBy || "-";
 
 }
+window.updatePOD = async function(){
+
+await updateDoc(doc(db,"pods",grNo),{
+
+vehicleNo:
+document.getElementById("vehicleNo").value,
+
+driverName:
+document.getElementById("driverName").value,
+
+driverMobile:
+document.getElementById("driverMobile").value,
+
+partyName:
+document.getElementById("partyName").value,
+
+deliveryDate:
+document.getElementById("deliveryDate").value,
+
+remarks:
+document.getElementById("remarks").value,
+
+status:
+document.getElementById("status").value
+
+});
+
+alert("POD Updated Successfully");
+
+window.location.href =
+"viewpod.html?gr=" + grNo;
+
+};
+window.deletePOD = async function(){
+
+const confirmDelete =
+confirm("Delete this POD?");
+
+if(!confirmDelete) return;
+
+await deleteDoc(doc(db,"pods",grNo));
+
+alert("POD Deleted Successfully");
+
+window.location.href =
+"pod.html";
+
+};
