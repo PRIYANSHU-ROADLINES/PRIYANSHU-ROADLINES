@@ -227,16 +227,6 @@ if(deviceApprovalSection){
     loadSystemStats();
     console.log("User Logged In");
 
-const params = new URLSearchParams(window.location.search);
-const gr = params.get("gr");
-
-console.log("GR =", gr);
-
-if (gr) {
-    console.log("Calling editPOD...");
-    await editPOD(gr);
-    console.log("editPOD finished");
-}
     
   } else {
 
@@ -383,6 +373,14 @@ document.getElementById("remarks").value = "";
 
   loadRecentPods();
   loadDashboard();
+
+  const params = new URLSearchParams(window.location.search);
+const gr = params.get("gr");
+
+if (gr) {
+    await editPOD(gr);
+}
+  
 saveButton.disabled = false;
 saveButton.innerText = "Save POD";
   return;
