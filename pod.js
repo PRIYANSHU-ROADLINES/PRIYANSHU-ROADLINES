@@ -225,12 +225,17 @@ if(deviceApprovalSection){
     loadRecentPods();
     loadDashboard();
     loadSystemStats();
-    
+    console.log("User Logged In");
+
 const params = new URLSearchParams(window.location.search);
 const gr = params.get("gr");
 
-if (gr && typeof window.editPOD === "function") {
-    window.editPOD(gr);
+console.log("GR =", gr);
+
+if (gr) {
+    console.log("Calling editPOD...");
+    await editPOD(gr);
+    console.log("editPOD finished");
 }
     
   } else {
