@@ -5,6 +5,10 @@ import {
   doc,
   getDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 // Firebase Config
 const firebaseConfig = {
@@ -17,7 +21,24 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
+
+onAuthStateChanged(auth, (user) => {
+
+    if (!user) {
+
+        alert("Please login first.");
+
+        window.location.replace("pod.html");
+
+        return;
+
+    }
+
+    loadPOD(grNo);
+
+});
 
 // Read GR Number from URL
 const params = new URLSearchParams(window.location.search);
