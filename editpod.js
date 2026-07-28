@@ -74,28 +74,48 @@ return;
 }
 
 const data = snap.data();
-
+    
+<label><b>GR Number</b></label>
+<input type="text" id="grNo" readonly>
 document.getElementById("grNo").value =
 data.grNo || "";
-
+    
+<label><b>Vehicle Number</b></label>
+<input type="text" id="vehicleNo">
 document.getElementById("vehicleNo").value =
 data.vehicleNo || "";
 
+<label><b>Driver Name</b></label>
+<input type="text" id="driverName">
 document.getElementById("driverName").value =
 data.driverName || "";
 
+<label><b>Driver Mobile</b></label>
+<input type="text" id="driverMobile">
 document.getElementById("driverMobile").value =
 data.driverMobile || "";
-
+    
+<label><b>Party Name</b></label>
+<input type="text" id="partyName">
 document.getElementById("partyName").value =
 data.partyName || "";
 
+<label><b>Delivery Date</b></label>
+<input type="date" id="deliveryDate">
 document.getElementById("deliveryDate").value =
 data.deliveryDate || "";
 
+<label><b>Remarks</b></label>
+<textarea id="remarks"></textarea>
 document.getElementById("remarks").value =
 data.remarks || "";
 
+<label><b>Status</b></label>
+<select id="status">
+    <option value="Pending">Pending</option>
+    <option value="Delivered">Delivered</option>
+    <option value="Completed">Completed</option>
+</select>
 document.getElementById("status").value =
 data.status || "Pending";
 
