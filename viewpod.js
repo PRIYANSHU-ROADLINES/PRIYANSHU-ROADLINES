@@ -51,16 +51,6 @@ if (!grNo) {
 }
 
 // Read GR Number from URL
-if (!grNo) {
-
-    document.getElementById("result").innerHTML =
-    "<h2>No GR Number Found.</h2>";
-
-} else {
-
-    loadPOD(grNo);
-
-}
 
 async function loadPOD(grNo){
 
