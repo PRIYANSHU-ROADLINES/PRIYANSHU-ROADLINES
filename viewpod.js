@@ -24,21 +24,31 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-onAuthStateChanged(auth, (user) => {
+const params = new URLSearchParams(window.location.search);
+const grNo = params.get("gr");
 
-    if (!user) {
+if (!grNo) {
 
-        alert("Please login first.");
+    document.getElementById("result").innerHTML =
+    "<h2>No GR Number Found.</h2>";
 
-        window.location.replace("pod.html");
+} else {
 
-        return;
+    onAuthStateChanged(auth, (user) => {
 
-    }
+        if (!user) {
 
-    loadPOD(grNo);
+            alert("Please login first.");
+            window.location.replace("pod.html");
+            return;
 
-});
+        }
+
+        loadPOD(grNo);
+
+    });
+
+}
 
 // Read GR Number from URL
 const params = new URLSearchParams(window.location.search);
@@ -117,6 +127,6 @@ Download POD
 window.editPOD = function () {
 
     window.location.href =
-        "pod.html?gr=" + grNo;
+        "editpod.html?gr=" + grNo;
 
 };
