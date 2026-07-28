@@ -39,7 +39,12 @@ history.back();
 }
 onAuthStateChanged(auth, (user) => {
 
+    console.log("Auth callback fired");
+    console.log("User =", user);
+
     if (!user) {
+
+        console.log("No user found");
 
         alert("Please login first.");
 
@@ -48,7 +53,8 @@ onAuthStateChanged(auth, (user) => {
         return;
     }
 
-    // User is logged in
+    console.log("Logged in as:", user.email);
+
     loadPOD(grNo);
 
 });
