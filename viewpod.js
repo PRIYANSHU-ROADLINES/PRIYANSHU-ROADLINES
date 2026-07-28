@@ -51,9 +51,6 @@ if (!grNo) {
 }
 
 // Read GR Number from URL
-const params = new URLSearchParams(window.location.search);
-const grNo = params.get("gr");
-
 if (!grNo) {
 
     document.getElementById("result").innerHTML =
