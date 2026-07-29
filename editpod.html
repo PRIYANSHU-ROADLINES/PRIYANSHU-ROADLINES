@@ -87,7 +87,12 @@ background:gray;
 color:white;
 
 }
-
+label{
+    display:block;
+    margin-top:12px;
+    font-weight:bold;
+    color:#333;
+}
 </style>
 
 </head>
@@ -98,30 +103,32 @@ color:white;
 
 <h2>Edit POD</h2>
 
+<label><b>GR Number</b></label>
 <input id="grNo" readonly>
 
-<input id="vehicleNo">
+<label><b>Vehicle Number</b></label>
+<input id="vehicleNo" placeholder="Enter Vehicle Number">
 
-<input id="driverName">
+<label><b>Driver Name</b></label>
+<input id="driverName" placeholder="Enter Driver Name">
 
-<input id="driverMobile">
+<label><b>Driver Mobile</b></label>
+<input id="driverMobile" placeholder="Enter Driver Mobile">
 
-<input id="partyName">
+<label><b>Party Name</b></label>
+<input id="partyName" placeholder="Enter Party Name">
 
-<input type="date"
-id="deliveryDate">
+<label><b>Delivery Date</b></label>
+<input type="date" id="deliveryDate">
 
-<textarea
-id="remarks"></textarea>
+<label><b>Remarks</b></label>
+<textarea id="remarks" placeholder="Enter Remarks"></textarea>
 
+<label><b>Status</b></label>
 <select id="status">
-
-<option>Completed</option>
-
-<option>Pending</option>
-
-<option>Delivered</option>
-
+    <option>Completed</option>
+    <option>Pending</option>
+    <option>Delivered</option>
 </select>
 
 <p>
