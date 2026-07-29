@@ -259,16 +259,21 @@ window.searchByDate = async function () {
         return;
     }
 
-    const snapshot = await getDocs(collection(db, "pods"));
-
     filteredPods = [];
 
-    snapshot.forEach((docItem) => {
+    allPods.forEach((pod) => {
 
-        const pod = docItem.data();
+        // Convert DD-MM-YYYY to YYYY-MM-DD
+        const parts = (pod.uploadDate || "").split("-");
 
-      const uploadDate = (pod.uploadDate || "").split("-").reverse().join("-");
+        if (parts.length !== 3) return;
 
+        const uploadDate =
+            parts[2] + "-" + parts[1] + "-" + parts[0];
+
+        if (uploadDate >= fromDate && uploadDate <= toDate) {
+            filteredPods.push(pod);
+        }
 
     });
 
@@ -276,8 +281,6 @@ window.searchByDate = async function () {
 
     renderPods();
 
+    alert(filteredPods.length + " POD(s) found.");
+
 };
-
-
-
-
