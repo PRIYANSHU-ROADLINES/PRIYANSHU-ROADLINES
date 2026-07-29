@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 import {
   getFirestore,
   doc,
-  getDoc
+  getDoc,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 import {
     getAuth,
@@ -115,5 +116,18 @@ window.editPOD = function () {
 
     window.location.href =
         "editpod.html?gr=" + grNo;
+
+};
+window.deletePOD = async function () {
+
+    const confirmDelete = confirm("Delete this POD?");
+
+    if (!confirmDelete) return;
+
+    await deleteDoc(doc(db, "pods", grNo));
+
+    alert("POD Deleted Successfully");
+
+    window.location.href = "pod.html";
 
 };
