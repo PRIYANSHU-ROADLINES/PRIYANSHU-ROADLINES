@@ -7,7 +7,6 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-import { getCurrentRole } from "./role.js";
 
 import {
   getFirestore,
@@ -180,7 +179,7 @@ window.logout = async function () {
 };
 
 // Auth State
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
   
   const adminPanel = document.getElementById("adminPanel");
   const loginBox = document.getElementById("loginBox");
@@ -196,58 +195,20 @@ document.getElementById("trustedDevicesSection");
 
     isAdminLoggedIn = true;
 
-    const role = await getCurrentRole(user.uid);
-
-    if (role === "admin") {
-
     adminPanel.style.display = "block";
-
-} else {
-
-    adminPanel.style.display = "none";
-
-}
     
-   if (role === "admin") {
-
-    if(loginHistorySection){
-        loginHistorySection.style.display = "block";
-    }
-
-} else {
-
-    if(loginHistorySection){
-        loginHistorySection.style.display = "none";
-    }
-
-}
-if (role === "admin") {
-
-    if(deviceApprovalSection){
-        deviceApprovalSection.style.display = "block";
-    }
-
-} else {
-
-    if(deviceApprovalSection){
-        deviceApprovalSection.style.display = "none";
-    }
-
+if(loginHistorySection){
+    loginHistorySection.style.display = "block";
 }
 
-if (role === "admin") {
-
-    if(trustedDevicesSection){
-        trustedDevicesSection.style.display = "block";
-    }
-
-} else {
-
-    if(trustedDevicesSection){
-        trustedDevicesSection.style.display = "none";
-    }
-
+if(deviceApprovalSection){
+    deviceApprovalSection.style.display = "block";
 }
+
+if(trustedDevicesSection){
+    trustedDevicesSection.style.display = "block";
+}
+
     if (searchPanel) {
       searchPanel.style.display = "block";
     }
@@ -259,13 +220,7 @@ if (role === "admin") {
 
     loadRecentPods();
     loadDashboard();
-
-if(role === "admin"){
-
     loadSystemStats();
-
-}
-    
 
     
   } else {
