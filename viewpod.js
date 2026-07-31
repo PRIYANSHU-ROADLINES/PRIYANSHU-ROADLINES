@@ -35,20 +35,25 @@ if (!grNo) {
 
 } else {
 
-    onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (user) => {
 
-        if (!user) {
+    console.log("AUTH STATE:", user);
 
-            alert("Please login first.");
-            window.location.replace("pod.html");
-            return;
+    if (!user) {
 
-        }
+        console.log("User is NOT logged in");
 
-        loadPOD(grNo);
+        alert("Please login first.");
+        window.location.replace("pod.html");
+        return;
 
-    });
+    }
 
+    console.log("User IS logged in:", user.email);
+
+    loadPOD(grNo);
+
+});
 }
 
 // Read GR Number from URL
