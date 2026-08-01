@@ -21,6 +21,9 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
+import { checkSecurity } from "./security.js";
+
+
 // Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
@@ -35,17 +38,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-onAuthStateChanged(auth, (user) => {
+checkSecurity(() => {
 
-    if (!user) {
-
-        alert("Please login first.");
-
-        window.location.replace("pod.html");
-
-        return;
-
-    }
+    console.log("Security Passed");
 
     loadAllPods();
 
@@ -176,7 +171,7 @@ window.prevPage=function(){
 
 }
 
-loadAllPods();
+
 window.searchPod = function () {
 
     const gr = document
