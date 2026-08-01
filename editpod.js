@@ -12,6 +12,7 @@ import {
     getAuth,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { checkSecurity } from "./security.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
@@ -37,23 +38,9 @@ alert("GR Number Missing");
 history.back();
 
 }
-onAuthStateChanged(auth, (user) => {
+checkSecurity(() => {
 
-    console.log("Auth callback fired");
-    console.log("User =", user);
-
-    if (!user) {
-
-        console.log("No user found");
-
-        alert("Please login first.");
-
-        window.location.replace("pod.html");
-
-        return;
-    }
-
-    console.log("Logged in as:", user.email);
+    console.log("Security Passed");
 
     loadPOD(grNo);
 
