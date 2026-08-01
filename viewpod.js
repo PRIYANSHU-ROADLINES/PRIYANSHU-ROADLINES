@@ -10,6 +10,7 @@ import {
     getAuth,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+import { checkSecurity } from "./security.js";
 
 // Firebase Config
 const firebaseConfig = {
@@ -35,25 +36,12 @@ if (!grNo) {
 
 } else {
 
-onAuthStateChanged(auth, (user) => {
+    checkSecurity(() => {
 
-    console.log("AUTH STATE:", user);
+        loadPOD(grNo);
 
-    if (!user) {
+    });
 
-        console.log("User is NOT logged in");
-
-        alert("Please login first.");
-        window.location.replace("pod.html");
-        return;
-
-    }
-
-    console.log("User IS logged in:", user.email);
-
-    loadPOD(grNo);
-
-});
 }
 
 // Read GR Number from URL
