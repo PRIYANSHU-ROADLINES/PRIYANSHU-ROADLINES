@@ -64,4 +64,28 @@ alert("Password must be at least 8 characters.");
 return;
 
 }
+// Create Firebase Authentication Account
+const userCredential =
+await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+);
+
+const user = userCredential.user;
+// Save Customer Details
+await setDoc(doc(db,"users",user.uid),{
+
+    mobile: mobile,
+    name: fullname,
+    email: email,
+
+    role: "customer",
+
+    createdAt: serverTimestamp()
+
+});
+alert("Account Created Successfully!");
+
+window.location.href="index.html";
 }
