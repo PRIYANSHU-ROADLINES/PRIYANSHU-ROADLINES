@@ -64,3 +64,4 @@ alert("Password must be at least 8 characters.");
 return;
 
 }
+}
