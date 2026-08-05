@@ -27,65 +27,66 @@ const db = getFirestore(app);
 
 document.getElementById("signupBtn").addEventListener("click", signupCustomer);
 
-async function signupCustomer(){
+async function signupCustomer() {
 
-const mobile =
-document.getElementById("mobile").value.trim();
+    const mobile =
+    document.getElementById("mobile").value.trim();
 
-const fullname =
-document.getElementById("fullname").value.trim();
+    const fullname =
+    document.getElementById("fullname").value.trim();
 
-const email =
-document.getElementById("email").value.trim();
+    const email =
+    document.getElementById("email").value.trim();
 
-const password =
-document.getElementById("password").value;
+    const password =
+    document.getElementById("password").value;
 
-if(!/^[6-9]\d{9}$/.test(mobile)){
+    if(!/^[6-9]\d{9}$/.test(mobile)){
+        alert("Enter a valid 10 digit Mobile Number.");
+        return;
+    }
 
-alert("Enter a valid 10 digit Mobile Number.");
+    if(fullname.length < 3){
+        alert("Enter Full Name.");
+        return;
+    }
 
-return;
+    if(password.length < 8){
+        alert("Password must be at least 8 characters.");
+        return;
+    }
 
-}
+    try{
 
-if(fullname.length < 3){
+        const userCredential =
+        await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
 
-alert("Enter Full Name.");
+        const user = userCredential.user;
 
-return;
+        await setDoc(doc(db,"users",user.uid),{
 
-}
+            mobile: mobile,
+            name: fullname,
+            email: email,
+            role: "customer",
+            createdAt: serverTimestamp()
 
-if(password.length < 8){
+        });
 
-alert("Password must be at least 8 characters.");
+        alert("Account Created Successfully!");
 
-return;
+        window.location.href="index.html";
 
-}
-// Create Firebase Authentication Account
-const userCredential =
-await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-);
+    }catch(error){
 
-const user = userCredential.user;
-// Save Customer Details
-await setDoc(doc(db,"users",user.uid),{
+        console.log(error);
 
-    mobile: mobile,
-    name: fullname,
-    email: email,
+        alert(error.message);
 
-    role: "customer",
+    }
 
-    createdAt: serverTimestamp()
-
-});
-alert("Account Created Successfully!");
-
-window.location.href="index.html";
 }
