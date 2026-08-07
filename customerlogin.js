@@ -80,7 +80,7 @@ async function loginCustomer(){
 
         alert("Login Successful");
 
-        window.location.href="customerdashboard.html";
+        window.location.href="index.html";
 
     }catch(error){
 
