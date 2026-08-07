@@ -48,6 +48,24 @@ onAuthStateChanged(auth, async(user)=>{
 
     const data = snap.data();
 
-    console.log("Logged in as :",data.role);
+    document.getElementById("signinBtn").style.display = "none";
+
+document.getElementById("userInfo").style.display = "block";
+
+document.getElementById("welcomeUser").innerHTML =
+"Hello, " + data.name;
+});
+document.getElementById("logoutBtn")
+?.addEventListener("click", async () => {
+
+    const { signOut } = await import(
+        "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js"
+    );
+
+    await signOut(auth);
+
+    alert("Logged Out Successfully");
+
+    window.location.href = "index.html";
 
 });
