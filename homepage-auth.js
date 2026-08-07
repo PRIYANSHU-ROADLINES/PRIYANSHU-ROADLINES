@@ -25,6 +25,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+let currentRole = "guest";
 
 onAuthStateChanged(auth, async(user)=>{
 
@@ -47,6 +48,7 @@ onAuthStateChanged(auth, async(user)=>{
     }
 
     const data = snap.data();
+    currentRole = data.role;
 
     document.getElementById("signinBtn").style.display = "none";
 
@@ -67,5 +69,43 @@ document.getElementById("logoutBtn")
     alert("Logged Out Successfully");
 
     window.location.href = "index.html";
+
+});
+document.getElementById("trackBtn")
+?.addEventListener("click", function(e){
+
+    if(currentRole === "guest"){
+
+        e.preventDefault();
+
+        window.location.href="signin.html";
+
+    }
+
+});
+
+document.getElementById("quoteBtn")
+?.addEventListener("click", function(e){
+
+    if(currentRole === "guest"){
+
+        e.preventDefault();
+
+        window.location.href="signin.html";
+
+    }
+
+});
+
+document.getElementById("enquiryBtn")
+?.addEventListener("click", function(e){
+
+    if(currentRole === "guest"){
+
+        e.preventDefault();
+
+        window.location.href="signin.html";
+
+    }
 
 });
