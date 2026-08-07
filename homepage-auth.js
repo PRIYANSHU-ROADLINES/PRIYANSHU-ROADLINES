@@ -31,11 +31,34 @@ onAuthStateChanged(auth, async(user)=>{
 
     if(!user){
 
-        console.log("Guest User");
+    // Check Operator Login
+    if(localStorage.getItem("loggedIn") === "true"){
+
+        currentRole = localStorage.getItem("role");
+
+        document.getElementById("signinBtn").style.display = "none";
+
+        document.getElementById("userInfo").style.display = "block";
+
+        document.getElementById("welcomeUser").innerHTML =
+        "Hello, " + localStorage.getItem("name");
+
+        // Show POD only for Staff/Admin
+        if(currentRole === "staff" || currentRole === "admin"){
+
+            document.getElementById("podMenu").style.display = "block";
+
+        }
 
         return;
 
     }
+
+    console.log("Guest User");
+
+    return;
+
+}
 
     const snap = await getDoc(doc(db,"users",user.uid));
 
@@ -60,17 +83,29 @@ document.getElementById("welcomeUser").innerHTML =
 document.getElementById("logoutBtn")
 ?.addEventListener("click", async () => {
 
-    const { signOut } = await import(
-        "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js"
-    );
+    // Customer Logout
+    if(auth.currentUser){
 
-    await signOut(auth);
+        const { signOut } = await import(
+            "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js"
+        );
+
+        await signOut(auth);
+
+    }
+
+    // Operator Logout
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("role");
+    localStorage.removeItem("name");
+    localStorage.removeItem("designation");
 
     alert("Logged Out Successfully");
 
     window.location.href = "index.html";
 
 });
+
 document.getElementById("trackBtn")
 ?.addEventListener("click", function(e){
 
