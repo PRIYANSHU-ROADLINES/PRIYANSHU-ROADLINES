@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 
 import {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 import {
@@ -10,6 +11,7 @@ import {
     doc,
     getDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
@@ -20,126 +22,303 @@ const firebaseConfig = {
     appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
+
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
 const db = getFirestore(app);
+
+
+// Current website role
 let currentRole = "guest";
 
-onAuthStateChanged(auth, async(user)=>{
 
-    if(!user){
+// --------------------------------------------------
+// BASIC UI ELEMENTS
+// --------------------------------------------------
 
-    // Check Operator Login
-    if(localStorage.getItem("loggedIn") === "true"){
+const signinBtn = document.getElementById("signinBtn");
+const userInfo = document.getElementById("userInfo");
+const welcomeUser = document.getElementById("welcomeUser");
+const logoutBtn = document.getElementById("logoutBtn");
+const podMenu = document.getElementById("podMenu");
 
-        currentRole = localStorage.getItem("role");
 
-        document.getElementById("signinBtn").style.display = "none";
+// --------------------------------------------------
+// INITIAL UI
+// --------------------------------------------------
 
-        document.getElementById("userInfo").style.display = "block";
+function showGuest() {
 
-        document.getElementById("welcomeUser").innerHTML =
-        "Hello, " + localStorage.getItem("name");
+    currentRole = "guest";
 
-        // Show POD only for Staff/Admin
-        if(currentRole === "staff" || currentRole === "admin"){
+    if (signinBtn) {
+        signinBtn.style.display = "block";
+    }
 
-            document.getElementById("podMenu").style.display = "block";
+    if (userInfo) {
+        userInfo.style.display = "none";
+    }
 
-        }
-
-        return;
-
+    if (podMenu) {
+        podMenu.style.display = "none";
     }
 
     console.log("Guest User");
-
-    return;
-
 }
 
-    const snap = await getDoc(doc(db,"users",user.uid));
 
-    if(!snap.exists()){
+function showLoggedInUser(name, role) {
 
-        console.log("Operator Login");
+    currentRole = role;
+
+    if (signinBtn) {
+        signinBtn.style.display = "none";
+    }
+
+    if (userInfo) {
+        userInfo.style.display = "block";
+    }
+
+    if (welcomeUser) {
+        welcomeUser.innerHTML = "Hello, " + name;
+    }
+
+    // POD is ONLY visible to Staff and Admin
+    if (podMenu) {
+
+        if (role === "staff" || role === "admin") {
+
+            podMenu.style.display = "block";
+
+        } else {
+
+            podMenu.style.display = "none";
+
+        }
+    }
+
+    console.log("Logged in as:", role);
+}
+
+
+// --------------------------------------------------
+// CHECK OPERATOR
+// --------------------------------------------------
+
+function checkOperatorLogin() {
+
+    const loggedIn =
+        localStorage.getItem("loggedIn") === "true";
+
+    const role =
+        localStorage.getItem("role");
+
+    const name =
+        localStorage.getItem("name");
+
+    if (
+        loggedIn &&
+        (role === "staff" || role === "admin") &&
+        name
+    ) {
+
+        return {
+            loggedIn: true,
+            role: role,
+            name: name
+        };
+
+    }
+
+    return {
+        loggedIn: false
+    };
+}
+
+
+// --------------------------------------------------
+// CUSTOMER / OPERATOR INITIALIZATION
+// --------------------------------------------------
+
+let firebaseCheckFinished = false;
+
+
+onAuthStateChanged(auth, async (user) => {
+
+    firebaseCheckFinished = true;
+
+
+    // ----------------------------------------------
+    // CUSTOMER LOGGED IN
+    // ----------------------------------------------
+
+    if (user) {
+
+        try {
+
+            const snap =
+                await getDoc(
+                    doc(db, "users", user.uid)
+                );
+
+
+            if (snap.exists()) {
+
+                const data = snap.data();
+
+                showLoggedInUser(
+                    data.name,
+                    data.role || "customer"
+                );
+
+                return;
+
+            }
+
+
+            // Firebase user exists but profile
+            // doesn't exist
+
+            console.log(
+                "Firebase user found but customer profile not found."
+            );
+
+            showGuest();
+
+            return;
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error loading customer profile:",
+                error
+            );
+
+            showGuest();
+
+            return;
+        }
+    }
+
+
+    // ----------------------------------------------
+    // NO FIREBASE CUSTOMER
+    // CHECK OPERATOR
+    // ----------------------------------------------
+
+    const operator = checkOperatorLogin();
+
+
+    if (operator.loggedIn) {
+
+        showLoggedInUser(
+            operator.name,
+            operator.role
+        );
 
         return;
 
     }
 
-    const data = snap.data();
-    currentRole = data.role;
 
-    document.getElementById("signinBtn").style.display = "none";
+    // ----------------------------------------------
+    // NO CUSTOMER + NO OPERATOR
+    // ----------------------------------------------
 
-document.getElementById("userInfo").style.display = "block";
+    showGuest();
 
-document.getElementById("welcomeUser").innerHTML =
-"Hello, " + data.name;
 });
-document.getElementById("logoutBtn")
-?.addEventListener("click", async () => {
 
-    // Customer Logout
-    if(auth.currentUser){
 
-        const { signOut } = await import(
-            "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js"
+// --------------------------------------------------
+// LOGOUT
+// --------------------------------------------------
+
+logoutBtn?.addEventListener("click", async () => {
+
+    try {
+
+        // Customer logout
+        if (auth.currentUser) {
+
+            await signOut(auth);
+
+        }
+
+
+        // Operator logout
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("role");
+        localStorage.removeItem("name");
+        localStorage.removeItem("designation");
+
+
+        alert("Logged Out Successfully");
+
+        window.location.href = "index.html";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Logout Error:",
+            error
         );
 
-        await signOut(auth);
+        alert(
+            "Logout failed. Please try again."
+        );
 
     }
 
-    // Operator Logout
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("role");
-    localStorage.removeItem("name");
-    localStorage.removeItem("designation");
-
-    alert("Logged Out Successfully");
-
-    window.location.href = "index.html";
-
 });
+
+
+// --------------------------------------------------
+// PROTECTED BUTTONS
+// --------------------------------------------------
 
 document.getElementById("trackBtn")
-?.addEventListener("click", function(e){
+?.addEventListener("click", function(e) {
 
-    if(currentRole === "guest"){
+    if (currentRole === "guest") {
 
         e.preventDefault();
 
-        window.location.href="signin.html";
+        window.location.href = "signin.html";
 
     }
 
 });
+
 
 document.getElementById("quoteBtn")
-?.addEventListener("click", function(e){
+?.addEventListener("click", function(e) {
 
-    if(currentRole === "guest"){
+    if (currentRole === "guest") {
 
         e.preventDefault();
 
-        window.location.href="signin.html";
+        window.location.href = "signin.html";
 
     }
 
 });
 
-document.getElementById("enquiryBtn")
-?.addEventListener("click", function(e){
 
-    if(currentRole === "guest"){
+document.getElementById("enquiryBtn")
+?.addEventListener("click", function(e) {
+
+    if (currentRole === "guest") {
 
         e.preventDefault();
 
-        window.location.href="signin.html";
+        window.location.href = "signin.html";
 
     }
 
