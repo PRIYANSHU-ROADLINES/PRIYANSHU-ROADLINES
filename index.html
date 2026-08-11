@@ -386,8 +386,155 @@ header h1{
 .branch-office p{
     font-size:18px;
     line-height:1.6;
+    }
+/* =========================================
+   PROFESSIONAL USER PROFILE
+========================================= */
+
+#userSection{
+    position:relative;
+    display:flex;
+    align-items:center;
+    margin-left:20px;
 }
 
+/* Sign In */
+
+.signin-btn{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+    padding:10px 18px;
+    border:1px solid #ff2d2d;
+    border-radius:6px;
+    transition:0.3s;
+}
+
+.signin-btn:hover{
+    background:#ff2d2d;
+}
+
+/* Profile circle */
+
+.profile-circle{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    border:2px solid #ff2d2d;
+    background:#222;
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:0.3s;
+}
+
+.profile-circle:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 12px rgba(255,0,0,0.7);
+}
+
+/* Profile dropdown */
+
+.profile-dropdown{
+    position:absolute;
+
+    top:60px;
+    right:0;
+
+    width:300px;
+
+    background:white;
+    color:#222;
+
+    border-radius:12px;
+
+    padding:18px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.3);
+
+    display:none;
+
+    z-index:5000;
+}
+
+/* Profile information */
+
+.profile-header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.profile-big-circle{
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    background:#ff2d2d;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+    font-weight:bold;
+}
+
+.profile-header h3{
+    margin:0;
+    color:#111;
+    font-size:18px;
+}
+
+.profile-header p{
+    margin-top:5px;
+    color:#666;
+    font-size:13px;
+    word-break:break-word;
+}
+
+/* Dropdown line */
+
+.profile-dropdown hr{
+    border:0;
+    border-top:1px solid #ddd;
+    margin:15px 0;
+}
+
+/* Logout */
+
+.logout-btn{
+    width:100%;
+
+    background:#ff2d2d;
+    color:white;
+
+    border:none;
+
+    padding:11px;
+
+    border-radius:6px;
+
+    font-size:15px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.logout-btn:hover{
+    background:#cc0000;
+}
 </style>
 <link rel="icon" href="images/logo.png">
 </head>
@@ -415,25 +562,43 @@ header h1{
 <li><a href="services.html">Services</a></li>   
 </ul>
 </nav>
+<!-- USER PROFILE -->
 <div id="userSection">
 
-<a href="signin.html" id="signinBtn">
+    <!-- Sign In button for logged-out users -->
+    <a href="signin.html" id="signinBtn" class="signin-btn">
+        Sign In
+    </a>
 
-Sign In
+    <!-- Profile for logged-in users -->
+    <div id="profileContainer" style="display:none;">
 
-</a>
+        <button id="profileCircle" class="profile-circle">
+            <span id="profileInitial">U</span>
+        </button>
 
-<div id="userInfo" style="display:none;">
+        <div id="profileDropdown" class="profile-dropdown">
 
-<span id="welcomeUser"></span>
+            <div class="profile-header">
+                <div class="profile-big-circle">
+                    <span id="profileBigInitial">U</span>
+                </div>
 
-<button id="logoutBtn">
+                <div>
+                    <h3 id="profileName">User</h3>
+                    <p id="profileEmail">email@example.com</p>
+                </div>
+            </div>
 
-Logout
+            <hr>
 
-</button>
+            <button id="logoutBtn" class="logout-btn">
+                🚪 Logout
+            </button>
 
-</div>
+        </div>
+
+    </div>
 
 </div>
 
