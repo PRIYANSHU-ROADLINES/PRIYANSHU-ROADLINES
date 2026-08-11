@@ -91,6 +91,49 @@ window.login = async function () {
   );
 
 const user = userCredential.user;
+    // -----------------------------------------
+// CHECK USER ROLE BEFORE TRUSTED DEVICE
+// -----------------------------------------
+
+const userProfile = await getDoc(
+  doc(db, "users", user.uid)
+);
+
+if (!userProfile.exists()) {
+
+  await signOut(auth);
+
+  alert("User profile not found.");
+
+  return;
+}
+
+const userData = userProfile.data();
+
+const role = userData.role;
+
+console.log("POD Login Role:", role);
+
+// CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
+if (role === "customer") {
+
+  await signOut(auth);
+
+  alert("Customer accounts cannot access the POD system.");
+
+  return;
+}
+
+// ONLY STAFF AND ADMIN CAN CONTINUE
+if (role !== "staff" && role !== "admin") {
+
+  await signOut(auth);
+
+  alert("You are not authorized to access the POD system.");
+
+  return;
+}
+    
     const deviceId = getDeviceId();
 
 const trustedQuery = query(
