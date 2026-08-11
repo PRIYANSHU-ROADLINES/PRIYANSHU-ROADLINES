@@ -12,153 +12,324 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+
 const firebaseConfig = {
+
     apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
-    authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
-    projectId: "priyanshu-roadlines-pod",
-    storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
-    messagingSenderId: "735411516260",
-    appId: "1:735411516260:web:397d6a80141f032c0a0071"
+
+    authDomain:
+        "priyanshu-roadlines-pod.firebaseapp.com",
+
+    projectId:
+        "priyanshu-roadlines-pod",
+
+    storageBucket:
+        "priyanshu-roadlines-pod.firebasestorage.app",
+
+    messagingSenderId:
+        "735411516260",
+
+    appId:
+        "1:735411516260:web:397d6a80141f032c0a0071"
 };
+
 
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
 
-// --------------------------------------------------
-// CURRENT WEBSITE ROLE
-// --------------------------------------------------
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const signinBtn =
+    document.getElementById("signinBtn");
+
+const profileContainer =
+    document.getElementById("profileContainer");
+
+const profileCircle =
+    document.getElementById("profileCircle");
+
+const profileDropdown =
+    document.getElementById("profileDropdown");
+
+const profileBigCircle =
+    document.getElementById("profileBigCircle");
+
+const profileName =
+    document.getElementById("profileName");
+
+const profileRole =
+    document.getElementById("profileRole");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+const headerUserName =
+    document.getElementById("headerUserName");
+
+const userNameBar =
+    document.getElementById("userNameBar");
+
+const podMenu =
+    document.getElementById("podMenu");
+
+const loader =
+    document.getElementById("loader");
+
 
 let currentRole = "guest";
 
 
-// --------------------------------------------------
-// BASIC UI ELEMENTS
-// --------------------------------------------------
+/* =========================================
+   LOADER
+========================================= */
 
-const signinBtn = document.getElementById("signinBtn");
-const userInfo = document.getElementById("userInfo");
-const welcomeUser = document.getElementById("welcomeUser");
-const logoutBtn = document.getElementById("logoutBtn");
-const podMenu = document.getElementById("podMenu");
-const loader = document.getElementById("loader");
-
-
-// --------------------------------------------------
-// LOADER
-// --------------------------------------------------
 const MIN_LOADER_TIME = 1500;
 
 const loaderStartTime = Date.now();
 
+
 function showLoader() {
 
     if (loader) {
+
         loader.style.display = "flex";
+
     }
 
 }
+
 
 function hideLoader() {
 
     if (!loader) return;
 
-    const elapsedTime = Date.now() - loaderStartTime;
+    const elapsed =
+        Date.now() - loaderStartTime;
 
-    const remainingTime =
-        Math.max(0, MIN_LOADER_TIME - elapsedTime);
+    const remaining =
+        Math.max(
+            0,
+            MIN_LOADER_TIME - elapsed
+        );
 
-    setTimeout(function () {
+    setTimeout(() => {
 
         loader.style.display = "none";
 
-    }, remainingTime);
+    }, remaining);
 
 }
 
 
-// IMPORTANT:
-// Keep loader visible while Firebase checks the login.
 showLoader();
 
 
-// --------------------------------------------------
-// GUEST UI
-// --------------------------------------------------
+/* =========================================
+   GET FIRST LETTER
+========================================= */
+
+function getInitial(name) {
+
+    if (!name) return "U";
+
+    return name
+        .trim()
+        .charAt(0)
+        .toUpperCase();
+
+}
+
+
+/* =========================================
+   GUEST
+========================================= */
 
 function showGuest() {
 
     currentRole = "guest";
 
+
     if (signinBtn) {
+
         signinBtn.style.display = "block";
+
     }
 
-    if (userInfo) {
-        userInfo.style.display = "none";
+
+    if (profileContainer) {
+
+        profileContainer.style.display = "none";
+
     }
+
+
+    if (profileDropdown) {
+
+        profileDropdown.style.display = "none";
+
+    }
+
+
+    if (userNameBar) {
+
+        userNameBar.style.display = "none";
+
+    }
+
 
     if (podMenu) {
+
         podMenu.style.display = "none";
+
     }
+
 
     console.log("Guest User");
 
 }
 
 
-// --------------------------------------------------
-// LOGGED-IN USER UI
-// --------------------------------------------------
+/* =========================================
+   LOGGED-IN USER
+========================================= */
 
 function showLoggedInUser(name, role) {
 
     currentRole = role;
 
+
+    const userName =
+        name || "User";
+
+
+    const initial =
+        getInitial(userName);
+
+
+    /* Hide Sign In */
+
     if (signinBtn) {
+
         signinBtn.style.display = "none";
-    }
 
-    if (userInfo) {
-        userInfo.style.display = "block";
-    }
-
-    if (welcomeUser) {
-        welcomeUser.innerHTML = "Hello, " + name;
     }
 
 
-    // POD is ONLY visible to Staff and Admin
+    /* Show Profile */
+
+    if (profileContainer) {
+
+        profileContainer.style.display = "block";
+
+    }
+
+
+    /* Circle Letter */
+
+    if (profileCircle) {
+
+        profileCircle.innerText =
+            initial;
+
+    }
+
+
+    if (profileBigCircle) {
+
+        profileBigCircle.innerText =
+            initial;
+
+    }
+
+
+    /* Profile Name */
+
+    if (profileName) {
+
+        profileName.innerText =
+            userName;
+
+    }
+
+
+    /* Profile Role */
+
+    if (profileRole) {
+
+        profileRole.innerText =
+            role === "admin"
+                ? "Administrator"
+                : role === "staff"
+                ? "Staff"
+                : "Customer";
+
+    }
+
+
+    /* Name below header */
+
+    if (headerUserName) {
+
+        headerUserName.innerText =
+            "Welcome, " + userName;
+
+    }
+
+
+    if (userNameBar) {
+
+        userNameBar.style.display =
+            "block";
+
+    }
+
+
+    /* POD */
 
     if (podMenu) {
 
-        if (role === "staff" || role === "admin") {
+        if (
+            role === "staff" ||
+            role === "admin"
+        ) {
 
-            podMenu.style.display = "block";
+            podMenu.style.display =
+                "block";
 
         } else {
 
-            podMenu.style.display = "none";
+            podMenu.style.display =
+                "none";
 
         }
 
     }
 
-    console.log("Logged in as:", role);
+
+    console.log(
+        "Logged in:",
+        userName,
+        role
+    );
 
 }
 
 
-// --------------------------------------------------
-// CHECK OPERATOR / STAFF LOGIN
-// --------------------------------------------------
+/* =========================================
+   STAFF / ADMIN LOCAL LOGIN
+========================================= */
 
 function checkOperatorLogin() {
 
     const loggedIn =
-        localStorage.getItem("loggedIn") === "true";
+        localStorage.getItem("loggedIn")
+        === "true";
 
     const role =
         localStorage.getItem("role");
@@ -169,254 +340,344 @@ function checkOperatorLogin() {
 
     if (
         loggedIn &&
-        (role === "staff" || role === "admin") &&
+        (role === "staff" ||
+         role === "admin") &&
         name
     ) {
 
         return {
+
             loggedIn: true,
+
             role: role,
+
             name: name
+
         };
 
     }
 
 
     return {
+
         loggedIn: false
+
     };
 
 }
 
 
-// --------------------------------------------------
-// FIREBASE AUTH STATE
-// --------------------------------------------------
+/* =========================================
+   FIREBASE AUTH
+========================================= */
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(
+    auth,
+    async (user) => {
 
-    // ----------------------------------------------
-    // CUSTOMER / FIREBASE USER
-    // ----------------------------------------------
+        /* -------------------------------
+           CUSTOMER
+        ------------------------------- */
 
-    if (user) {
+        if (user) {
 
-        try {
+            try {
 
-            const snap = await getDoc(
-                doc(db, "users", user.uid)
-            );
-
-
-            // ------------------------------------------
-            // PROFILE FOUND
-            // ------------------------------------------
-
-            if (snap.exists()) {
-
-                const data = snap.data();
-
-                showLoggedInUser(
-                    data.name,
-                    data.role || "customer"
-                );
+                const snap =
+                    await getDoc(
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        )
+                    );
 
 
-                // PROFILE IS FULLY LOADED
+                if (snap.exists()) {
+
+                    const data =
+                        snap.data();
+
+
+                    showLoggedInUser(
+
+                        data.name ||
+                        "User",
+
+                        data.role ||
+                        "customer"
+
+                    );
+
+
+                    hideLoader();
+
+                    return;
+
+                }
+
+
+                showGuest();
+
                 hideLoader();
 
                 return;
 
             }
 
+            catch (error) {
 
-            // ------------------------------------------
-            // FIREBASE USER BUT NO PROFILE
-            // ------------------------------------------
+                console.error(
+                    "Profile error:",
+                    error
+                );
 
-            console.log(
-                "Firebase user found but profile not found."
+                showGuest();
+
+                hideLoader();
+
+                return;
+
+            }
+
+        }
+
+
+        /* -------------------------------
+           STAFF / ADMIN
+        ------------------------------- */
+
+        const operator =
+            checkOperatorLogin();
+
+
+        if (operator.loggedIn) {
+
+            showLoggedInUser(
+
+                operator.name,
+
+                operator.role
+
             );
 
-            showGuest();
 
             hideLoader();
 
             return;
+
+        }
+
+
+        /* -------------------------------
+           GUEST
+        ------------------------------- */
+
+        showGuest();
+
+        hideLoader();
+
+    }
+);
+
+
+/* =========================================
+   PROFILE CLICK
+========================================= */
+
+profileCircle?.addEventListener(
+    "click",
+    function(event) {
+
+        event.stopPropagation();
+
+
+        if (
+            profileDropdown.style.display
+            === "block"
+        ) {
+
+            profileDropdown.style.display =
+                "none";
+
+        }
+
+        else {
+
+            profileDropdown.style.display =
+                "block";
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   CLOSE PROFILE WHEN CLICK OUTSIDE
+========================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            profileContainer &&
+            !profileContainer.contains(event.target)
+        ) {
+
+            profileDropdown.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+logoutBtn?.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            showLoader();
+
+
+            /* Firebase customer */
+
+            if (auth.currentUser) {
+
+                await signOut(auth);
+
+            }
+
+
+            /* Staff / Admin */
+
+            localStorage.removeItem(
+                "loggedIn"
+            );
+
+            localStorage.removeItem(
+                "role"
+            );
+
+            localStorage.removeItem(
+                "name"
+            );
+
+            localStorage.removeItem(
+                "designation"
+            );
+
+
+            currentRole = "guest";
+
+
+            alert(
+                "Logged Out Successfully"
+            );
+
+
+            window.location.href =
+                "index.html";
 
         }
 
         catch (error) {
 
             console.error(
-                "Error loading customer profile:",
+                "Logout Error:",
                 error
             );
 
-            showGuest();
+            alert(
+                "Logout failed."
+            );
 
             hideLoader();
 
-            return;
-
         }
 
     }
+);
 
 
-    // ----------------------------------------------
-    // NO FIREBASE USER
-    // CHECK STAFF / ADMIN LOGIN
-    // ----------------------------------------------
+/* =========================================
+   TRACK LR
+========================================= */
 
-    const operator = checkOperatorLogin();
+document
+    .getElementById("trackBtn")
+    ?.addEventListener(
+        "click",
+        function(e) {
 
+            if (
+                currentRole === "guest"
+            ) {
 
-    if (operator.loggedIn) {
+                e.preventDefault();
 
-        showLoggedInUser(
-            operator.name,
-            operator.role
-        );
+                window.location.href =
+                    "signin.html";
 
-
-        // STAFF / ADMIN PROFILE IS READY
-        hideLoader();
-
-        return;
-
-    }
-
-
-    // ----------------------------------------------
-    // NO CUSTOMER + NO STAFF + NO ADMIN
-    // ----------------------------------------------
-
-    showGuest();
-
-    hideLoader();
-
-});
-
-
-// --------------------------------------------------
-// LOGOUT
-// --------------------------------------------------
-
-logoutBtn?.addEventListener("click", async () => {
-
-    try {
-
-        // Show loader during logout
-        showLoader();
-
-
-        if (userInfo) {
-            userInfo.style.display = "none";
-        }
-
-        if (signinBtn) {
-            signinBtn.style.display = "none";
-        }
-
-
-        // ------------------------------------------
-        // CUSTOMER LOGOUT
-        // ------------------------------------------
-
-        if (auth.currentUser) {
-
-            await signOut(auth);
+            }
 
         }
+    );
 
 
-        // ------------------------------------------
-        // STAFF / ADMIN LOGOUT
-        // ------------------------------------------
+/* =========================================
+   GET QUOTE
+========================================= */
 
-        localStorage.removeItem("loggedIn");
-        localStorage.removeItem("role");
-        localStorage.removeItem("name");
-        localStorage.removeItem("designation");
+document
+    .getElementById("quoteBtn")
+    ?.addEventListener(
+        "click",
+        function(e) {
 
+            if (
+                currentRole === "guest"
+            ) {
 
-        currentRole = "guest";
+                e.preventDefault();
 
+                window.location.href =
+                    "signin.html";
 
-        alert("Logged Out Successfully");
+            }
 
-        window.location.href = "index.html";
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Logout Error:",
-            error
-        );
-
-        alert(
-            "Logout failed. Please try again."
-        );
-
-        hideLoader();
-
-    }
-
-});
+        }
+    );
 
 
-// --------------------------------------------------
-// PROTECTED TRACK BUTTON
-// --------------------------------------------------
+/* =========================================
+   ENQUIRY
+========================================= */
 
-document.getElementById("trackBtn")
-?.addEventListener("click", function(e) {
+document
+    .getElementById("enquiryBtn")
+    ?.addEventListener(
+        "click",
+        function(e) {
 
-    if (currentRole === "guest") {
+            if (
+                currentRole === "guest"
+            ) {
 
-        e.preventDefault();
+                e.preventDefault();
 
-        window.location.href = "signin.html";
+                window.location.href =
+                    "signin.html";
 
-    }
+            }
 
-});
-
-
-// --------------------------------------------------
-// PROTECTED QUOTE BUTTON
-// --------------------------------------------------
-
-document.getElementById("quoteBtn")
-?.addEventListener("click", function(e) {
-
-    if (currentRole === "guest") {
-
-        e.preventDefault();
-
-        window.location.href = "signin.html";
-
-    }
-
-});
-
-
-// --------------------------------------------------
-// PROTECTED ENQUIRY BUTTON
-// --------------------------------------------------
-
-document.getElementById("enquiryBtn")
-?.addEventListener("click", function(e) {
-
-    if (currentRole === "guest") {
-
-        e.preventDefault();
-
-        window.location.href = "signin.html";
-
-    }
-
-});
+        }
+    );
