@@ -45,7 +45,7 @@ signOut(auth);
 const podAuthApp = initializeApp(firebaseConfig, "POD_AUTH_APP");
 const podAuth = getAuth(podAuthApp);
 
-const db = getFirestore(app);
+const db = getFirestore(podAuthApp);
 
 let isAdminLoggedIn = false;
 window.getDeviceId = function() {
@@ -105,7 +105,7 @@ const userProfile = await getDoc(
 
 if (!userProfile.exists()) {
 
-  await signOut(auth);
+  await signOut(podAuth);
 
   alert("User profile not found.");
 
@@ -122,7 +122,7 @@ console.log("POD Login Role:", role);
 // CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
 if (role === "customer") {
 
-    await signOut(podauth);
+    await signOut(podAuth);
 
     alert("Customer accounts cannot access the POD system.");
 
@@ -132,7 +132,7 @@ if (role === "customer") {
 // ONLY EMPLOYEE AND OWNER CAN CONTINUE
 if (role !== "employee" && role !== "owner") {
 
-    await signOut(podauth);
+    await signOut(podAuth);
 
     alert("You are not authorized to access the POD system.");
 
@@ -162,7 +162,7 @@ if (trustedSnapshot.empty) {
     }
   );
 
-  await signOut(auth);
+  await signOut(podAuth);
 
   alert(
     "Device Approval Required. Contact Administrator."
@@ -178,7 +178,7 @@ trustedDoc.data();
 
 if(trustedData.status === "Blocked"){
 
-  await signOut(auth);
+  await signOut(podAuth);
 
   alert(
     "This device has been blocked by Admin."
@@ -230,7 +230,7 @@ window.logout = async function () {
     window.location.href = "index.html";
 };
 // Auth State
-onAuthStateChanged(podauth, (user) => {
+onAuthStateChanged(podAuth, (user) => {
   
   const adminPanel = document.getElementById("adminPanel");
   const loginBox = document.getElementById("loginBox");
@@ -772,7 +772,7 @@ function resetLogoutTimer() {
 
         alert("Session expired. Please login again.");
 
-        await signOut(auth);
+        await signOut(podAuth);
 
         window.location.href = "index.html";
 
