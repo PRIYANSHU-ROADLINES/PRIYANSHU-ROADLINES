@@ -41,6 +41,10 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 signOut(auth);
+
+const podAuthApp = initializeApp(firebaseConfig, "POD_AUTH_APP");
+const podAuth = getAuth(podAuthApp);
+
 const db = getFirestore(app);
 
 let isAdminLoggedIn = false;
