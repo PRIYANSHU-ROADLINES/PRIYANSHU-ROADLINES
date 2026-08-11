@@ -115,23 +115,24 @@ const role = userData.role;
 console.log("POD Login Role:", role);
 
 // CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
+// CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
 if (role === "customer") {
 
-  await signOut(auth);
+    await signOut(auth);
 
-  alert("Customer accounts cannot access the POD system.");
+    alert("Customer accounts cannot access the POD system.");
 
-  return;
+    return;
 }
 
-// ONLY STAFF AND ADMIN CAN CONTINUE
-if (role !== "staff" && role !== "admin") {
+// ONLY EMPLOYEE AND OWNER CAN CONTINUE
+if (role !== "employee" && role !== "owner") {
 
-  await signOut(auth);
+    await signOut(auth);
 
-  alert("You are not authorized to access the POD system.");
+    alert("You are not authorized to access the POD system.");
 
-  return;
+    return;
 }
     
     const deviceId = getDeviceId();
