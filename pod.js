@@ -222,10 +222,13 @@ addDoc(
 };
 // Logout
 window.logout = async function () {
-  await signOut(auth);
-  alert("Logged Out");
-};
 
+    await signOut(podAuth);
+
+    alert("Logged Out");
+
+    window.location.href = "index.html";
+};
 // Auth State
 onAuthStateChanged(podauth, (user) => {
   
