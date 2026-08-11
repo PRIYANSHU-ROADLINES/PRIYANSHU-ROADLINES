@@ -12,7 +12,6 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
     authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
@@ -22,15 +21,16 @@ const firebaseConfig = {
     appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
-
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 
-// Current website role
+// --------------------------------------------------
+// CURRENT WEBSITE ROLE
+// --------------------------------------------------
+
 let currentRole = "guest";
 
 
@@ -43,10 +43,37 @@ const userInfo = document.getElementById("userInfo");
 const welcomeUser = document.getElementById("welcomeUser");
 const logoutBtn = document.getElementById("logoutBtn");
 const podMenu = document.getElementById("podMenu");
+const loader = document.getElementById("loader");
 
 
 // --------------------------------------------------
-// INITIAL UI
+// LOADER
+// --------------------------------------------------
+
+function showLoader() {
+
+    if (loader) {
+        loader.style.display = "flex";
+    }
+
+}
+
+function hideLoader() {
+
+    if (loader) {
+        loader.style.display = "none";
+    }
+
+}
+
+
+// IMPORTANT:
+// Keep loader visible while Firebase checks the login.
+showLoader();
+
+
+// --------------------------------------------------
+// GUEST UI
 // --------------------------------------------------
 
 function showGuest() {
@@ -66,8 +93,13 @@ function showGuest() {
     }
 
     console.log("Guest User");
+
 }
 
+
+// --------------------------------------------------
+// LOGGED-IN USER UI
+// --------------------------------------------------
 
 function showLoggedInUser(name, role) {
 
@@ -85,7 +117,9 @@ function showLoggedInUser(name, role) {
         welcomeUser.innerHTML = "Hello, " + name;
     }
 
+
     // POD is ONLY visible to Staff and Admin
+
     if (podMenu) {
 
         if (role === "staff" || role === "admin") {
@@ -97,14 +131,16 @@ function showLoggedInUser(name, role) {
             podMenu.style.display = "none";
 
         }
+
     }
 
     console.log("Logged in as:", role);
+
 }
 
 
 // --------------------------------------------------
-// CHECK OPERATOR
+// CHECK OPERATOR / STAFF LOGIN
 // --------------------------------------------------
 
 function checkOperatorLogin() {
@@ -117,6 +153,7 @@ function checkOperatorLogin() {
 
     const name =
         localStorage.getItem("name");
+
 
     if (
         loggedIn &&
@@ -132,37 +169,36 @@ function checkOperatorLogin() {
 
     }
 
+
     return {
         loggedIn: false
     };
+
 }
 
 
 // --------------------------------------------------
-// CUSTOMER / OPERATOR INITIALIZATION
+// FIREBASE AUTH STATE
 // --------------------------------------------------
-
-let firebaseCheckFinished = false;
-
 
 onAuthStateChanged(auth, async (user) => {
 
-    firebaseCheckFinished = true;
-
-
     // ----------------------------------------------
-    // CUSTOMER LOGGED IN
+    // CUSTOMER / FIREBASE USER
     // ----------------------------------------------
 
     if (user) {
 
         try {
 
-            const snap =
-                await getDoc(
-                    doc(db, "users", user.uid)
-                );
+            const snap = await getDoc(
+                doc(db, "users", user.uid)
+            );
 
+
+            // ------------------------------------------
+            // PROFILE FOUND
+            // ------------------------------------------
 
             if (snap.exists()) {
 
@@ -173,19 +209,26 @@ onAuthStateChanged(auth, async (user) => {
                     data.role || "customer"
                 );
 
+
+                // PROFILE IS FULLY LOADED
+                hideLoader();
+
                 return;
 
             }
 
 
-            // Firebase user exists but profile
-            // doesn't exist
+            // ------------------------------------------
+            // FIREBASE USER BUT NO PROFILE
+            // ------------------------------------------
 
             console.log(
-                "Firebase user found but customer profile not found."
+                "Firebase user found but profile not found."
             );
 
             showGuest();
+
+            hideLoader();
 
             return;
 
@@ -200,14 +243,18 @@ onAuthStateChanged(auth, async (user) => {
 
             showGuest();
 
+            hideLoader();
+
             return;
+
         }
+
     }
 
 
     // ----------------------------------------------
-    // NO FIREBASE CUSTOMER
-    // CHECK OPERATOR
+    // NO FIREBASE USER
+    // CHECK STAFF / ADMIN LOGIN
     // ----------------------------------------------
 
     const operator = checkOperatorLogin();
@@ -220,16 +267,22 @@ onAuthStateChanged(auth, async (user) => {
             operator.role
         );
 
+
+        // STAFF / ADMIN PROFILE IS READY
+        hideLoader();
+
         return;
 
     }
 
 
     // ----------------------------------------------
-    // NO CUSTOMER + NO OPERATOR
+    // NO CUSTOMER + NO STAFF + NO ADMIN
     // ----------------------------------------------
 
     showGuest();
+
+    hideLoader();
 
 });
 
@@ -242,7 +295,23 @@ logoutBtn?.addEventListener("click", async () => {
 
     try {
 
-        // Customer logout
+        // Show loader during logout
+        showLoader();
+
+
+        if (userInfo) {
+            userInfo.style.display = "none";
+        }
+
+        if (signinBtn) {
+            signinBtn.style.display = "none";
+        }
+
+
+        // ------------------------------------------
+        // CUSTOMER LOGOUT
+        // ------------------------------------------
+
         if (auth.currentUser) {
 
             await signOut(auth);
@@ -250,11 +319,17 @@ logoutBtn?.addEventListener("click", async () => {
         }
 
 
-        // Operator logout
+        // ------------------------------------------
+        // STAFF / ADMIN LOGOUT
+        // ------------------------------------------
+
         localStorage.removeItem("loggedIn");
         localStorage.removeItem("role");
         localStorage.removeItem("name");
         localStorage.removeItem("designation");
+
+
+        currentRole = "guest";
 
 
         alert("Logged Out Successfully");
@@ -274,13 +349,15 @@ logoutBtn?.addEventListener("click", async () => {
             "Logout failed. Please try again."
         );
 
+        hideLoader();
+
     }
 
 });
 
 
 // --------------------------------------------------
-// PROTECTED BUTTONS
+// PROTECTED TRACK BUTTON
 // --------------------------------------------------
 
 document.getElementById("trackBtn")
@@ -297,6 +374,10 @@ document.getElementById("trackBtn")
 });
 
 
+// --------------------------------------------------
+// PROTECTED QUOTE BUTTON
+// --------------------------------------------------
+
 document.getElementById("quoteBtn")
 ?.addEventListener("click", function(e) {
 
@@ -310,6 +391,10 @@ document.getElementById("quoteBtn")
 
 });
 
+
+// --------------------------------------------------
+// PROTECTED ENQUIRY BUTTON
+// --------------------------------------------------
 
 document.getElementById("enquiryBtn")
 ?.addEventListener("click", function(e) {
