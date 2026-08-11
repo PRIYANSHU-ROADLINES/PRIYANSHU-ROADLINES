@@ -227,7 +227,7 @@ window.logout = async function () {
 };
 
 // Auth State
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(podauth, (user) => {
   
   const adminPanel = document.getElementById("adminPanel");
   const loginBox = document.getElementById("loginBox");
