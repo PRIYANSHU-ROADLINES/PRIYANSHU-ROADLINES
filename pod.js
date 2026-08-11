@@ -87,12 +87,12 @@ window.login = async function () {
 
   try {
 
-   const userCredential =
-  await signInWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
+  const userCredential =
+await signInWithEmailAndPassword(
+  podAuth,
+  email,
+  password
+);
 
 const user = userCredential.user;
     // -----------------------------------------
@@ -122,7 +122,7 @@ console.log("POD Login Role:", role);
 // CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
 if (role === "customer") {
 
-    await signOut(auth);
+    await signOut(podauth);
 
     alert("Customer accounts cannot access the POD system.");
 
@@ -132,7 +132,7 @@ if (role === "customer") {
 // ONLY EMPLOYEE AND OWNER CAN CONTINUE
 if (role !== "employee" && role !== "owner") {
 
-    await signOut(auth);
+    await signOut(podauth);
 
     alert("You are not authorized to access the POD system.");
 
