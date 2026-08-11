@@ -42,10 +42,20 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 
-
-
 const podAuthApp = initializeApp(firebaseConfig, "POD_AUTH_APP");
 const podAuth = getAuth(podAuthApp);
+// ============================================
+// END POD LOGIN WHEN LEAVING POD PAGE
+// ============================================
+
+window.addEventListener("pagehide", () => {
+
+    // End ONLY the POD login session
+    signOut(podAuth).catch((error) => {
+        console.error("POD logout error:", error);
+    });
+
+});
 
 const db = getFirestore(podAuthApp);
 
