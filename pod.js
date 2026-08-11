@@ -4,10 +4,10 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  setPersistence,
+  browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-
-
 import {
   getFirestore,
   doc,
@@ -44,18 +44,13 @@ const auth = getAuth(app);
 
 const podAuthApp = initializeApp(firebaseConfig, "POD_AUTH_APP");
 const podAuth = getAuth(podAuthApp);
+
+await setPersistence(podAuth, browserSessionPersistence);
+
 // ============================================
 // END POD LOGIN WHEN LEAVING POD PAGE
 // ============================================
 
-window.addEventListener("pagehide", () => {
-
-    // End ONLY the POD login session
-    signOut(podAuth).catch((error) => {
-        console.error("POD logout error:", error);
-    });
-
-});
 
 const db = getFirestore(podAuthApp);
 
