@@ -49,6 +49,9 @@ const loader = document.getElementById("loader");
 // --------------------------------------------------
 // LOADER
 // --------------------------------------------------
+const MIN_LOADER_TIME = 1500;
+
+const loaderStartTime = Date.now();
 
 function showLoader() {
 
@@ -60,9 +63,18 @@ function showLoader() {
 
 function hideLoader() {
 
-    if (loader) {
+    if (!loader) return;
+
+    const elapsedTime = Date.now() - loaderStartTime;
+
+    const remainingTime =
+        Math.max(0, MIN_LOADER_TIME - elapsedTime);
+
+    setTimeout(function () {
+
         loader.style.display = "none";
-    }
+
+    }, remainingTime);
 
 }
 
