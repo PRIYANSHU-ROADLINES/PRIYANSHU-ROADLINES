@@ -478,7 +478,7 @@ await setDoc(doc(db, "pods", grNo), {
 
     uploadTime: uploadTime,
 
-    uploadedBy: auth.currentUser.email
+    uploadedBy: podAuth.currentUser.email
 
 });
     saveButton.disabled = false;
