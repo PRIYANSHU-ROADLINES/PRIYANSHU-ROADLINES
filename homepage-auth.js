@@ -90,6 +90,37 @@ const podMenu =
 
 const loader =
     document.getElementById("loader");
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const menuDropdown =
+    document.getElementById("menuDropdown");
+const welcomeSection =
+    document.getElementById("welcomeSection");
+
+const welcomeTitle =
+    document.getElementById("welcomeTitle");
+
+const welcomeDesignation =
+    document.getElementById("welcomeDesignation");
+
+const welcomeMessage =
+    document.getElementById("welcomeMessage");
+
+const customerMenuItems =
+    document.querySelectorAll(".customer-menu");
+
+const staffMenuItems =
+    document.querySelectorAll(".staff-menu");
+
+const adminMenuItems =
+    document.querySelectorAll(".admin-menu");
+
+const staffDashboardMenu =
+    document.getElementById("staffDashboardMenu");
+
+const adminDashboardMenu =
+    document.getElementById("adminDashboardMenu");
 
 
 let currentRole = "guest";
@@ -199,7 +230,11 @@ function showGuest() {
     console.log("Guest User");
 
 }
+if (welcomeSection) {
+    welcomeSection.style.display = "none";
+}
 
+hideAllRoleMenus();
 
 /* =========================================
    LOGGED-IN USER
@@ -320,13 +355,30 @@ function showLoggedInUser(name, role, email, photoURL) {
         }
 
     }
+if (role === "admin") {
 
+    showAdminInterface(userName);
+
+}
+
+else if (role === "staff") {
+
+    showStaffInterface(userName);
+
+}
+
+else {
+
+    showCustomerInterface(userName);
+
+}
     console.log(
         "Logged in:",
         userName,
         role,
         userEmail
     );
+    
 }
 
 /* =========================================
@@ -702,3 +754,138 @@ document
 
         }
     );
+
+/* =========================================
+   MENU
+========================================= */
+
+menuBtn?.addEventListener(
+    "click",
+    function(event) {
+
+        event.stopPropagation();
+
+        menuDropdown?.classList.toggle("show");
+
+    }
+);
+
+
+/* CLOSE MENU WHEN CLICKING OUTSIDE */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            menuDropdown &&
+            menuBtn &&
+            !menuDropdown.contains(event.target) &&
+            !menuBtn.contains(event.target)
+        ) {
+
+            menuDropdown.classList.remove("show");
+
+        }
+
+    }
+);
+function hideAllRoleMenus() {
+
+    customerMenuItems.forEach(item => {
+        item.style.display = "none";
+    });
+
+    staffMenuItems.forEach(item => {
+        item.style.display = "none";
+    });
+
+    adminMenuItems.forEach(item => {
+        item.style.display = "none";
+    });
+
+}
+function showCustomerInterface(name) {
+
+    hideAllRoleMenus();
+
+    if (welcomeSection) {
+        welcomeSection.style.display = "block";
+    }
+
+    if (welcomeTitle) {
+        welcomeTitle.innerText =
+            "Welcome, " + name + " 👋";
+    }
+
+    if (welcomeDesignation) {
+        welcomeDesignation.innerText =
+            "Customer";
+    }
+
+    if (welcomeMessage) {
+        welcomeMessage.innerText =
+            "We're glad to have you with PRIYANSHU ROADLINES.";
+    }
+
+    customerMenuItems.forEach(item => {
+        item.style.display = "block";
+    });
+
+}
+function showStaffInterface(name) {
+
+    hideAllRoleMenus();
+
+    if (welcomeSection) {
+        welcomeSection.style.display = "block";
+    }
+
+    if (welcomeTitle) {
+        welcomeTitle.innerText =
+            "Welcome, " + name + " 👋";
+    }
+
+    if (welcomeDesignation) {
+        welcomeDesignation.innerText =
+            "Staff Member";
+    }
+
+    if (welcomeMessage) {
+        welcomeMessage.innerText =
+            "Your staff services and POD tools are available from the Menu.";
+    }
+
+    staffMenuItems.forEach(item => {
+        item.style.display = "block";
+    });
+
+}
+function showAdminInterface(name) {
+
+    hideAllRoleMenus();
+
+    if (welcomeSection) {
+        welcomeSection.style.display = "block";
+    }
+
+    if (welcomeTitle) {
+        welcomeTitle.innerText =
+            "Welcome, " + name + " 👋";
+    }
+
+    if (welcomeDesignation) {
+        welcomeDesignation.innerText =
+            "Administrator";
+    }
+
+    if (welcomeMessage) {
+        welcomeMessage.innerText =
+            "Administrator controls and management tools are available from the Menu.";
+    }
+
+    adminMenuItems.forEach(item => {
+        item.style.display = "block";
+    });
+
+}
