@@ -58,7 +58,22 @@ const profileDropdown =
     document.getElementById("profileDropdown");
 
 const profileBigCircle =
-    document.getElementById("profileBigCircle");
+    document.querySelector(".profile-big-circle");
+
+const profileImage =
+    document.getElementById("profileImage");
+
+const profileBigImage =
+    document.getElementById("profileBigImage");
+
+const profileInitial =
+    document.getElementById("profileInitial");
+
+const profileBigInitial =
+    document.getElementById("profileBigInitial");
+
+const profileEmail =
+    document.getElementById("profileEmail");
 
 const profileName =
     document.getElementById("profileName");
@@ -69,11 +84,6 @@ const profileRole =
 const logoutBtn =
     document.getElementById("logoutBtn");
 
-const headerUserName =
-    document.getElementById("headerUserName");
-
-const userNameBar =
-    document.getElementById("userNameBar");
 
 const podMenu =
     document.getElementById("podMenu");
@@ -176,11 +186,7 @@ function showGuest() {
     }
 
 
-    if (userNameBar) {
-
-        userNameBar.style.display = "none";
-
-    }
+    
 
 
     if (podMenu) {
@@ -199,64 +205,89 @@ function showGuest() {
    LOGGED-IN USER
 ========================================= */
 
-function showLoggedInUser(name, role) {
+function showLoggedInUser(name, role, email, photoURL) {
 
     currentRole = role;
 
-
-    const userName =
-        name || "User";
-
-
-    const initial =
-        getInitial(userName);
-
+    const userName = name || "User";
+    const userEmail = email || "";
+    const initial = getInitial(userName);
 
     /* Hide Sign In */
 
     if (signinBtn) {
-
         signinBtn.style.display = "none";
-
     }
-
 
     /* Show Profile */
 
     if (profileContainer) {
-
         profileContainer.style.display = "block";
-
     }
 
+    /* Profile Initial */
 
-    /* Circle Letter */
-
-    if (profileCircle) {
-
-        profileCircle.innerText =
-            initial;
-
+    if (profileInitial) {
+        profileInitial.innerText = initial;
     }
 
-
-    if (profileBigCircle) {
-
-        profileBigCircle.innerText =
-            initial;
-
+    if (profileBigInitial) {
+        profileBigInitial.innerText = initial;
     }
 
+    /* Profile Image */
+
+    if (photoURL) {
+
+        if (profileImage) {
+            profileImage.src = photoURL;
+            profileImage.style.display = "block";
+        }
+
+        if (profileBigImage) {
+            profileBigImage.src = photoURL;
+            profileBigImage.style.display = "block";
+        }
+
+        if (profileInitial) {
+            profileInitial.style.display = "none";
+        }
+
+        if (profileBigInitial) {
+            profileBigInitial.style.display = "none";
+        }
+
+    } else {
+
+        if (profileImage) {
+            profileImage.style.display = "none";
+        }
+
+        if (profileBigImage) {
+            profileBigImage.style.display = "none";
+        }
+
+        if (profileInitial) {
+            profileInitial.style.display = "block";
+        }
+
+        if (profileBigInitial) {
+            profileBigInitial.style.display = "block";
+        }
+
+    }
 
     /* Profile Name */
 
     if (profileName) {
-
-        profileName.innerText =
-            userName;
-
+        profileName.innerText = userName;
     }
 
+    /* Profile Email */
+
+    if (profileEmail) {
+        profileEmail.innerText = userEmail;
+    }
 
     /* Profile Role */
 
@@ -271,25 +302,6 @@ function showLoggedInUser(name, role) {
 
     }
 
-
-    /* Name below header */
-
-    if (headerUserName) {
-
-        headerUserName.innerText =
-            "Welcome, " + userName;
-
-    }
-
-
-    if (userNameBar) {
-
-        userNameBar.style.display =
-            "block";
-
-    }
-
-
     /* POD */
 
     if (podMenu) {
@@ -299,27 +311,23 @@ function showLoggedInUser(name, role) {
             role === "admin"
         ) {
 
-            podMenu.style.display =
-                "block";
+            podMenu.style.display = "block";
 
         } else {
 
-            podMenu.style.display =
-                "none";
+            podMenu.style.display = "none";
 
         }
 
     }
 
-
     console.log(
         "Logged in:",
         userName,
-        role
+        role,
+        userEmail
     );
-
 }
-
 
 /* =========================================
    STAFF / ADMIN LOCAL LOGIN
@@ -401,13 +409,22 @@ onAuthStateChanged(
 
                     showLoggedInUser(
 
-                        data.name ||
-                        "User",
+    data.name ||
+    user.displayName ||
+    "User",
 
-                        data.role ||
-                        "customer"
+    data.role ||
+    "customer",
 
-                    );
+    data.email ||
+    user.email ||
+    "",
+
+    data.photoURL ||
+    user.photoURL ||
+    ""
+
+);
 
 
                     hideLoader();
@@ -453,13 +470,17 @@ onAuthStateChanged(
 
         if (operator.loggedIn) {
 
-            showLoggedInUser(
+           showLoggedInUser(
 
-                operator.name,
+    operator.name,
 
-                operator.role
+    operator.role,
 
-            );
+    operator.email || "",
+
+    operator.photoURL || ""
+
+);
 
 
             hideLoader();
