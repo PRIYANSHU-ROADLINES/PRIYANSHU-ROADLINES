@@ -185,6 +185,18 @@ function getInitial(name) {
         .toUpperCase();
 
 }
+function getDefaultDesignation(role) {
+
+    if (role === "admin") {
+        return "Administrator";
+    }
+
+    if (role === "staff") {
+        return "Staff Member";
+    }
+
+    return "Customer";
+}
 
 
 /* =========================================
@@ -240,14 +252,22 @@ hideAllRoleMenus();
    LOGGED-IN USER
 ========================================= */
 
-function showLoggedInUser(name, role, email, photoURL) {
+function showLoggedInUser(
+    name,
+    role,
+    email,
+    photoURL,
+    designation
+) {
 
     currentRole = role;
 
     const userName = name || "User";
     const userEmail = email || "";
-    const initial = getInitial(userName);
+    const userDesignation =
+        designation || getDefaultDesignation(role);
 
+    const initial = getInitial(userName);
     /* Hide Sign In */
 
     if (signinBtn) {
@@ -326,16 +346,12 @@ function showLoggedInUser(name, role, email, photoURL) {
 
     /* Profile Role */
 
-    if (profileRole) {
+   if (profileRole) {
 
-        profileRole.innerText =
-            role === "admin"
-                ? "Administrator"
-                : role === "staff"
-                ? "Staff"
-                : "Customer";
+    profileRole.innerText =
+        userDesignation;
 
-    }
+}
 
     /* POD */
 
@@ -357,19 +373,28 @@ function showLoggedInUser(name, role, email, photoURL) {
     }
 if (role === "admin") {
 
-    showAdminInterface(userName);
+    showAdminInterface(
+        userName,
+        userDesignation
+    );
 
 }
 
 else if (role === "staff") {
 
-    showStaffInterface(userName);
+    showStaffInterface(
+        userName,
+        userDesignation
+    );
 
 }
 
 else {
 
-    showCustomerInterface(userName);
+    showCustomerInterface(
+        userName,
+        userDesignation
+    );
 
 }
     console.log(
@@ -388,14 +413,22 @@ else {
 function checkOperatorLogin() {
 
     const loggedIn =
-        localStorage.getItem("loggedIn")
-        === "true";
+        localStorage.getItem("loggedIn") === "true";
 
     const role =
         localStorage.getItem("role");
 
     const name =
         localStorage.getItem("name");
+
+    const email =
+        localStorage.getItem("email");
+
+    const designation =
+        localStorage.getItem("designation");
+
+    const photoURL =
+        localStorage.getItem("photoURL");
 
 
     if (
@@ -411,7 +444,16 @@ function checkOperatorLogin() {
 
             role: role,
 
-            name: name
+            name: name,
+
+            email: email || "",
+
+            designation:
+                designation ||
+                getDefaultDesignation(role),
+
+            photoURL:
+                photoURL || ""
 
         };
 
@@ -425,7 +467,6 @@ function checkOperatorLogin() {
     };
 
 }
-
 
 /* =========================================
    FIREBASE AUTH
@@ -474,7 +515,10 @@ onAuthStateChanged(
 
     data.photoURL ||
     user.photoURL ||
-    ""
+    "",
+
+    data.designation ||
+    getDefaultDesignation(data.role || "customer")
 
 );
 
@@ -530,10 +574,12 @@ onAuthStateChanged(
 
     operator.email || "",
 
-    operator.photoURL || ""
+    operator.photoURL || "",
+
+    operator.designation ||
+    getDefaultDesignation(operator.role)
 
 );
-
 
             hideLoader();
 
@@ -805,87 +851,17 @@ function hideAllRoleMenus() {
     });
 
 }
-function showCustomerInterface(name) {
+showLoggedInUser(
 
-    hideAllRoleMenus();
+    operator.name,
 
-    if (welcomeSection) {
-        welcomeSection.style.display = "block";
-    }
+    operator.role,
 
-    if (welcomeTitle) {
-        welcomeTitle.innerText =
-            "Welcome, " + name + " 👋";
-    }
+    operator.email || "",
 
-    if (welcomeDesignation) {
-        welcomeDesignation.innerText =
-            "Customer";
-    }
+    operator.photoURL || "",
 
-    if (welcomeMessage) {
-        welcomeMessage.innerText =
-            "We're glad to have you with PRIYANSHU ROADLINES.";
-    }
+    operator.designation ||
+    getDefaultDesignation(operator.role)
 
-    customerMenuItems.forEach(item => {
-        item.style.display = "block";
-    });
-
-}
-function showStaffInterface(name) {
-
-    hideAllRoleMenus();
-
-    if (welcomeSection) {
-        welcomeSection.style.display = "block";
-    }
-
-    if (welcomeTitle) {
-        welcomeTitle.innerText =
-            "Welcome, " + name + " 👋";
-    }
-
-    if (welcomeDesignation) {
-        welcomeDesignation.innerText =
-            "Staff Member";
-    }
-
-    if (welcomeMessage) {
-        welcomeMessage.innerText =
-            "Your staff services and POD tools are available from the Menu.";
-    }
-
-    staffMenuItems.forEach(item => {
-        item.style.display = "block";
-    });
-
-}
-function showAdminInterface(name) {
-
-    hideAllRoleMenus();
-
-    if (welcomeSection) {
-        welcomeSection.style.display = "block";
-    }
-
-    if (welcomeTitle) {
-        welcomeTitle.innerText =
-            "Welcome, " + name + " 👋";
-    }
-
-    if (welcomeDesignation) {
-        welcomeDesignation.innerText =
-            "Administrator";
-    }
-
-    if (welcomeMessage) {
-        welcomeMessage.innerText =
-            "Administrator controls and management tools are available from the Menu.";
-    }
-
-    adminMenuItems.forEach(item => {
-        item.style.display = "block";
-    });
-
-}
+);
