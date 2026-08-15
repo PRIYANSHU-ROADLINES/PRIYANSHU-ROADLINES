@@ -375,44 +375,40 @@ STAFF / ADMIN LOCAL LOGIN
 
 function checkOperatorLogin() {
 
-const loggedIn =
-    localStorage.getItem("loggedIn")
-    === "true";
+    const loggedIn =
+        localStorage.getItem("loggedIn") === "true";
 
-const role =
-    localStorage.getItem("role");
+    const role =
+        localStorage.getItem("role");
 
-const name =
-    localStorage.getItem("name");
+    const name =
+        localStorage.getItem("name");
 
+    const email =
+        localStorage.getItem("email") || "";
 
-if (
-    loggedIn &&
-    (role === "staff" ||
-     role === "admin") &&
-    name
-) {
+    const photoURL =
+        localStorage.getItem("photoURL") || "";
+
+    if (
+        loggedIn &&
+        (role === "staff" || role === "admin") &&
+        name
+    ) {
+
+        return {
+            loggedIn: true,
+            role: role,
+            name: name,
+            email: email,
+            photoURL: photoURL
+        };
+
+    }
 
     return {
-
-        loggedIn: true,
-
-        role: role,
-
-        name: name
-
+        loggedIn: false
     };
-
-}
-
-
-return {
-
-    loggedIn: false
-
-};
-
-
 }
 
 /* =========================================
