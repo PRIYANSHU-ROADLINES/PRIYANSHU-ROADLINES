@@ -605,102 +605,162 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
 PROFESSIONAL WELCOME SECTION
 ========================================= *
 
+/* =========================================
+   PROFESSIONAL COMPACT WELCOME SECTION
+========================================= */
+
 .welcome-section {
-background: linear-gradient(
-135deg,
-#111,
-#1c1c1c,
-#000
-);
+    background: linear-gradient(
+        135deg,
+        #111,
+        #1b1b1b,
+        #080808
+    );
 
-color: white;
-padding: 45px 20px;
-text-align: center;
-overflow: hidden;
+    color: white;
+    padding: 24px 20px;
 
-border-bottom: 1px solid rgba(255,45,45,.3);
+    text-align: center;
 
+    border-bottom: 1px solid rgba(255,45,45,.35);
 
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.25);
+
+    overflow: hidden;
 }
 
 .welcome-content {
-max-width: 900px;
-margin: auto;
+    max-width: 1100px;
+    margin: auto;
 
-animation: welcomeEnter 1s ease forwards;
-
-
+    animation: welcomeEnter .7s ease forwards;
 }
+
+/* ONLINE BADGE */
 
 .welcome-badge {
-display: inline-block;
+    display: inline-block;
 
-color: #25D366;
-border: 1px solid #25D366;
+    color: #25D366;
+    border: 1px solid #25D366;
 
-padding: 5px 14px;
-border-radius: 30px;
+    padding: 4px 12px;
 
-font-size: 12px;
-font-weight: bold;
+    border-radius: 20px;
 
-margin-bottom: 15px;
+    font-size: 11px;
+    font-weight: bold;
 
-animation: onlinePulse 2s infinite;
+    margin-bottom: 8px;
 
+    letter-spacing: .5px;
 
+    animation: onlinePulse 2s infinite;
 }
+
+/* WELCOME TITLE */
 
 #welcomeTitle {
-font-size: 42px;
-margin-bottom: 8px;
-color: white;
+    font-size: 30px;
+
+    line-height: 1.2;
+
+    margin: 0 0 4px;
+
+    color: white;
+
+    text-shadow:
+        0 0 8px rgba(255,45,45,.35);
 }
+
+/* ROLE */
 
 #welcomeDesignation {
-font-size: 20px;
-color: #ff2d2d;
-font-weight: bold;
-margin-bottom: 12px;
+    font-size: 15px;
+
+    color: #ff2d2d;
+
+    font-weight: bold;
+
+    margin: 0 0 5px;
+
+    letter-spacing: .3px;
 }
 
+/* MESSAGE */
+
 #welcomeMessage {
-color: #ccc;
-font-size: 16px;
+    color: #bdbdbd;
+
+    font-size: 13px;
+
+    display: block;
+
+    line-height: 1.4;
 }
+
+
+/* WELCOME ANIMATION */
 
 @keyframes welcomeEnter {
 
-from {
-    opacity: 0;
-    transform: translateY(-30px);
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 }
 
-to {
-    opacity: 1;
-    transform: translateY(0);
-}
 
-
-}
+/* ONLINE ANIMATION */
 
 @keyframes onlinePulse {
 
-0% {
-    box-shadow: 0 0 0 0 rgba(37,211,102,.4);
+    0% {
+        box-shadow:
+            0 0 0 0 rgba(37,211,102,.35);
+    }
+
+    70% {
+        box-shadow:
+            0 0 0 7px rgba(37,211,102,0);
+    }
+
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(37,211,102,0);
+    }
+
 }
 
-70% {
-    box-shadow: 0 0 0 8px rgba(37,211,102,0);
+
+/* MOBILE */
+
+@media(max-width:768px) {
+
+    .welcome-section {
+        padding: 20px 15px;
+    }
+
+    #welcomeTitle {
+        font-size: 24px;
+    }
+
+    #welcomeDesignation {
+        font-size: 14px;
+    }
+
+    #welcomeMessage {
+        font-size: 12px;
+    }
+
 }
-
-100% {
-    box-shadow: 0 0 0 0 rgba(37,211,102,0);
-}
-
-
-}
-
 * =========================================
 HEADER MENU
 ========================================= *
