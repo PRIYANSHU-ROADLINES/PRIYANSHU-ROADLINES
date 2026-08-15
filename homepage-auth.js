@@ -14,7 +14,7 @@ getDoc
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyBQZREq5abr\_oLzt6ksMGb-1jhlnKc92pU",
+apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
 
 authDomain:
     "priyanshu-roadlines-pod.firebaseapp.com",
@@ -29,7 +29,7 @@ messagingSenderId:
     "735411516260",
 
 appId:
-    "1:735411516260\:web:397d6a80141f032c0a0071"
+    "1:735411516260:web:397d6a80141f032c0a0071"
 
 
 };
@@ -151,7 +151,7 @@ const elapsed =
 const remaining =
     Math.max(
         0,
-        MIN\_LOADER\_TIME - elapsed
+        MIN_LOADER_TIME - elapsed
     );
 
 setTimeout(() => {
@@ -243,19 +243,19 @@ const userName = name || "User";
 const userEmail = email || "";
 const initial = getInitial(userName);
 
-/\* Hide Sign In \*/
+/* Hide Sign In */
 
 if (signinBtn) {
     signinBtn.style.display = "none";
 }
 
-/\* Show Profile \*/
+/* Show Profile */
 
 if (profileContainer) {
     profileContainer.style.display = "block";
 }
 
-/\* Profile Initial \*/
+/* Profile Initial */
 
 if (profileInitial) {
     profileInitial.innerText = initial;
@@ -265,7 +265,7 @@ if (profileBigInitial) {
     profileBigInitial.innerText = initial;
 }
 
-/\* Profile Image \*/
+/* Profile Image */
 
 if (photoURL) {
 
@@ -307,19 +307,19 @@ if (photoURL) {
 
 }
 
-/\* Profile Name \*/
+/* Profile Name */
 
 if (profileName) {
     profileName.innerText = userName;
 }
 
-/\* Profile Email \*/
+/* Profile Email */
 
 if (profileEmail) {
     profileEmail.innerText = userEmail;
 }
 
-/\* Profile Role \*/
+/* Profile Role */
 
 if (profileRole) {
 
@@ -332,7 +332,7 @@ if (profileRole) {
 
 }
 
-/\* POD \*/
+/* POD */
 
 if (podMenu) {
 
@@ -389,7 +389,7 @@ function checkOperatorLogin() {
 
 const loggedIn =
     localStorage.getItem("loggedIn")
-    \=== "true";
+    === "true";
 
 const role =
     localStorage.getItem("role");
@@ -435,9 +435,9 @@ onAuthStateChanged(
 auth,
 async (user) => {
 
-    /\* -------------------------------
+    /* -------------------------------
        CUSTOMER
-    \------------------------------- \*/
+    \------------------------------- */
 
     if (user) {
 
@@ -512,9 +512,9 @@ user.photoURL ||
     }
 
 
-    /\* -------------------------------
+    /* -------------------------------
        STAFF / ADMIN
-    \------------------------------- \*/
+    \------------------------------- */
 
     const operator =
         checkOperatorLogin();
@@ -542,9 +542,9 @@ operator.photoURL || ""
     }
 
 
-    /\* -------------------------------
+    /* -------------------------------
        GUEST
-    \------------------------------- \*/
+    /------------------------------- */
 
     showGuest();
 
@@ -568,7 +568,7 @@ function(event) {
 
     if (
         profileDropdown.style.display
-        \=== "block"
+        === "block"
     ) {
 
         profileDropdown.style.display =
@@ -624,7 +624,7 @@ async () => {
         showLoader();
 
 
-        /\* Firebase customer \*/
+        /* Firebase customer */
 
         if (auth.currentUser) {
 
@@ -633,7 +633,7 @@ async () => {
         }
 
 
-        /\* Staff / Admin \*/
+        /* Staff / Admin */
 
         localStorage.removeItem(
             "loggedIn"
@@ -660,7 +660,7 @@ async () => {
         );
 
 
-        window\.location.href =
+        window.location.href =
             "index.html";
 
     }
@@ -701,7 +701,7 @@ function(e) {
 
             e.preventDefault();
 
-            window\.location.href =
+            window.location.href =
                 "signin.html";
 
         }
@@ -726,7 +726,7 @@ function(e) {
 
             e.preventDefault();
 
-            window\.location.href =
+            window.location.href =
                 "signin.html";
 
         }
@@ -751,7 +751,7 @@ function(e) {
 
             e.preventDefault();
 
-            window\.location.href =
+            window.location.href =
                 "signin.html";
 
         }
