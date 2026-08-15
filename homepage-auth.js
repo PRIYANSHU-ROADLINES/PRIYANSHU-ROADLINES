@@ -1,21 +1,21 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import { initializeApp } from "[https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js](https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js)";
 
 import {
     getAuth,
     onAuthStateChanged,
     signOut
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+} from "[https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js](https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js)";
 
 import {
     getFirestore,
     doc,
     getDoc
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+} from "[https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js](https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js)";
 
 
 const firebaseConfig = {
 
-    apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
+    apiKey: "AIzaSyBQZREq5abr\_oLzt6ksMGb-1jhlnKc92pU",
 
     authDomain:
         "priyanshu-roadlines-pod.firebaseapp.com",
@@ -30,7 +30,7 @@ const firebaseConfig = {
         "735411516260",
 
     appId:
-        "1:735411516260:web:397d6a80141f032c0a0071"
+        "1:735411516260\:web:397d6a80141f032c0a0071"
 };
 
 
@@ -41,9 +41,9 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 
-/* =========================================
+/\* =========================================
    ELEMENTS
-========================================= */
+\========================================= \*/
 
 const signinBtn =
     document.getElementById("signinBtn");
@@ -58,22 +58,7 @@ const profileDropdown =
     document.getElementById("profileDropdown");
 
 const profileBigCircle =
-    document.querySelector(".profile-big-circle");
-
-const profileImage =
-    document.getElementById("profileImage");
-
-const profileBigImage =
-    document.getElementById("profileBigImage");
-
-const profileInitial =
-    document.getElementById("profileInitial");
-
-const profileBigInitial =
-    document.getElementById("profileBigInitial");
-
-const profileEmail =
-    document.getElementById("profileEmail");
+    document.getElementById("profileBigCircle");
 
 const profileName =
     document.getElementById("profileName");
@@ -84,53 +69,27 @@ const profileRole =
 const logoutBtn =
     document.getElementById("logoutBtn");
 
+const headerUserName =
+    document.getElementById("headerUserName");
+
+const userNameBar =
+    document.getElementById("userNameBar");
 
 const podMenu =
     document.getElementById("podMenu");
 
 const loader =
     document.getElementById("loader");
-const menuBtn =
-    document.getElementById("menuBtn");
-
-const menuDropdown =
-    document.getElementById("menuDropdown");
-const welcomeSection =
-    document.getElementById("welcomeSection");
-
-const welcomeTitle =
-    document.getElementById("welcomeTitle");
-
-const welcomeDesignation =
-    document.getElementById("welcomeDesignation");
-
-const welcomeMessage =
-    document.getElementById("welcomeMessage");
-
-const customerMenuItems =
-    document.querySelectorAll(".customer-menu");
-
-const staffMenuItems =
-    document.querySelectorAll(".staff-menu");
-
-const adminMenuItems =
-    document.querySelectorAll(".admin-menu");
-
-const staffDashboardMenu =
-    document.getElementById("staffDashboardMenu");
-
-const adminDashboardMenu =
-    document.getElementById("adminDashboardMenu");
 
 
 let currentRole = "guest";
 
 
-/* =========================================
+/\* =========================================
    LOADER
-========================================= */
+\========================================= \*/
 
-const MIN_LOADER_TIME = 1500;
+const MIN\_LOADER\_TIME = 1500;
 
 const loaderStartTime = Date.now();
 
@@ -156,7 +115,7 @@ function hideLoader() {
     const remaining =
         Math.max(
             0,
-            MIN_LOADER_TIME - elapsed
+            MIN\_LOADER\_TIME - elapsed
         );
 
     setTimeout(() => {
@@ -171,9 +130,9 @@ function hideLoader() {
 showLoader();
 
 
-/* =========================================
+/\* =========================================
    GET FIRST LETTER
-========================================= */
+\========================================= \*/
 
 function getInitial(name) {
 
@@ -185,23 +144,11 @@ function getInitial(name) {
         .toUpperCase();
 
 }
-function getDefaultDesignation(role) {
-
-    if (role === "admin") {
-        return "Administrator";
-    }
-
-    if (role === "staff") {
-        return "Staff Member";
-    }
-
-    return "Customer";
-}
 
 
-/* =========================================
+/\* =========================================
    GUEST
-========================================= */
+\========================================= \*/
 
 function showGuest() {
 
@@ -229,7 +176,11 @@ function showGuest() {
     }
 
 
-    
+    if (userNameBar) {
+
+        userNameBar.style.display = "none";
+
+    }
 
 
     if (podMenu) {
@@ -242,118 +193,104 @@ function showGuest() {
     console.log("Guest User");
 
 }
-if (welcomeSection) {
-    welcomeSection.style.display = "none";
-}
 
-hideAllRoleMenus();
 
-/* =========================================
+/\* =========================================
    LOGGED-IN USER
-========================================= */
+\========================================= \*/
 
-function showLoggedInUser(
-    name,
-    role,
-    email,
-    photoURL,
-    designation
-) {
+function showLoggedInUser(name, role) {
 
     currentRole = role;
 
-    const userName = name || "User";
-    const userEmail = email || "";
-    const userDesignation =
-        designation || getDefaultDesignation(role);
 
-    const initial = getInitial(userName);
-    /* Hide Sign In */
+    const userName =
+        name || "User";
+
+
+    const initial =
+        getInitial(userName);
+
+
+    /\* Hide Sign In \*/
 
     if (signinBtn) {
+
         signinBtn.style.display = "none";
+
     }
 
-    /* Show Profile */
+
+    /\* Show Profile \*/
 
     if (profileContainer) {
+
         profileContainer.style.display = "block";
-    }
-
-    /* Profile Initial */
-
-    if (profileInitial) {
-        profileInitial.innerText = initial;
-    }
-
-    if (profileBigInitial) {
-        profileBigInitial.innerText = initial;
-    }
-
-    /* Profile Image */
-
-    if (photoURL) {
-
-        if (profileImage) {
-            profileImage.src = photoURL;
-            profileImage.style.display = "block";
-        }
-
-        if (profileBigImage) {
-            profileBigImage.src = photoURL;
-            profileBigImage.style.display = "block";
-        }
-
-        if (profileInitial) {
-            profileInitial.style.display = "none";
-        }
-
-        if (profileBigInitial) {
-            profileBigInitial.style.display = "none";
-        }
-
-    } else {
-
-        if (profileImage) {
-            profileImage.style.display = "none";
-        }
-
-        if (profileBigImage) {
-            profileBigImage.style.display = "none";
-        }
-
-        if (profileInitial) {
-            profileInitial.style.display = "block";
-        }
-
-        if (profileBigInitial) {
-            profileBigInitial.style.display = "block";
-        }
 
     }
 
-    /* Profile Name */
+
+    /\* Circle Letter \*/
+
+    if (profileCircle) {
+
+        profileCircle.innerText =
+            initial;
+
+    }
+
+
+    if (profileBigCircle) {
+
+        profileBigCircle.innerText =
+            initial;
+
+    }
+
+
+    /\* Profile Name \*/
 
     if (profileName) {
-        profileName.innerText = userName;
+
+        profileName.innerText =
+            userName;
+
     }
 
-    /* Profile Email */
 
-    if (profileEmail) {
-        profileEmail.innerText = userEmail;
+    /\* Profile Role \*/
+
+    if (profileRole) {
+
+        profileRole.innerText =
+            role === "admin"
+                ? "Administrator"
+                : role === "staff"
+                ? "Staff"
+                : "Customer";
+
     }
 
-    /* Profile Role */
 
-   if (profileRole) {
+    /\* Name below header \*/
 
-    profileRole.innerText =
-        userDesignation;
+    if (headerUserName) {
 
-}
+        headerUserName.innerText =
+            "Welcome, " + userName;
 
-    /* POD */
+    }
+
+
+    if (userNameBar) {
+
+        userNameBar.style.display =
+            "block";
+
+    }
+
+
+    /\* POD \*/
 
     if (podMenu) {
 
@@ -362,73 +299,43 @@ function showLoggedInUser(
             role === "admin"
         ) {
 
-            podMenu.style.display = "block";
+            podMenu.style.display =
+                "block";
 
         } else {
 
-            podMenu.style.display = "none";
+            podMenu.style.display =
+                "none";
 
         }
 
     }
-if (role === "admin") {
 
-    showAdminInterface(
-        userName,
-        userDesignation
-    );
 
-}
-
-else if (role === "staff") {
-
-    showStaffInterface(
-        userName,
-        userDesignation
-    );
-
-}
-
-else {
-
-    showCustomerInterface(
-        userName,
-        userDesignation
-    );
-
-}
     console.log(
         "Logged in:",
         userName,
-        role,
-        userEmail
+        role
     );
-    
+
 }
 
-/* =========================================
+
+/\* =========================================
    STAFF / ADMIN LOCAL LOGIN
-========================================= */
+\========================================= \*/
 
 function checkOperatorLogin() {
 
     const loggedIn =
-        localStorage.getItem("loggedIn") === "true";
+        localStorage.getItem("loggedIn")
+        \=== "true";
 
     const role =
         localStorage.getItem("role");
 
     const name =
         localStorage.getItem("name");
-
-    const email =
-        localStorage.getItem("email");
-
-    const designation =
-        localStorage.getItem("designation");
-
-    const photoURL =
-        localStorage.getItem("photoURL");
 
 
     if (
@@ -444,16 +351,7 @@ function checkOperatorLogin() {
 
             role: role,
 
-            name: name,
-
-            email: email || "",
-
-            designation:
-                designation ||
-                getDefaultDesignation(role),
-
-            photoURL:
-                photoURL || ""
+            name: name
 
         };
 
@@ -468,17 +366,18 @@ function checkOperatorLogin() {
 
 }
 
-/* =========================================
+
+/\* =========================================
    FIREBASE AUTH
-========================================= */
+\========================================= \*/
 
 onAuthStateChanged(
     auth,
     async (user) => {
 
-        /* -------------------------------
+        /\* -------------------------------
            CUSTOMER
-        ------------------------------- */
+        \------------------------------- \*/
 
         if (user) {
 
@@ -502,25 +401,13 @@ onAuthStateChanged(
 
                     showLoggedInUser(
 
-    data.name ||
-    user.displayName ||
-    "User",
+                        data.name ||
+                        "User",
 
-    data.role ||
-    "customer",
+                        data.role ||
+                        "customer"
 
-    data.email ||
-    user.email ||
-    "",
-
-    data.photoURL ||
-    user.photoURL ||
-    "",
-
-    data.designation ||
-    getDefaultDesignation(data.role || "customer")
-
-);
+                    );
 
 
                     hideLoader();
@@ -556,9 +443,9 @@ onAuthStateChanged(
         }
 
 
-        /* -------------------------------
+        /\* -------------------------------
            STAFF / ADMIN
-        ------------------------------- */
+        \------------------------------- \*/
 
         const operator =
             checkOperatorLogin();
@@ -566,20 +453,14 @@ onAuthStateChanged(
 
         if (operator.loggedIn) {
 
-           showLoggedInUser(
+            showLoggedInUser(
 
-    operator.name,
+                operator.name,
 
-    operator.role,
+                operator.role
 
-    operator.email || "",
+            );
 
-    operator.photoURL || "",
-
-    operator.designation ||
-    getDefaultDesignation(operator.role)
-
-);
 
             hideLoader();
 
@@ -588,9 +469,9 @@ onAuthStateChanged(
         }
 
 
-        /* -------------------------------
+        /\* -------------------------------
            GUEST
-        ------------------------------- */
+        \------------------------------- \*/
 
         showGuest();
 
@@ -600,9 +481,9 @@ onAuthStateChanged(
 );
 
 
-/* =========================================
+/\* =========================================
    PROFILE CLICK
-========================================= */
+\========================================= \*/
 
 profileCircle?.addEventListener(
     "click",
@@ -613,7 +494,7 @@ profileCircle?.addEventListener(
 
         if (
             profileDropdown.style.display
-            === "block"
+            \=== "block"
         ) {
 
             profileDropdown.style.display =
@@ -632,9 +513,9 @@ profileCircle?.addEventListener(
 );
 
 
-/* =========================================
+/\* =========================================
    CLOSE PROFILE WHEN CLICK OUTSIDE
-========================================= */
+\========================================= \*/
 
 document.addEventListener(
     "click",
@@ -654,9 +535,9 @@ document.addEventListener(
 );
 
 
-/* =========================================
+/\* =========================================
    LOGOUT
-========================================= */
+\========================================= \*/
 
 logoutBtn?.addEventListener(
     "click",
@@ -667,7 +548,7 @@ logoutBtn?.addEventListener(
             showLoader();
 
 
-            /* Firebase customer */
+            /\* Firebase customer \*/
 
             if (auth.currentUser) {
 
@@ -676,7 +557,7 @@ logoutBtn?.addEventListener(
             }
 
 
-            /* Staff / Admin */
+            /\* Staff / Admin \*/
 
             localStorage.removeItem(
                 "loggedIn"
@@ -703,7 +584,7 @@ logoutBtn?.addEventListener(
             );
 
 
-            window.location.href =
+            window\.location.href =
                 "index.html";
 
         }
@@ -727,9 +608,9 @@ logoutBtn?.addEventListener(
 );
 
 
-/* =========================================
+/\* =========================================
    TRACK LR
-========================================= */
+\========================================= \*/
 
 document
     .getElementById("trackBtn")
@@ -743,7 +624,7 @@ document
 
                 e.preventDefault();
 
-                window.location.href =
+                window\.location.href =
                     "signin.html";
 
             }
@@ -752,9 +633,9 @@ document
     );
 
 
-/* =========================================
+/\* =========================================
    GET QUOTE
-========================================= */
+\========================================= \*/
 
 document
     .getElementById("quoteBtn")
@@ -768,7 +649,7 @@ document
 
                 e.preventDefault();
 
-                window.location.href =
+                window\.location.href =
                     "signin.html";
 
             }
@@ -777,9 +658,9 @@ document
     );
 
 
-/* =========================================
+/\* =========================================
    ENQUIRY
-========================================= */
+\========================================= \*/
 
 document
     .getElementById("enquiryBtn")
@@ -793,75 +674,10 @@ document
 
                 e.preventDefault();
 
-                window.location.href =
+                window\.location.href =
                     "signin.html";
 
             }
 
         }
     );
-
-/* =========================================
-   MENU
-========================================= */
-
-menuBtn?.addEventListener(
-    "click",
-    function(event) {
-
-        event.stopPropagation();
-
-        menuDropdown?.classList.toggle("show");
-
-    }
-);
-
-
-/* CLOSE MENU WHEN CLICKING OUTSIDE */
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            menuDropdown &&
-            menuBtn &&
-            !menuDropdown.contains(event.target) &&
-            !menuBtn.contains(event.target)
-        ) {
-
-            menuDropdown.classList.remove("show");
-
-        }
-
-    }
-);
-function hideAllRoleMenus() {
-
-    customerMenuItems.forEach(item => {
-        item.style.display = "none";
-    });
-
-    staffMenuItems.forEach(item => {
-        item.style.display = "none";
-    });
-
-    adminMenuItems.forEach(item => {
-        item.style.display = "none";
-    });
-
-}
-showLoggedInUser(
-
-    operator.name,
-
-    operator.role,
-
-    operator.email || "",
-
-    operator.photoURL || "",
-
-    operator.designation ||
-    getDefaultDesignation(operator.role)
-
-);
