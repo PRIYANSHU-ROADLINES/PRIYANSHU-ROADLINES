@@ -898,3 +898,6 @@ if (welcomeMessage) {
 adminMenuItems.forEach(item => {
     item.style.display = "block";
 });
+    
+}
+
