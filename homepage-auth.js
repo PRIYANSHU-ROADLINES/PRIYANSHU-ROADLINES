@@ -1,38 +1,38 @@
-import { initializeApp } from "[https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js](https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js)";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-} from "[https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js](https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js)";
+getAuth,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 import {
-    getFirestore,
-    doc,
-    getDoc
-} from "[https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js](https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js)";
-
+getFirestore,
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
 
-    apiKey: "AIzaSyBQZREq5abr\_oLzt6ksMGb-1jhlnKc92pU",
+apiKey: "AIzaSyBQZREq5abr\_oLzt6ksMGb-1jhlnKc92pU",
 
-    authDomain:
-        "priyanshu-roadlines-pod.firebaseapp.com",
+authDomain:
+    "priyanshu-roadlines-pod.firebaseapp.com",
 
-    projectId:
-        "priyanshu-roadlines-pod",
+projectId:
+    "priyanshu-roadlines-pod",
 
-    storageBucket:
-        "priyanshu-roadlines-pod.firebasestorage.app",
+storageBucket:
+    "priyanshu-roadlines-pod.firebasestorage.app",
 
-    messagingSenderId:
-        "735411516260",
+messagingSenderId:
+    "735411516260",
 
-    appId:
-        "1:735411516260\:web:397d6a80141f032c0a0071"
+appId:
+    "1:735411516260\:web:397d6a80141f032c0a0071"
+
+
 };
-
 
 const app = initializeApp(firebaseConfig);
 
@@ -40,399 +40,444 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-
-/\* =========================================
-   ELEMENTS
-\========================================= \*/
+/* =========================================
+ELEMENTS
+========================================= */
 
 const signinBtn =
-    document.getElementById("signinBtn");
+document.getElementById("signinBtn");
 
 const profileContainer =
-    document.getElementById("profileContainer");
+document.getElementById("profileContainer");
 
 const profileCircle =
-    document.getElementById("profileCircle");
+document.getElementById("profileCircle");
 
 const profileDropdown =
-    document.getElementById("profileDropdown");
+document.getElementById("profileDropdown");
 
 const profileBigCircle =
-    document.getElementById("profileBigCircle");
+document.querySelector(".profile-big-circle");
+
+const profileImage =
+document.getElementById("profileImage");
+
+const profileBigImage =
+document.getElementById("profileBigImage");
+
+const profileInitial =
+document.getElementById("profileInitial");
+
+const profileBigInitial =
+document.getElementById("profileBigInitial");
+
+const profileEmail =
+document.getElementById("profileEmail");
 
 const profileName =
-    document.getElementById("profileName");
+document.getElementById("profileName");
 
 const profileRole =
-    document.getElementById("profileRole");
+document.getElementById("profileRole");
 
 const logoutBtn =
-    document.getElementById("logoutBtn");
-
-const headerUserName =
-    document.getElementById("headerUserName");
-
-const userNameBar =
-    document.getElementById("userNameBar");
+document.getElementById("logoutBtn");
 
 const podMenu =
-    document.getElementById("podMenu");
+document.getElementById("podMenu");
 
 const loader =
-    document.getElementById("loader");
+document.getElementById("loader");
+const menuBtn =
+document.getElementById("menuBtn");
 
+const menuDropdown =
+document.getElementById("menuDropdown");
+const welcomeSection =
+document.getElementById("welcomeSection");
+
+const welcomeTitle =
+document.getElementById("welcomeTitle");
+
+const welcomeDesignation =
+document.getElementById("welcomeDesignation");
+
+const welcomeMessage =
+document.getElementById("welcomeMessage");
+
+const customerMenuItems =
+document.querySelectorAll(".customer-menu");
+
+const staffMenuItems =
+document.querySelectorAll(".staff-menu");
+
+const adminMenuItems =
+document.querySelectorAll(".admin-menu");
+
+const staffDashboardMenu =
+document.getElementById("staffDashboardMenu");
+
+const adminDashboardMenu =
+document.getElementById("adminDashboardMenu");
 
 let currentRole = "guest";
 
+/* =========================================
+LOADER
+========================================= */
 
-/\* =========================================
-   LOADER
-\========================================= \*/
-
-const MIN\_LOADER\_TIME = 1500;
+const MIN_LOADER_TIME = 1500;
 
 const loaderStartTime = Date.now();
 
-
 function showLoader() {
 
-    if (loader) {
+if (loader) {
 
-        loader.style.display = "flex";
-
-    }
+    loader.style.display = "flex";
 
 }
 
+
+}
 
 function hideLoader() {
 
-    if (!loader) return;
+if (!loader) return;
 
-    const elapsed =
-        Date.now() - loaderStartTime;
+const elapsed =
+    Date.now() - loaderStartTime;
 
-    const remaining =
-        Math.max(
-            0,
-            MIN\_LOADER\_TIME - elapsed
-        );
+const remaining =
+    Math.max(
+        0,
+        MIN\_LOADER\_TIME - elapsed
+    );
 
-    setTimeout(() => {
+setTimeout(() => {
 
-        loader.style.display = "none";
+    loader.style.display = "none";
 
-    }, remaining);
+}, remaining);
+
 
 }
-
 
 showLoader();
 
-
-/\* =========================================
-   GET FIRST LETTER
-\========================================= \*/
+/* =========================================
+GET FIRST LETTER
+========================================= */
 
 function getInitial(name) {
 
-    if (!name) return "U";
+if (!name) return "U";
 
-    return name
-        .trim()
-        .charAt(0)
-        .toUpperCase();
+return name
+    .trim()
+    .charAt(0)
+    .toUpperCase();
+
+
+}
+
+/* =========================================
+GUEST
+========================================= */
+
+function showGuest() {
+
+currentRole = "guest";
+
+
+if (signinBtn) {
+
+    signinBtn.style.display = "block";
 
 }
 
 
-/\* =========================================
-   GUEST
-\========================================= \*/
+if (profileContainer) {
 
-function showGuest() {
+    profileContainer.style.display = "none";
 
-    currentRole = "guest";
+}
 
 
-    if (signinBtn) {
+if (profileDropdown) {
 
-        signinBtn.style.display = "block";
+    profileDropdown.style.display = "none";
 
+}
+
+
+
+
+
+if (podMenu) {
+
+    podMenu.style.display = "none";
+
+}
+
+
+console.log("Guest User");
+
+
+}
+if (welcomeSection) {
+welcomeSection.style.display = "none";
+}
+
+hideAllRoleMenus();
+
+/* =========================================
+LOGGED-IN USER
+========================================= */
+
+function showLoggedInUser(name, role, email, photoURL) {
+
+currentRole = role;
+
+const userName = name || "User";
+const userEmail = email || "";
+const initial = getInitial(userName);
+
+/\* Hide Sign In \*/
+
+if (signinBtn) {
+    signinBtn.style.display = "none";
+}
+
+/\* Show Profile \*/
+
+if (profileContainer) {
+    profileContainer.style.display = "block";
+}
+
+/\* Profile Initial \*/
+
+if (profileInitial) {
+    profileInitial.innerText = initial;
+}
+
+if (profileBigInitial) {
+    profileBigInitial.innerText = initial;
+}
+
+/\* Profile Image \*/
+
+if (photoURL) {
+
+    if (profileImage) {
+        profileImage.src = photoURL;
+        profileImage.style.display = "block";
     }
 
-
-    if (profileContainer) {
-
-        profileContainer.style.display = "none";
-
+    if (profileBigImage) {
+        profileBigImage.src = photoURL;
+        profileBigImage.style.display = "block";
     }
 
-
-    if (profileDropdown) {
-
-        profileDropdown.style.display = "none";
-
+    if (profileInitial) {
+        profileInitial.style.display = "none";
     }
 
-
-    if (userNameBar) {
-
-        userNameBar.style.display = "none";
-
+    if (profileBigInitial) {
+        profileBigInitial.style.display = "none";
     }
 
+} else {
 
-    if (podMenu) {
+    if (profileImage) {
+        profileImage.style.display = "none";
+    }
+
+    if (profileBigImage) {
+        profileBigImage.style.display = "none";
+    }
+
+    if (profileInitial) {
+        profileInitial.style.display = "block";
+    }
+
+    if (profileBigInitial) {
+        profileBigInitial.style.display = "block";
+    }
+
+}
+
+/\* Profile Name \*/
+
+if (profileName) {
+    profileName.innerText = userName;
+}
+
+/\* Profile Email \*/
+
+if (profileEmail) {
+    profileEmail.innerText = userEmail;
+}
+
+/\* Profile Role \*/
+
+if (profileRole) {
+
+    profileRole.innerText =
+        role === "admin"
+            ? "Administrator"
+            : role === "staff"
+            ? "Staff"
+            : "Customer";
+
+}
+
+/\* POD \*/
+
+if (podMenu) {
+
+    if (
+        role === "staff" ||
+        role === "admin"
+    ) {
+
+        podMenu.style.display = "block";
+
+    } else {
 
         podMenu.style.display = "none";
 
     }
 
-
-    console.log("Guest User");
-
 }
 
 
-/\* =========================================
-   LOGGED-IN USER
-\========================================= \*/
+if (role === "admin") {
 
-function showLoggedInUser(name, role) {
+showAdminInterface(userName);
 
-    currentRole = role;
-
-
-    const userName =
-        name || "User";
-
-
-    const initial =
-        getInitial(userName);
-
-
-    /\* Hide Sign In \*/
-
-    if (signinBtn) {
-
-        signinBtn.style.display = "none";
-
-    }
-
-
-    /\* Show Profile \*/
-
-    if (profileContainer) {
-
-        profileContainer.style.display = "block";
-
-    }
-
-
-    /\* Circle Letter \*/
-
-    if (profileCircle) {
-
-        profileCircle.innerText =
-            initial;
-
-    }
-
-
-    if (profileBigCircle) {
-
-        profileBigCircle.innerText =
-            initial;
-
-    }
-
-
-    /\* Profile Name \*/
-
-    if (profileName) {
-
-        profileName.innerText =
-            userName;
-
-    }
-
-
-    /\* Profile Role \*/
-
-    if (profileRole) {
-
-        profileRole.innerText =
-            role === "admin"
-                ? "Administrator"
-                : role === "staff"
-                ? "Staff"
-                : "Customer";
-
-    }
-
-
-    /\* Name below header \*/
-
-    if (headerUserName) {
-
-        headerUserName.innerText =
-            "Welcome, " + userName;
-
-    }
-
-
-    if (userNameBar) {
-
-        userNameBar.style.display =
-            "block";
-
-    }
-
-
-    /\* POD \*/
-
-    if (podMenu) {
-
-        if (
-            role === "staff" ||
-            role === "admin"
-        ) {
-
-            podMenu.style.display =
-                "block";
-
-        } else {
-
-            podMenu.style.display =
-                "none";
-
-        }
-
-    }
-
-
-    console.log(
-        "Logged in:",
-        userName,
-        role
-    );
 
 }
 
+else if (role === "staff") {
 
-/\* =========================================
-   STAFF / ADMIN LOCAL LOGIN
-\========================================= \*/
+showStaffInterface(userName);
+
+
+}
+
+else {
+
+showCustomerInterface(userName);
+
+
+}
+console.log(
+"Logged in:",
+userName,
+role,
+userEmail
+);
+
+}
+
+/* =========================================
+STAFF / ADMIN LOCAL LOGIN
+========================================= */
 
 function checkOperatorLogin() {
 
-    const loggedIn =
-        localStorage.getItem("loggedIn")
-        \=== "true";
+const loggedIn =
+    localStorage.getItem("loggedIn")
+    \=== "true";
 
-    const role =
-        localStorage.getItem("role");
+const role =
+    localStorage.getItem("role");
 
-    const name =
-        localStorage.getItem("name");
+const name =
+    localStorage.getItem("name");
 
 
-    if (
-        loggedIn &&
-        (role === "staff" ||
-         role === "admin") &&
-        name
-    ) {
-
-        return {
-
-            loggedIn: true,
-
-            role: role,
-
-            name: name
-
-        };
-
-    }
-
+if (
+    loggedIn &&
+    (role === "staff" ||
+     role === "admin") &&
+    name
+) {
 
     return {
 
-        loggedIn: false
+        loggedIn: true,
+
+        role: role,
+
+        name: name
 
     };
 
 }
 
 
-/\* =========================================
-   FIREBASE AUTH
-\========================================= \*/
+return {
+
+    loggedIn: false
+
+};
+
+
+}
+
+/* =========================================
+FIREBASE AUTH
+========================================= */
 
 onAuthStateChanged(
-    auth,
-    async (user) => {
+auth,
+async (user) => {
 
-        /\* -------------------------------
-           CUSTOMER
-        \------------------------------- \*/
+    /\* -------------------------------
+       CUSTOMER
+    \------------------------------- \*/
 
-        if (user) {
+    if (user) {
 
-            try {
+        try {
 
-                const snap =
-                    await getDoc(
-                        doc(
-                            db,
-                            "users",
-                            user.uid
-                        )
-                    );
-
-
-                if (snap.exists()) {
-
-                    const data =
-                        snap.data();
-
-
-                    showLoggedInUser(
-
-                        data.name ||
-                        "User",
-
-                        data.role ||
-                        "customer"
-
-                    );
-
-
-                    hideLoader();
-
-                    return;
-
-                }
-
-
-                showGuest();
-
-                hideLoader();
-
-                return;
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Profile error:",
-                    error
+            const snap =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
                 );
 
-                showGuest();
+
+            if (snap.exists()) {
+
+                const data =
+                    snap.data();
+
+
+                showLoggedInUser(
+
+data.name ||
+user.displayName ||
+"User",
+
+data.role ||
+"customer",
+
+data.email ||
+user.email ||
+"",
+
+data.photoURL ||
+user.photoURL ||
+""
+
+
+);
 
                 hideLoader();
 
@@ -440,27 +485,8 @@ onAuthStateChanged(
 
             }
 
-        }
 
-
-        /\* -------------------------------
-           STAFF / ADMIN
-        \------------------------------- \*/
-
-        const operator =
-            checkOperatorLogin();
-
-
-        if (operator.loggedIn) {
-
-            showLoggedInUser(
-
-                operator.name,
-
-                operator.role
-
-            );
-
+            showGuest();
 
             hideLoader();
 
@@ -468,139 +494,215 @@ onAuthStateChanged(
 
         }
 
+        catch (error) {
 
-        /\* -------------------------------
-           GUEST
-        \------------------------------- \*/
+            console.error(
+                "Profile error:",
+                error
+            );
 
-        showGuest();
+            showGuest();
+
+            hideLoader();
+
+            return;
+
+        }
+
+    }
+
+
+    /\* -------------------------------
+       STAFF / ADMIN
+    \------------------------------- \*/
+
+    const operator =
+        checkOperatorLogin();
+
+
+    if (operator.loggedIn) {
+
+       showLoggedInUser(
+
+operator.name,
+
+operator.role,
+
+operator.email || "",
+
+operator.photoURL || ""
+
+
+);
+
+        hideLoader();
+
+        return;
+
+    }
+
+
+    /\* -------------------------------
+       GUEST
+    \------------------------------- \*/
+
+    showGuest();
+
+    hideLoader();
+
+}
+
+
+);
+
+/* =========================================
+PROFILE CLICK
+========================================= */
+
+profileCircle?.addEventListener(
+"click",
+function(event) {
+
+    event.stopPropagation();
+
+
+    if (
+        profileDropdown.style.display
+        \=== "block"
+    ) {
+
+        profileDropdown.style.display =
+            "none";
+
+    }
+
+    else {
+
+        profileDropdown.style.display =
+            "block";
+
+    }
+
+}
+
+
+);
+
+/* =========================================
+CLOSE PROFILE WHEN CLICK OUTSIDE
+========================================= */
+
+document.addEventListener(
+"click",
+function(event) {
+
+    if (
+        profileContainer &&
+        !profileContainer.contains(event.target)
+    ) {
+
+        profileDropdown.style.display =
+            "none";
+
+    }
+
+}
+
+
+);
+
+/* =========================================
+LOGOUT
+========================================= */
+
+logoutBtn?.addEventListener(
+"click",
+async () => {
+
+    try {
+
+        showLoader();
+
+
+        /\* Firebase customer \*/
+
+        if (auth.currentUser) {
+
+            await signOut(auth);
+
+        }
+
+
+        /\* Staff / Admin \*/
+
+        localStorage.removeItem(
+            "loggedIn"
+        );
+
+        localStorage.removeItem(
+            "role"
+        );
+
+        localStorage.removeItem(
+            "name"
+        );
+
+        localStorage.removeItem(
+            "designation"
+        );
+
+
+        currentRole = "guest";
+
+
+        alert(
+            "Logged Out Successfully"
+        );
+
+
+        window\.location.href =
+            "index.html";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Logout Error:",
+            error
+        );
+
+        alert(
+            "Logout failed."
+        );
 
         hideLoader();
 
     }
+
+}
+
+
 );
 
+/* =========================================
+TRACK LR
+========================================= */
 
-/\* =========================================
-   PROFILE CLICK
-\========================================= \*/
-
-profileCircle?.addEventListener(
-    "click",
-    function(event) {
-
-        event.stopPropagation();
-
+document
+.getElementById("trackBtn")
+?.addEventListener(
+"click",
+function(e) {
 
         if (
-            profileDropdown.style.display
-            \=== "block"
+            currentRole === "guest"
         ) {
 
-            profileDropdown.style.display =
-                "none";
-
-        }
-
-        else {
-
-            profileDropdown.style.display =
-                "block";
-
-        }
-
-    }
-);
-
-
-/\* =========================================
-   CLOSE PROFILE WHEN CLICK OUTSIDE
-\========================================= \*/
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            profileContainer &&
-            !profileContainer.contains(event.target)
-        ) {
-
-            profileDropdown.style.display =
-                "none";
-
-        }
-
-    }
-);
-
-
-/\* =========================================
-   LOGOUT
-\========================================= \*/
-
-logoutBtn?.addEventListener(
-    "click",
-    async () => {
-
-        try {
-
-            showLoader();
-
-
-            /\* Firebase customer \*/
-
-            if (auth.currentUser) {
-
-                await signOut(auth);
-
-            }
-
-
-            /\* Staff / Admin \*/
-
-            localStorage.removeItem(
-                "loggedIn"
-            );
-
-            localStorage.removeItem(
-                "role"
-            );
-
-            localStorage.removeItem(
-                "name"
-            );
-
-            localStorage.removeItem(
-                "designation"
-            );
-
-
-            currentRole = "guest";
-
-
-            alert(
-                "Logged Out Successfully"
-            );
-
+            e.preventDefault();
 
             window\.location.href =
-                "index.html";
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Logout Error:",
-                error
-            );
-
-            alert(
-                "Logout failed."
-            );
-
-            hideLoader();
+                "signin.html";
 
         }
 
@@ -608,76 +710,191 @@ logoutBtn?.addEventListener(
 );
 
 
-/\* =========================================
-   TRACK LR
-\========================================= \*/
+/* =========================================
+GET QUOTE
+========================================= */
 
 document
-    .getElementById("trackBtn")
-    ?.addEventListener(
-        "click",
-        function(e) {
+.getElementById("quoteBtn")
+?.addEventListener(
+"click",
+function(e) {
 
-            if (
-                currentRole === "guest"
-            ) {
+        if (
+            currentRole === "guest"
+        ) {
 
-                e.preventDefault();
+            e.preventDefault();
 
-                window\.location.href =
-                    "signin.html";
-
-            }
+            window\.location.href =
+                "signin.html";
 
         }
-    );
+
+    }
+);
 
 
-/\* =========================================
-   GET QUOTE
-\========================================= \*/
+/* =========================================
+ENQUIRY
+========================================= */
 
 document
-    .getElementById("quoteBtn")
-    ?.addEventListener(
-        "click",
-        function(e) {
+.getElementById("enquiryBtn")
+?.addEventListener(
+"click",
+function(e) {
 
-            if (
-                currentRole === "guest"
-            ) {
+        if (
+            currentRole === "guest"
+        ) {
 
-                e.preventDefault();
+            e.preventDefault();
 
-                window\.location.href =
-                    "signin.html";
-
-            }
+            window\.location.href =
+                "signin.html";
 
         }
-    );
+
+    }
+);
 
 
-/\* =========================================
-   ENQUIRY
-\========================================= \*/
+/* =========================================
+MENU
+========================================= */
 
-document
-    .getElementById("enquiryBtn")
-    ?.addEventListener(
-        "click",
-        function(e) {
+menuBtn?.addEventListener(
+"click",
+function(event) {
 
-            if (
-                currentRole === "guest"
-            ) {
+    event.stopPropagation();
 
-                e.preventDefault();
+    menuDropdown?.classList.toggle("show");
 
-                window\.location.href =
-                    "signin.html";
+}
 
-            }
 
-        }
-    );
+);
+
+/* CLOSE MENU WHEN CLICKING OUTSIDE */
+
+document.addEventListener(
+"click",
+function(event) {
+
+    if (
+        menuDropdown &&
+        menuBtn &&
+        !menuDropdown.contains(event.target) &&
+        !menuBtn.contains(event.target)
+    ) {
+
+        menuDropdown.classList.remove("show");
+
+    }
+
+}
+
+
+);
+function hideAllRoleMenus() {
+
+customerMenuItems.forEach(item => {
+    item.style.display = "none";
+});
+
+staffMenuItems.forEach(item => {
+    item.style.display = "none";
+});
+
+adminMenuItems.forEach(item => {
+    item.style.display = "none";
+});
+
+
+}
+function showCustomerInterface(name) {
+
+hideAllRoleMenus();
+
+if (welcomeSection) {
+    welcomeSection.style.display = "block";
+}
+
+if (welcomeTitle) {
+    welcomeTitle.innerText =
+        "Welcome, " + name + " 👋";
+}
+
+if (welcomeDesignation) {
+    welcomeDesignation.innerText =
+        "Customer";
+}
+
+if (welcomeMessage) {
+    welcomeMessage.innerText =
+        "We're glad to have you with PRIYANSHU ROADLINES.";
+}
+
+customerMenuItems.forEach(item => {
+    item.style.display = "block";
+});
+
+
+}
+function showStaffInterface(name) {
+
+hideAllRoleMenus();
+
+if (welcomeSection) {
+    welcomeSection.style.display = "block";
+}
+
+if (welcomeTitle) {
+    welcomeTitle.innerText =
+        "Welcome, " + name + " 👋";
+}
+
+if (welcomeDesignation) {
+    welcomeDesignation.innerText =
+        "Staff Member";
+}
+
+if (welcomeMessage) {
+    welcomeMessage.innerText =
+        "Your staff services and POD tools are available from the Menu.";
+}
+
+staffMenuItems.forEach(item => {
+    item.style.display = "block";
+});
+
+
+}
+function showAdminInterface(name) {
+
+hideAllRoleMenus();
+
+if (welcomeSection) {
+    welcomeSection.style.display = "block";
+}
+
+if (welcomeTitle) {
+    welcomeTitle.innerText =
+        "Welcome, " + name + " 👋";
+}
+
+if (welcomeDesignation) {
+    welcomeDesignation.innerText =
+        "Administrator";
+}
+
+if (welcomeMessage) {
+    welcomeMessage.innerText =
+        "Administrator controls and management tools are available from the Menu.";
+}
+
+adminMenuItems.forEach(item => {
+    item.style.display = "block";
+});
