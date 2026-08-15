@@ -187,50 +187,38 @@ GUEST
 
 function showGuest() {
 
-currentRole = "guest";
+    currentRole = "guest";
 
+    // Show Sign In
+    if (signinBtn) {
+        signinBtn.style.display = "block";
+    }
 
-if (signinBtn) {
+    // Hide Profile
+    if (profileContainer) {
+        profileContainer.style.display = "none";
+    }
 
-    signinBtn.style.display = "block";
+    // Close Profile Dropdown
+    if (profileDropdown) {
+        profileDropdown.style.display = "none";
+    }
 
+    // Hide POD
+    if (podMenu) {
+        podMenu.style.display = "none";
+    }
+
+    // Hide Welcome Section
+    if (welcomeSection) {
+        welcomeSection.style.display = "none";
+    }
+
+    // Hide all role-based menu items
+    hideAllRoleMenus();
+
+    console.log("Guest User");
 }
-
-
-if (profileContainer) {
-
-    profileContainer.style.display = "none";
-
-}
-
-
-if (profileDropdown) {
-
-    profileDropdown.style.display = "none";
-
-}
-
-
-
-
-
-if (podMenu) {
-
-    podMenu.style.display = "none";
-
-}
-
-
-console.log("Guest User");
-
-
-}
-if (welcomeSection) {
-welcomeSection.style.display = "none";
-}
-
-hideAllRoleMenus();
-
 /* =========================================
 LOGGED-IN USER
 ========================================= */
