@@ -878,57 +878,8 @@ function(e) {
 
 );
 
-/* =========================================
-MENU
-========================================= */
 
-menuBtn?.addEventListener(
-"click",
-function(event) {
 
-event.stopPropagation();
-
-menuDropdown?.classList.toggle("show");
-
-}
-
-);
-
-/* CLOSE MENU WHEN CLICKING OUTSIDE */
-
-document.addEventListener(
-"click",
-function(event) {
-
-if (
-    menuDropdown &&
-    menuBtn &&
-    !menuDropdown.contains(event.target) &&
-    !menuBtn.contains(event.target)
-) {
-
-    menuDropdown.classList.remove("show");
-
-}
-
-}
-
-);
-function hideAllRoleMenus() {
-
-customerMenuItems.forEach(item => {
-item.style.display = "none";
-});
-
-staffMenuItems.forEach(item => {
-item.style.display = "none";
-});
-
-adminMenuItems.forEach(item => {
-item.style.display = "none";
-});
-
-}
 
 function showCustomerInterface(name) {
 
