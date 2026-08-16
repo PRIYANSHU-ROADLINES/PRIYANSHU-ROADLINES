@@ -117,6 +117,15 @@ document.getElementById("headerAdmin");
 const headerGetQuote =
 document.getElementById("headerGetQuote");
 
+const mobileMyQuotes =
+document.getElementById("mobileMyQuotes");
+
+const mobilePOD =
+document.getElementById("mobilePOD");
+
+const mobileAdmin =
+document.getElementById("mobileAdmin");
+
 const customerMenuItems =
 document.querySelectorAll(".customer-menu");
 
