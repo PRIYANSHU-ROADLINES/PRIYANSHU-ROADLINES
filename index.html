@@ -607,25 +607,30 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
 PROFESSIONAL WELCOME SECTION
 ========================================= */
 
+/* =========================================
+PROFESSIONAL WELCOME SECTION
+========================================= */
+
 .welcome-section {
+    position: relative;
     background: linear-gradient(
-        135deg,
-        #111111,
-        #181818,
-        #050505
+        90deg,
+        #ffffff 0%,
+        #fafafa 50%,
+        #ffffff 100%
     );
 
-    color: white;
+    color: #111;
 
-    padding: 12px 15px;
+    padding: 12px 20px 13px;
 
     text-align: center;
 
     overflow: hidden;
 
-    border-bottom: 1px solid rgba(255,45,45,0.35);
+    border-bottom: 2px solid #ff2d2d;
 
-    min-height: 78px;
+    min-height: 82px;
 
     display: flex;
     align-items: center;
@@ -633,9 +638,13 @@ PROFESSIONAL WELCOME SECTION
 }
 
 
-/* MAIN CONTENT */
+/* =========================================
+WELCOME CONTENT
+========================================= */
 
 .welcome-content {
+
+    position: relative;
 
     width: 100%;
     max-width: 1200px;
@@ -644,11 +653,14 @@ PROFESSIONAL WELCOME SECTION
 
     text-align: center;
 
-    animation: welcomeEnter 1s ease-out both;
+    z-index: 5;
+
 }
 
 
-/* FIRST LINE ELEMENTS */
+/* =========================================
+FIRST LINE
+========================================= */
 
 .welcome-badge,
 #welcomeTitle,
@@ -663,11 +675,13 @@ PROFESSIONAL WELCOME SECTION
 }
 
 
-/* ONLINE */
+/* =========================================
+ONLINE
+========================================= */
 
 .welcome-badge {
 
-    color: #25D366;
+    color: #16b957;
 
     border: 1px solid #25D366;
 
@@ -675,57 +689,67 @@ PROFESSIONAL WELCOME SECTION
 
     border-radius: 20px;
 
-    font-size: 10px;
+    font-size: 11px;
 
     font-weight: bold;
 
     white-space: nowrap;
 
-    animation: welcomeItemUp .8s ease-out .1s both;
+    opacity: 0;
+
+    animation: onlineEnter .8s ease-out .25s forwards;
 
 }
 
 
-/* WELCOME NAME */
+/* =========================================
+WELCOME NAME
+========================================= */
 
 #welcomeTitle {
 
-    font-size: 26px;
+    font-size: 27px;
 
     line-height: 1;
 
-    color: white;
+    color: #111;
 
     font-weight: 700;
 
     white-space: nowrap;
 
     text-shadow:
-        0 0 8px rgba(255,255,255,.25);
+        0 0 5px rgba(0,0,0,.08);
 
-    animation: welcomeItemUp .8s ease-out .2s both;
+    opacity: 0;
+
+    animation: welcomeEnter .8s ease-out .15s forwards;
 
 }
 
 
-/* SEPARATOR */
+/* =========================================
+SEPARATOR
+========================================= */
 
 #welcomeTitle::after {
 
     content: "  |  ";
 
-    color: #777;
+    color: #aaa;
 
     font-weight: normal;
 
 }
 
 
-/* DESIGNATION */
+/* =========================================
+DESIGNATION
+========================================= */
 
 #welcomeDesignation {
 
-    font-size: 15px;
+    font-size: 16px;
 
     line-height: 1;
 
@@ -735,20 +759,24 @@ PROFESSIONAL WELCOME SECTION
 
     white-space: nowrap;
 
-    animation: welcomeItemUp .8s ease-out .3s both;
+    opacity: 0;
+
+    animation: designationEnter .8s ease-out .35s forwards;
 
 }
 
 
-/* SECOND LINE */
+/* =========================================
+SECOND LINE
+========================================= */
 
 #welcomeMessage {
 
     display: block;
 
-    margin-top: 7px;
+    margin-top: 8px;
 
-    color: #cfcfcf;
+    color: #333;
 
     font-size: 13px;
 
@@ -756,39 +784,193 @@ PROFESSIONAL WELCOME SECTION
 
     text-align: center;
 
-    animation: welcomeItemUp .8s ease-out .45s both;
+    opacity: 0;
+
+    animation: messageEnter .8s ease-out .65s forwards;
 
 }
 
 
-/* MAIN SLIDE-UP ANIMATION */
+/* =========================================
+LEFT RED CHEVRONS
+========================================= */
 
-@keyframes welcomeEnter {
+.welcome-section::before {
 
-    from {
+    content: "»»»";
+
+    position: absolute;
+
+    left: 17%;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #ff2d2d;
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 8px rgba(255,0,0,.6),
+        0 0 18px rgba(255,0,0,.35);
+
+    opacity: 0;
+
+    z-index: 2;
+
+    animation: arrowsLeft 1.2s ease-out .1s forwards;
+
+}
+
+
+/* =========================================
+RIGHT RED CHEVRONS
+========================================= */
+
+.welcome-section::after {
+
+    content: "«««";
+
+    position: absolute;
+
+    right: 17%;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #ff2d2d;
+
+    font-size: 34px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 8px rgba(255,0,0,.6),
+        0 0 18px rgba(255,0,0,.35);
+
+    opacity: 0;
+
+    z-index: 2;
+
+    animation: arrowsRight 1.2s ease-out .1s forwards;
+
+}
+
+
+/* =========================================
+ONLINE ANIMATION
+========================================= */
+
+@keyframes onlineEnter {
+
+    0% {
 
         opacity: 0;
 
-        transform: translateY(35px);
+        transform: translateX(-45px);
 
     }
 
-    to {
+    60% {
 
         opacity: 1;
 
-        transform: translateY(0);
+        transform: translateX(8px);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: translateX(0);
 
     }
 
 }
 
 
-/* TEXT SLIDE-UP */
+/* =========================================
+WELCOME TEXT — SLIDE UP
+========================================= */
 
-@keyframes welcomeItemUp {
+@keyframes welcomeEnter {
 
-    from {
+    0% {
+
+        opacity: 0;
+
+        transform: translateY(35px) scale(.96);
+
+    }
+
+    60% {
+
+        opacity: 1;
+
+        transform: translateY(-4px) scale(1.02);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* =========================================
+DESIGNATION — FROM RIGHT
+========================================= */
+
+@keyframes designationEnter {
+
+    0% {
+
+        opacity: 0;
+
+        transform: translateX(45px);
+
+    }
+
+    60% {
+
+        opacity: 1;
+
+        transform: translateX(-7px);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform: translateX(0);
+
+    }
+
+}
+
+
+/* =========================================
+SECOND LINE — SLIDE UP
+========================================= */
+
+@keyframes messageEnter {
+
+    0% {
 
         opacity: 0;
 
@@ -796,7 +978,7 @@ PROFESSIONAL WELCOME SECTION
 
     }
 
-    to {
+    100% {
 
         opacity: 1;
 
@@ -807,43 +989,107 @@ PROFESSIONAL WELCOME SECTION
 }
 
 
-/* ONLINE PULSE */
+/* =========================================
+LEFT ARROWS
+========================================= */
 
-@keyframes onlinePulse {
+@keyframes arrowsLeft {
 
     0% {
 
-        box-shadow:
-            0 0 0 0 rgba(37,211,102,.35);
+        opacity: 0;
+
+        transform:
+            translate(-120px,-50%)
+            scale(.7);
 
     }
 
-    70% {
+    35% {
 
-        box-shadow:
-            0 0 0 6px rgba(37,211,102,0);
+        opacity: 1;
+
+    }
+
+    75% {
+
+        opacity: 1;
+
+        transform:
+            translate(15px,-50%)
+            scale(1);
 
     }
 
     100% {
 
-        box-shadow:
-            0 0 0 0 rgba(37,211,102,0);
+        opacity: 0;
+
+        transform:
+            translate(45px,-50%)
+            scale(.9);
 
     }
 
 }
 
 
-/* MOBILE */
+/* =========================================
+RIGHT ARROWS
+========================================= */
+
+@keyframes arrowsRight {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            translate(120px,-50%)
+            scale(.7);
+
+    }
+
+    35% {
+
+        opacity: 1;
+
+    }
+
+    75% {
+
+        opacity: 1;
+
+        transform:
+            translate(-15px,-50%)
+            scale(1);
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translate(-45px,-50%)
+            scale(.9);
+
+    }
+
+}
+
+
+/* =========================================
+MOBILE
+========================================= */
 
 @media(max-width:768px) {
 
     .welcome-section {
 
-        padding: 10px 8px;
+        padding: 10px 8px 11px;
 
-        min-height: 72px;
+        min-height: 75px;
 
     }
 
@@ -872,6 +1118,22 @@ PROFESSIONAL WELCOME SECTION
         font-size: 12px;
 
         margin-top: 6px;
+
+    }
+
+    .welcome-section::before {
+
+        left: 3%;
+
+        font-size: 22px;
+
+    }
+
+    .welcome-section::after {
+
+        right: 3%;
+
+        font-size: 22px;
 
     }
 
