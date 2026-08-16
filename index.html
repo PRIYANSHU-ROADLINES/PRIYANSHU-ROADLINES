@@ -604,178 +604,232 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
 
 
 /* =========================================
-   PROFESSIONAL TWO-LINE WELCOME SECTION
-========================================= */
-
-/* =========================================
 PROFESSIONAL WELCOME SECTION
 ========================================= */
 
 .welcome-section {
     background: linear-gradient(
         135deg,
-        #111,
-        #1c1c1c,
-        #000
+        #111111,
+        #181818,
+        #050505
     );
 
     color: white;
-    padding: 18px 20px 20px;
+
+    padding: 12px 15px;
+
     text-align: center;
+
     overflow: hidden;
 
-    border-bottom: 1px solid rgba(255,45,45,.35);
-}
+    border-bottom: 1px solid rgba(255,45,45,0.35);
 
-
-/* MAIN WELCOME CONTENT */
-
-.welcome-content {
-    max-width: 1100px;
-    margin: auto;
+    min-height: 78px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    flex-wrap: wrap;
-    column-gap: 14px;
-    row-gap: 7px;
-
-    animation: welcomeSlideUp .8s ease-out both;
+    justify-content: center;
 }
 
 
-/* ONLINE BADGE */
+/* MAIN CONTENT */
 
-.welcome-badge {
+.welcome-content {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    text-align: center;
+
+    animation: welcomeEnter 1s ease-out both;
+}
+
+
+/* FIRST LINE ELEMENTS */
+
+.welcome-badge,
+#welcomeTitle,
+#welcomeDesignation {
+
     display: inline-block;
 
+    vertical-align: middle;
+
+    margin: 0 5px;
+
+}
+
+
+/* ONLINE */
+
+.welcome-badge {
+
     color: #25D366;
+
     border: 1px solid #25D366;
 
-    padding: 4px 11px;
-    border-radius: 30px;
+    padding: 3px 10px;
 
-    font-size: 11px;
+    border-radius: 20px;
+
+    font-size: 10px;
+
     font-weight: bold;
 
     white-space: nowrap;
 
-    animation:
-        welcomeItemUp .7s ease-out .1s both,
-        onlinePulse 2s infinite .8s;
+    animation: welcomeItemUp .8s ease-out .1s both;
+
 }
 
 
 /* WELCOME NAME */
 
 #welcomeTitle {
-    font-size: 27px;
-    margin: 0;
+
+    font-size: 26px;
+
+    line-height: 1;
 
     color: white;
+
+    font-weight: 700;
 
     white-space: nowrap;
 
     text-shadow:
         0 0 8px rgba(255,255,255,.25);
 
-    animation: welcomeItemUp .7s ease-out .2s both;
+    animation: welcomeItemUp .8s ease-out .2s both;
+
 }
 
 
-/* SEPARATOR BEFORE DESIGNATION */
+/* SEPARATOR */
 
 #welcomeTitle::after {
+
     content: "  |  ";
 
     color: #777;
+
     font-weight: normal;
+
 }
 
 
 /* DESIGNATION */
 
 #welcomeDesignation {
-    font-size: 16px;
+
+    font-size: 15px;
+
+    line-height: 1;
 
     color: #ff2d2d;
-    font-weight: bold;
 
-    margin: 0;
+    font-weight: bold;
 
     white-space: nowrap;
 
-    animation: welcomeItemUp .7s ease-out .3s both;
+    animation: welcomeItemUp .8s ease-out .3s both;
+
 }
 
 
-/* SECOND LINE — QUOTE / MESSAGE */
+/* SECOND LINE */
 
 #welcomeMessage {
-    flex-basis: 100%;
 
-    color: #d5d5d5;
+    display: block;
 
-    font-size: 14px;
+    margin-top: 7px;
 
-    margin-top: 2px;
+    color: #cfcfcf;
+
+    font-size: 13px;
+
+    line-height: 1.2;
 
     text-align: center;
 
     animation: welcomeItemUp .8s ease-out .45s both;
+
 }
 
 
 /* MAIN SLIDE-UP ANIMATION */
 
-@keyframes welcomeSlideUp {
+@keyframes welcomeEnter {
 
     from {
+
         opacity: 0;
+
         transform: translateY(35px);
+
     }
 
     to {
+
         opacity: 1;
+
         transform: translateY(0);
+
     }
 
 }
 
 
-/* INDIVIDUAL TEXT ANIMATION */
+/* TEXT SLIDE-UP */
 
 @keyframes welcomeItemUp {
 
     from {
+
         opacity: 0;
-        transform: translateY(25px);
+
+        transform: translateY(20px);
+
     }
 
     to {
+
         opacity: 1;
+
         transform: translateY(0);
+
     }
 
 }
 
 
-/* ONLINE GLOW */
+/* ONLINE PULSE */
 
 @keyframes onlinePulse {
 
     0% {
-        box-shadow: 0 0 0 0 rgba(37,211,102,.35);
+
+        box-shadow:
+            0 0 0 0 rgba(37,211,102,.35);
+
     }
 
     70% {
-        box-shadow: 0 0 0 7px rgba(37,211,102,0);
+
+        box-shadow:
+            0 0 0 6px rgba(37,211,102,0);
+
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(37,211,102,0);
+
+        box-shadow:
+            0 0 0 0 rgba(37,211,102,0);
+
     }
 
 }
@@ -786,29 +840,39 @@ PROFESSIONAL WELCOME SECTION
 @media(max-width:768px) {
 
     .welcome-section {
-        padding: 14px 12px 16px;
-    }
 
-    .welcome-content {
-        column-gap: 8px;
-        row-gap: 6px;
+        padding: 10px 8px;
+
+        min-height: 72px;
+
     }
 
     #welcomeTitle {
-        font-size: 21px;
+
+        font-size: 20px;
+
     }
 
     #welcomeDesignation {
-        font-size: 14px;
+
+        font-size: 13px;
+
     }
 
     .welcome-badge {
-        font-size: 10px;
+
+        font-size: 9px;
+
         padding: 3px 8px;
+
     }
 
     #welcomeMessage {
-        font-size: 13px;
+
+        font-size: 12px;
+
+        margin-top: 6px;
+
     }
 
 }
