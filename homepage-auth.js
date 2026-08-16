@@ -821,79 +821,58 @@ async () => {
 );
 
 /* =========================================
-TRACK LR
+   AUTHENTICATION NAVIGATION GUARD
 ========================================= */
 
-document
-.getElementById("trackBtn")
-?.addEventListener(
-"click",
-function(e) {
+function requireLogin(event) {
 
-        if (
-            currentRole === "guest"
-        ) {
+    if (currentRole === "guest") {
 
-            e.preventDefault();
+        event.preventDefault();
 
-            window.location.href =
-                "signin.html";
+        window.location.href = "signin.html";
 
-        }
-
+        return false;
     }
-);
+
+    return true;
+}
 
 
 /* =========================================
-GET QUOTE
+   TRACK LR
 ========================================= */
 
 document
-.getElementById("quoteBtn")
-?.addEventListener(
-"click",
-function(e) {
-
-        if (
-            currentRole === "guest"
-        ) {
-
-            e.preventDefault();
-
-            window.location.href =
-                "signin.html";
-
-        }
-
-    }
-);
+    .getElementById("trackBtn")
+    ?.addEventListener(
+        "click",
+        requireLogin
+    );
 
 
 /* =========================================
-ENQUIRY
+   GET QUOTE
 ========================================= */
 
 document
-.getElementById("enquiryBtn")
-?.addEventListener(
-"click",
-function(e) {
+    .getElementById("quoteBtn")
+    ?.addEventListener(
+        "click",
+        requireLogin
+    );
 
-        if (
-            currentRole === "guest"
-        ) {
 
-            e.preventDefault();
+/* =========================================
+   ENQUIRY
+========================================= */
 
-            window.location.href =
-                "signin.html";
-
-        }
-
-    }
-);
-
+document
+    .getElementById("enquiryBtn")
+    ?.addEventListener(
+        "click",
+        requireLogin
+    );
 
 /* =========================================
 MENU
@@ -1044,5 +1023,47 @@ function showAdminInterface(name) {
     });
 
 }
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+const mobileMenuBtn =
+    document.getElementById("mobileMenuBtn");
+
+const mobileMenuDropdown =
+    document.getElementById("mobileMenuDropdown");
+
+
+mobileMenuBtn?.addEventListener(
+    "click",
+    function(event) {
+
+        event.stopPropagation();
+
+        mobileMenuDropdown?.classList.toggle("show");
+
+    }
+);
+
+
+/* CLOSE MOBILE MENU */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            mobileMenuDropdown &&
+            mobileMenuBtn &&
+            !mobileMenuDropdown.contains(event.target) &&
+            !mobileMenuBtn.contains(event.target)
+        ) {
+
+            mobileMenuDropdown.classList.remove("show");
+
+        }
+
+    }
+);
 
 
