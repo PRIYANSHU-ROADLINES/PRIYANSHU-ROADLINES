@@ -607,136 +607,134 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
    PROFESSIONAL TWO-LINE WELCOME SECTION
 ========================================= */
 
+/* =========================================
+PROFESSIONAL WELCOME SECTION
+========================================= */
+
 .welcome-section {
-    background: #ffffff;
-    color: #111;
+    background: linear-gradient(
+        135deg,
+        #111,
+        #1c1c1c,
+        #000
+    );
 
-    padding: 16px 20px 14px;
-
+    color: white;
+    padding: 18px 20px 20px;
     text-align: center;
-
-    border-bottom: 1px solid #e5e5e5;
-
-    box-shadow: 0 3px 12px rgba(0,0,0,.12);
-
     overflow: hidden;
+
+    border-bottom: 1px solid rgba(255,45,45,.35);
 }
+
+
+/* MAIN WELCOME CONTENT */
 
 .welcome-content {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: auto;
 
-    animation: welcomeEnter .6s ease forwards;
-}
-
-
-/* FIRST LINE */
-
-.welcome-main-row {
     display: flex;
-
+    justify-content: center;
     align-items: center;
 
-    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 14px;
+    row-gap: 7px;
 
-    gap: 14px;
-
-    min-height: 34px;
-
-    white-space: nowrap;
+    animation: welcomeSlideUp .8s ease-out both;
 }
 
 
-/* ONLINE */
+/* ONLINE BADGE */
 
 .welcome-badge {
-    display: inline-flex;
+    display: inline-block;
 
-    align-items: center;
-
-    color: #16a34a;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    letter-spacing: .3px;
-
-    padding: 4px 10px;
-
+    color: #25D366;
     border: 1px solid #25D366;
 
-    border-radius: 20px;
+    padding: 4px 11px;
+    border-radius: 30px;
 
-    animation: onlinePulse 2s infinite;
+    font-size: 11px;
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    animation:
+        welcomeItemUp .7s ease-out .1s both,
+        onlinePulse 2s infinite .8s;
 }
 
 
 /* WELCOME NAME */
 
 #welcomeTitle {
+    font-size: 27px;
     margin: 0;
 
-    color: #111;
+    color: white;
 
-    font-size: 25px;
+    white-space: nowrap;
 
-    font-weight: 700;
+    text-shadow:
+        0 0 8px rgba(255,255,255,.25);
 
-    line-height: 1.2;
-
-    text-shadow: none;
+    animation: welcomeItemUp .7s ease-out .2s both;
 }
 
 
-/* ROLE */
+/* SEPARATOR BEFORE DESIGNATION */
+
+#welcomeTitle::after {
+    content: "  |  ";
+
+    color: #777;
+    font-weight: normal;
+}
+
+
+/* DESIGNATION */
 
 #welcomeDesignation {
-    margin: 0;
-
-    color: #ff2d2d;
-
     font-size: 16px;
 
-    font-weight: 700;
+    color: #ff2d2d;
+    font-weight: bold;
 
-    line-height: 1.2;
+    margin: 0;
+
+    white-space: nowrap;
+
+    animation: welcomeItemUp .7s ease-out .3s both;
 }
 
 
-/* DIVIDERS */
+/* SECOND LINE — QUOTE / MESSAGE */
 
-.welcome-divider {
-    color: #b5b5b5;
+#welcomeMessage {
+    flex-basis: 100%;
 
-    font-size: 20px;
+    color: #d5d5d5;
 
-    font-weight: 300;
+    font-size: 14px;
+
+    margin-top: 2px;
+
+    text-align: center;
+
+    animation: welcomeItemUp .8s ease-out .45s both;
 }
 
 
-/* SECOND LINE */
+/* MAIN SLIDE-UP ANIMATION */
 
-.welcome-message {
-    margin-top: 5px;
-
-    color: #666;
-
-    font-size: 13px;
-
-    line-height: 1.4;
-
-    font-weight: 400;
-}
-
-
-/* ENTRY ANIMATION */
-
-@keyframes welcomeEnter {
+@keyframes welcomeSlideUp {
 
     from {
         opacity: 0;
-        transform: translateY(-8px);
+        transform: translateY(35px);
     }
 
     to {
@@ -747,16 +745,33 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
 }
 
 
-/* ONLINE PULSE */
+/* INDIVIDUAL TEXT ANIMATION */
+
+@keyframes welcomeItemUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ONLINE GLOW */
 
 @keyframes onlinePulse {
 
     0% {
-        box-shadow: 0 0 0 0 rgba(37,211,102,.25);
+        box-shadow: 0 0 0 0 rgba(37,211,102,.35);
     }
 
     70% {
-        box-shadow: 0 0 0 6px rgba(37,211,102,0);
+        box-shadow: 0 0 0 7px rgba(37,211,102,0);
     }
 
     100% {
@@ -771,37 +786,32 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
 @media(max-width:768px) {
 
     .welcome-section {
-        padding: 13px 10px;
+        padding: 14px 12px 16px;
     }
 
-    .welcome-main-row {
-        gap: 7px;
-    }
-
-    .welcome-badge {
-        font-size: 11px;
-        padding: 3px 7px;
+    .welcome-content {
+        column-gap: 8px;
+        row-gap: 6px;
     }
 
     #welcomeTitle {
-        font-size: 18px;
+        font-size: 21px;
     }
 
     #welcomeDesignation {
-        font-size: 12px;
+        font-size: 14px;
     }
 
-    .welcome-divider {
-        font-size: 16px;
+    .welcome-badge {
+        font-size: 10px;
+        padding: 3px 8px;
     }
 
-    .welcome-message {
-        font-size: 11px;
-        margin-top: 4px;
+    #welcomeMessage {
+        font-size: 13px;
     }
 
 }
-
 * =========================================
 HEADER MENU
 ========================================= *
