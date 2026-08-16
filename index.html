@@ -2289,223 +2289,299 @@ body.admin-mode .header-quote {
     }
 
 }
+/* =====================================================
+   DESKTOP / MOBILE HEADER SEPARATION
+   ===================================================== */
+
+/* DESKTOP HEADER */
+.desktop-header {
+    display: flex;
+}
+
+/* MOBILE HEADER + MENU */
+.mobile-header,
+.mobile-menu-dropdown {
+    display: none;
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .desktop-header {
+        display: none !important;
+    }
+
+    .mobile-header {
+        display: flex !important;
+    }
+
+    .mobile-menu-dropdown {
+        display: none;
+    }
+
+    .mobile-menu-dropdown.show {
+        display: block !important;
+    }
+}
+
+
+/* =====================================================
+   DESKTOP
+   ===================================================== */
+
+@media (min-width: 769px) {
+
+    .desktop-header {
+        display: flex !important;
+    }
+
+    .mobile-header,
+    .mobile-menu-dropdown {
+        display: none !important;
+    }
+}
 </style>
 <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
 
-<header class="professional-header">
+<!-- =========================================================
+     DESKTOP HEADER
+========================================================= -->
 
-    <!-- MOBILE MENU BUTTON -->
-    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button">
-        ☰
-    </button>
+<header class="desktop-header">
 
     <!-- BRAND -->
-    <div class="brand-area">
+    <div class="desktop-brand">
 
         <img
             src="images/logo.png"
             alt="PRIYANSHU ROADLINES Logo"
-            class="brand-logo"
+            class="desktop-brand-logo"
         >
 
-        <div class="brand-text">
+        <div class="desktop-brand-text">
+
             <h1>
-                <span>PRIYANSHU</span> ROADLINES
+                <span>PRIYANSHU</span>
+                ROADLINES
             </h1>
 
             <p>— FOR QUICK & SAFE SERVICE —</p>
+
         </div>
 
     </div>
 
 
     <!-- DESKTOP NAVIGATION -->
-    <nav class="professional-nav">
+    <nav class="desktop-nav">
 
-        <a href="tracking.html" id="headerTrack">
-            <span class="nav-icon">⌕</span>
+        <!-- TRACK LR -->
+        <a
+            href="tracking.html"
+            id="headerTrack"
+            class="desktop-nav-item"
+        >
+            <span class="desktop-nav-icon">⌕</span>
             <span>Track LR</span>
         </a>
 
-        <a href="about.html" id="headerAbout">
-            <span class="nav-icon">ⓘ</span>
+
+        <!-- ABOUT -->
+        <a
+            href="about.html"
+            id="headerAbout"
+            class="desktop-nav-item"
+        >
+            <span class="desktop-nav-icon">ⓘ</span>
             <span>About</span>
         </a>
 
-        <a href="services.html" id="headerServices">
-            <span class="nav-icon">▣</span>
+
+        <!-- SERVICES -->
+        <a
+            href="services.html"
+            id="headerServices"
+            class="desktop-nav-item"
+        >
+            <span class="desktop-nav-icon">▣</span>
             <span>Services</span>
         </a>
 
-        <a href="fleet.html" id="headerFleet">
-            <span class="nav-icon">▱</span>
+
+        <!-- FLEET -->
+        <a
+            href="fleet.html"
+            id="headerFleet"
+            class="desktop-nav-item"
+        >
+            <span class="desktop-nav-icon">▱</span>
             <span>Fleet</span>
         </a>
 
-        <!-- CUSTOMER -->
+
+        <!-- CUSTOMER : MY QUOTES -->
         <a
             href="quote.html"
             id="headerMyQuotes"
-            class="header-role-link"
+            class="desktop-nav-item desktop-customer-item"
             style="display:none;"
         >
-            <span class="nav-icon">▤</span>
+            <span class="desktop-nav-icon">▤</span>
             <span>My Quotes</span>
         </a>
 
-        <!-- STAFF + ADMIN -->
+
+        <!-- STAFF + ADMIN : POD -->
         <a
             href="pod.html"
             id="headerPOD"
-            class="header-role-link"
+            class="desktop-nav-item desktop-staff-item"
             style="display:none;"
         >
-            <span class="nav-icon">◇</span>
+            <span class="desktop-nav-icon">◇</span>
             <span>POD</span>
         </a>
 
-        <!-- ADMIN -->
+
+        <!-- ADMIN : ADMIN DASHBOARD -->
         <a
             href="admin-dashboard.html"
             id="headerAdmin"
-            class="header-role-link"
+            class="desktop-nav-item desktop-admin-item"
             style="display:none;"
         >
-            <span class="nav-icon">⚙</span>
-            <span>Admin</span>
-        </a>
-
-        <!-- GET QUOTE -->
-        <a
-            href="quote.html"
-            id="headerGetQuote"
-            class="header-quote"
-        >
-            <span>▤</span>
-            Get Quote
+            <span class="desktop-nav-icon">⚙</span>
+            <span>Admin Dashboard</span>
         </a>
 
     </nav>
 
 
-    <!-- MOBILE ACTION BUTTONS -->
-    <div class="mobile-actions">
+    <!-- DESKTOP RIGHT SIDE -->
+    <div class="desktop-header-right">
 
-        <a
-            href="tel:8171703677"
-            class="mobile-call-btn"
-            aria-label="Call"
-        >
-            📞
-        </a>
 
+        <!-- GET QUOTE -->
         <a
             href="quote.html"
-            id="mobileGetQuote"
-            class="mobile-quote-btn"
+            id="headerGetQuote"
+            class="desktop-get-quote"
         >
-            Get<br>Quote
-        </a>
-
-    </div>
-
-
-    <!-- USER AREA -->
-    <div
-        id="userSection"
-        class="header-user-area"
-    >
-
-        <!-- SIGN IN -->
-        <a
-            href="signin.html"
-            id="signinBtn"
-            class="header-signin"
-        >
-            <span>♙</span>
-            <span class="signin-text">Sign In</span>
+            <span class="desktop-quote-icon">▤</span>
+            <span>Get Quote</span>
         </a>
 
 
-        <!-- PROFILE -->
+        <!-- USER AREA -->
         <div
-            id="profileContainer"
-            class="header-profile"
-            style="display:none;"
+            id="userSection"
+            class="desktop-user-area"
         >
 
-            <button
-                id="profileCircle"
-                class="profile-circle"
-                type="button"
-                aria-label="Open profile"
+
+            <!-- SIGN IN -->
+            <a
+                href="signin.html"
+                id="signinBtn"
+                class="desktop-signin"
             >
-
-                <img
-                    id="profileImage"
-                    src=""
-                    alt="Profile"
-                >
-
-                <span id="profileInitial">U</span>
-
-                <span class="profile-arrow">⌄</span>
-
-            </button>
+                <span class="desktop-signin-icon">♙</span>
+                <span>Sign In</span>
+            </a>
 
 
-            <!-- PROFILE DROPDOWN -->
+            <!-- PROFILE -->
             <div
-                id="profileDropdown"
-                class="profile-dropdown"
+                id="profileContainer"
+                class="desktop-profile"
+                style="display:none;"
             >
-
-                <div class="profile-header">
-
-                    <div class="profile-big-circle">
-
-                        <img
-                            id="profileBigImage"
-                            src=""
-                            alt="Profile"
-                        >
-
-                        <span id="profileBigInitial">
-                            U
-                        </span>
-
-                    </div>
-
-                    <div class="profile-details">
-
-                        <h3 id="profileName">
-                            User
-                        </h3>
-
-                        <p id="profileEmail">
-                            email@example.com
-                        </p>
-
-                        <span id="profileRole">
-                            Customer
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <hr>
 
                 <button
-                    id="logoutBtn"
-                    class="logout-btn"
+                    id="profileCircle"
+                    class="desktop-profile-button"
                     type="button"
+                    aria-label="Open profile"
                 >
-                    🚪 Logout
+
+                    <img
+                        id="profileImage"
+                        src=""
+                        alt="Profile"
+                    >
+
+                    <span id="profileInitial">
+                        U
+                    </span>
+
+                    <span class="desktop-profile-arrow">
+                        ⌄
+                    </span>
+
                 </button>
+
+
+                <!-- PROFILE DROPDOWN -->
+                <div
+                    id="profileDropdown"
+                    class="profile-dropdown"
+                >
+
+                    <div class="profile-header">
+
+                        <div class="profile-big-circle">
+
+                            <img
+                                id="profileBigImage"
+                                src=""
+                                alt="Profile"
+                            >
+
+                            <span id="profileBigInitial">
+                                U
+                            </span>
+
+                        </div>
+
+
+                        <div class="profile-details">
+
+                            <h3 id="profileName">
+                                User
+                            </h3>
+
+                            <p id="profileEmail">
+                                email@example.com
+                            </p>
+
+                            <span id="profileRole">
+                                Customer
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <button
+                        id="logoutBtn"
+                        class="logout-btn"
+                        type="button"
+                    >
+                        🚪 Logout
+                    </button>
+
+                </div>
 
             </div>
 
@@ -2513,56 +2589,171 @@ body.admin-mode .header-quote {
 
     </div>
 
+</header>
 
-    <!-- MOBILE DROPDOWN -->
-    <div
-        class="mobile-menu-dropdown"
-        id="mobileMenuDropdown"
-    >
 
-        <a href="tracking.html">
-            ⌕ &nbsp; Track LR
-        </a>
 
-        <a href="about.html">
-            ⓘ &nbsp; About
-        </a>
+<!-- =========================================================
+     MOBILE HEADER
+========================================================= -->
 
-        <a href="services.html">
-            ▣ &nbsp; Services
-        </a>
+<header class="mobile-header">
 
-        <a href="fleet.html">
-            ▱ &nbsp; Fleet
-        </a>
 
-        <a
-            href="quote.html"
-            class="mobile-customer-menu"
-            id="mobileMyQuotes"
+    <!-- MOBILE BRAND -->
+    <div class="mobile-brand">
+
+        <img
+            src="images/logo.png"
+            alt="PRIYANSHU ROADLINES Logo"
+            class="mobile-brand-logo"
         >
-            ▤ &nbsp; My Quotes
+
+        <div class="mobile-brand-text">
+
+            <h1>
+                <span>PRIYANSHU</span>
+                ROADLINES
+            </h1>
+
+            <p>QUICK & SAFE SERVICE</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- MOBILE RIGHT SIDE -->
+    <div class="mobile-header-actions">
+
+
+        <!-- MOBILE SIGN IN -->
+        <a
+            href="signin.html"
+            id="mobileSignInBtn"
+            class="mobile-signin"
+        >
+            Sign In
         </a>
 
-        <a
-            href="pod.html"
-            class="mobile-staff-menu"
-            id="mobilePOD"
-        >
-            ◇ &nbsp; POD
-        </a>
 
-        <a
-            href="admin-dashboard.html"
-            class="mobile-admin-menu"
-            id="mobileAdmin"
+        <!-- MOBILE MENU BUTTON -->
+        <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button"
+            aria-label="Open menu"
         >
-            ⚙ &nbsp; Admin Dashboard
-        </a>
+            ☰
+        </button>
 
     </div>
 
 </header>
+
+
+
+<!-- =========================================================
+     MOBILE MENU
+========================================================= -->
+
+<div
+    class="mobile-menu-dropdown"
+    id="mobileMenuDropdown"
+>
+
+
+    <!-- TRACK LR -->
+    <a
+        href="tracking.html"
+        class="mobile-nav-item"
+        id="mobileTrack"
+    >
+        <span>⌕</span>
+        <span>Track LR</span>
+    </a>
+
+
+    <!-- ABOUT -->
+    <a
+        href="about.html"
+        class="mobile-nav-item"
+        id="mobileAbout"
+    >
+        <span>ⓘ</span>
+        <span>About</span>
+    </a>
+
+
+    <!-- SERVICES -->
+    <a
+        href="services.html"
+        class="mobile-nav-item"
+        id="mobileServices"
+    >
+        <span>▣</span>
+        <span>Services</span>
+    </a>
+
+
+    <!-- FLEET -->
+    <a
+        href="fleet.html"
+        class="mobile-nav-item"
+        id="mobileFleet"
+    >
+        <span>▱</span>
+        <span>Fleet</span>
+    </a>
+
+
+    <!-- CUSTOMER -->
+    <a
+        href="quote.html"
+        class="mobile-nav-item mobile-customer-menu"
+        id="mobileMyQuotes"
+        style="display:none;"
+    >
+        <span>▤</span>
+        <span>My Quotes</span>
+    </a>
+
+
+    <!-- STAFF + ADMIN -->
+    <a
+        href="pod.html"
+        class="mobile-nav-item mobile-staff-menu"
+        id="mobilePOD"
+        style="display:none;"
+    >
+        <span>◇</span>
+        <span>POD</span>
+    </a>
+
+
+    <!-- ADMIN -->
+    <a
+        href="admin-dashboard.html"
+        class="mobile-nav-item mobile-admin-menu"
+        id="mobileAdmin"
+        style="display:none;"
+    >
+        <span>⚙</span>
+        <span>Admin Dashboard</span>
+    </a>
+
+
+    <!-- GET QUOTE -->
+    <a
+        href="quote.html"
+        id="mobileGetQuote"
+        class="mobile-get-quote"
+    >
+        <span>▤</span>
+        <span>Get Quote</span>
+    </a>
+
+</div>
     
 <!-- USER WELCOME AREA -->
 <section
