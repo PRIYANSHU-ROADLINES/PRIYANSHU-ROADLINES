@@ -87,11 +87,7 @@ document.getElementById("podMenu");
 
 const loader =
 document.getElementById("loader");
-const menuBtn =
-document.getElementById("menuBtn");
 
-const menuDropdown =
-document.getElementById("menuDropdown");
 const welcomeSection =
 document.getElementById("welcomeSection");
 
