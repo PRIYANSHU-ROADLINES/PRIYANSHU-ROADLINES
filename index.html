@@ -1195,198 +1195,810 @@ to {
 
 
 }
+/* =====================================================
+   PROFESSIONAL PRIYANSHU ROADLINES HEADER
+   ===================================================== */
 
+.professional-header {
+
+    min-height: 120px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #050505 0%,
+            #0b0d0e 55%,
+            #050505 100%
+        );
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 14px 28px;
+
+    gap: 25px;
+
+    border-bottom: 2px solid #ff2d2d;
+
+    position: relative;
+
+    z-index: 5000;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.45);
+
+}
+
+
+/* =====================================================
+   BRAND
+   ===================================================== */
+
+.brand-area {
+
+    display: flex;
+
+    align-items: center;
+
+    min-width: 370px;
+
+    flex-shrink: 0;
+
+}
+
+
+.brand-logo {
+
+    width: 105px;
+
+    height: 105px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+
+}
+
+
+.brand-text {
+
+    margin-left: 15px;
+
+}
+
+
+.brand-text h1 {
+
+    margin: 0;
+
+    padding: 0;
+
+    font-size: 36px;
+
+    line-height: .95;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    color: white;
+
+    text-shadow: none;
+
+    animation: none;
+
+}
+
+
+.brand-text h1 span {
+
+    color: #ff2d2d;
+
+}
+
+
+.brand-text p {
+
+    margin-top: 9px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #ddd;
+
+    letter-spacing: .5px;
+
+}
+
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
+.professional-nav {
+
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    flex: 1;
+
+}
+
+
+.professional-nav > a {
+
+    min-width: 72px;
+
+    padding: 9px 11px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #eee;
+
+    text-decoration: none;
+
+    border-radius: 4px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease;
+
+}
+
+
+.professional-nav > a:hover {
+
+    background: rgba(255,45,45,.12);
+
+    color: white;
+
+    transform: translateY(-2px);
+
+}
+
+
+.nav-icon {
+
+    font-size: 26px;
+
+    line-height: 1;
+
+    font-weight: normal;
+
+}
+
+
+.professional-nav > a:hover .nav-icon {
+
+    color: #ff2d2d;
+
+}
+
+
+/* =====================================================
+   GET QUOTE
+   ===================================================== */
+
+.header-quote {
+
+    background: #ff2525 !important;
+
+    color: white !important;
+
+    min-width: 125px !important;
+
+    flex-direction: row !important;
+
+    gap: 8px !important;
+
+    padding: 13px 16px !important;
+
+    border-radius: 7px !important;
+
+    font-size: 15px !important;
+
+    font-weight: 700 !important;
+
+    margin-left: 8px;
+
+    box-shadow:
+        0 5px 15px rgba(255,0,0,.25);
+
+}
+
+
+.header-quote:hover {
+
+    background: #d90000 !important;
+
+    transform: translateY(-2px) !important;
+
+}
+
+
+/* =====================================================
+   USER AREA
+   ===================================================== */
+
+.header-user-area {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-shrink: 0;
+
+    margin-left: 5px;
+
+}
+
+
+.header-signin {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 12px 18px;
+
+    border: 1px solid #444;
+
+    border-radius: 8px;
+
+    font-weight: 700;
+
+    transition: .25s;
+
+}
+
+
+.header-signin:hover {
+
+    border-color: #ff2d2d;
+
+    background: rgba(255,45,45,.1);
+
+}
+
+
+/* =====================================================
+   PROFILE BUTTON
+   ===================================================== */
+
+.header-profile {
+
+    position: relative;
+
+}
+
+
+.header-profile .profile-circle {
+
+    width: 50px;
+
+    height: 50px;
+
+    position: relative;
+
+    border: 2px solid #ddd;
+
+    background: #111;
+
+    animation: none;
+
+}
+
+
+.header-profile .profile-circle:hover {
+
+    border-color: #ff2d2d;
+
+    transform: scale(1.05);
+
+}
+
+
+.header-profile .profile-arrow {
+
+    position: absolute;
+
+    right: -18px;
+
+    font-size: 20px;
+
+    color: white;
+
+}
+
+
+.header-profile .profile-circle img {
+
+    display: none;
+
+}
+
+
+/* =====================================================
+   PROFILE DROPDOWN
+   ===================================================== */
+
+.header-profile .profile-dropdown {
+
+    top: 63px;
+
+    right: 0;
+
+}
+
+
+/* =====================================================
+   ROLE VISIBILITY
+   ===================================================== */
+
+.header-role-link {
+
+    display: none;
+
+}
+
+
+/* =====================================================
+   STAFF / ADMIN HEADER
+   ===================================================== */
+
+body.staff-mode .header-quote,
+body.admin-mode .header-quote {
+
+    display: none !important;
+
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media(max-width:1100px) {
+
+    .professional-header {
+
+        padding: 12px 18px;
+
+        gap: 10px;
+
+    }
+
+
+    .brand-area {
+
+        min-width: 300px;
+
+    }
+
+
+    .brand-logo {
+
+        width: 82px;
+
+        height: 82px;
+
+    }
+
+
+    .brand-text h1 {
+
+        font-size: 28px;
+
+    }
+
+
+    .brand-text p {
+
+        font-size: 10px;
+
+    }
+
+
+    .professional-nav {
+
+        gap: 1px;
+
+    }
+
+
+    .professional-nav > a {
+
+        min-width: 60px;
+
+        padding: 7px;
+
+        font-size: 11px;
+
+    }
+
+
+    .nav-icon {
+
+        font-size: 21px;
+
+    }
+
+
+    .header-quote {
+
+        min-width: 105px !important;
+
+        padding: 11px !important;
+
+        font-size: 13px !important;
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE HEADER
+   ===================================================== */
+
+@media(max-width:768px) {
+
+    .professional-header {
+
+        min-height: auto;
+
+        padding: 12px 14px;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+
+    }
+
+
+    .brand-area {
+
+        width: 100%;
+
+        min-width: 0;
+
+        justify-content: flex-start;
+
+    }
+
+
+    .brand-logo {
+
+        width: 70px;
+
+        height: 70px;
+
+    }
+
+
+    .brand-text {
+
+        margin-left: 10px;
+
+    }
+
+
+    .brand-text h1 {
+
+        font-size: 24px;
+
+    }
+
+
+    .brand-text p {
+
+        font-size: 9px;
+
+        margin-top: 5px;
+
+    }
+
+
+    .professional-nav {
+
+        width: 100%;
+
+        overflow-x: auto;
+
+        justify-content: flex-start;
+
+        padding-bottom: 3px;
+
+        scrollbar-width: none;
+
+    }
+
+
+    .professional-nav::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+
+    .professional-nav > a {
+
+        min-width: 65px;
+
+        flex-shrink: 0;
+
+        font-size: 10px;
+
+    }
+
+
+    .nav-icon {
+
+        font-size: 20px;
+
+    }
+
+
+    .header-quote {
+
+        min-width: 105px !important;
+
+        flex-shrink: 0;
+
+    }
+
+
+    .header-user-area {
+
+        position: absolute;
+
+        top: 25px;
+
+        right: 15px;
+
+    }
+
+
+    .header-signin {
+
+        padding: 8px 11px;
+
+        font-size: 12px;
+
+    }
+
+}
 </style>
 <link rel="icon" href="images/logo.png">
 </head>
 
 <body>
 
-<header>
+<header class="professional-header">
 
-<!-- LOGO -->
-<div class="logo-box">
-    <img
-        src="images/logo.png"
-        alt="PRIYANSHU ROADLINES Logo"
-        class="logo-img"
-    >
-</div>
+    <!-- BRAND -->
+    <div class="brand-area">
 
-<!-- COMPANY NAME -->
-<h1>PRIYANSHU ROADLINES</h1>
-
-<!-- NAVIGATION -->
-
-
-<nav class="main-nav">
-<ul>
-
-    <!-- ALWAYS VISIBLE -->
-    <li>
-        <a href="tracking.html" id="trackBtn">
-            Track LR
-        </a>
-    </li>
-
-    <li>
-        <a href="about.html">
-            About
-        </a>
-    </li>
-
-    <li>
-        <a href="services.html">
-            Services
-        </a>
-    </li>
-
-    <!-- MENU -->
-    <li class="menu-wrapper">
-
-        <button
-            type="button"
-            class="menu-btn"
-            id="menuBtn"
-        >
-            ☰ Menu
-        </button>
-
-        <div
-            class="menu-dropdown"
-            id="menuDropdown"
+        <img
+            src="images/logo.png"
+            alt="PRIYANSHU ROADLINES Logo"
+            class="brand-logo"
         >
 
-            <!-- PUBLIC -->
-            <a href="fleet.html">
-                🚚 Fleet
-            </a>
+        <div class="brand-text">
+            <h1>
+                <span>PRIYANSHU</span>
+                ROADLINES
+            </h1>
 
-            <a href="contact.html">
-                📞 Contact
-            </a>
-
-          <!-- CUSTOMER -->
-<a
-    href="quote.html"
-    class="customer-menu"
-    style="display:none;"
->
-    📝 My Quotes
-</a>
-
-<!-- STAFF + ADMIN -->
-<a
-    href="pod.html"
-    id="podMenu"
-    class="staff-menu admin-menu"
-    style="display:none;"
->
-    📦 POD Management
-</a>
-
-<!-- ADMIN -->
-<a
-    href="admin-dashboard.html"
-    id="adminDashboardMenu"
-    class="admin-menu"
-    style="display:none;"
->
-    ⚙️ Admin Dashboard
-</a>
-
+            <p>— FOR QUICK & SAFE SERVICE —</p>
         </div>
 
-    </li>
-
-</ul>
+    </div>
 
 
-</nav>
-<!-- USER PROFILE -->
-<div id="userSection">
+    <!-- NAVIGATION -->
+    <nav class="professional-nav">
 
-<!-- SIGN IN -->
-<a
-    href="signin.html"
-    id="signinBtn"
-    class="signin-btn"
->
-    Sign In
-</a>
+        <a href="tracking.html" id="headerTrack">
+            <span class="nav-icon">⌕</span>
+            <span>Track LR</span>
+        </a>
 
-<!-- LOGGED-IN PROFILE -->
-<div id="profileContainer" style="display\:none;">
+        <a href="about.html" id="headerAbout">
+            <span class="nav-icon">ⓘ</span>
+            <span>About</span>
+        </a>
 
-    <!-- PROFILE BUTTON -->
-    <button
-        id="profileCircle"
-        class="profile-circle"
-        type="button"
-        aria-label="Open profile"
-    >
-        <img
-            id="profileImage"
-            src=""
-            alt="Profile"
+        <a href="services.html" id="headerServices">
+            <span class="nav-icon">▣</span>
+            <span>Services</span>
+        </a>
+
+        <a href="fleet.html" id="headerFleet">
+            <span class="nav-icon">▱</span>
+            <span>Fleet</span>
+        </a>
+
+
+        <!-- CUSTOMER ONLY -->
+        <a
+            href="quote.html"
+            id="headerMyQuotes"
+            class="header-role-link"
+            style="display:none;"
         >
-        <span id="profileInitial">U\</span>
-    </button>
+            <span class="nav-icon">▤</span>
+            <span>My Quotes</span>
+        </a>
 
-    <!-- PROFILE DROPDOWN -->
-    <div id="profileDropdown" class="profile-dropdown">
 
-        <div class="profile-header">
+        <!-- STAFF + ADMIN -->
+        <a
+            href="pod.html"
+            id="headerPOD"
+            class="header-role-link"
+            style="display:none;"
+        >
+            <span class="nav-icon">◇</span>
+            <span>POD</span>
+        </a>
 
-            <!-- LARGE PROFILE IMAGE -->
-            <div class="profile-big-circle">
+
+        <!-- ADMIN ONLY -->
+        <a
+            href="admin-dashboard.html"
+            id="headerAdmin"
+            class="header-role-link"
+            style="display:none;"
+        >
+            <span class="nav-icon">⚙</span>
+            <span>Admin Dashboard</span>
+        </a>
+
+
+        <!-- GET QUOTE -->
+        <a
+            href="quote.html"
+            id="headerGetQuote"
+            class="header-quote"
+        >
+            <span>▤</span>
+            Get Quote
+        </a>
+
+    </nav>
+
+
+    <!-- USER AREA -->
+    <div id="userSection" class="header-user-area">
+
+        <!-- SIGN IN -->
+        <a
+            href="signin.html"
+            id="signinBtn"
+            class="header-signin"
+        >
+            <span>♙</span>
+            Sign In
+        </a>
+
+
+        <!-- PROFILE -->
+        <div
+            id="profileContainer"
+            class="header-profile"
+            style="display:none;"
+        >
+
+            <button
+                id="profileCircle"
+                class="profile-circle"
+                type="button"
+                aria-label="Open profile"
+            >
 
                 <img
-                    id="profileBigImage"
+                    id="profileImage"
                     src=""
                     alt="Profile"
                 >
 
-                <span id="profileBigInitial">U\</span>
+                <span id="profileInitial">U</span>
 
-            </div>
+                <span class="profile-arrow">⌄</span>
 
-            <!-- USER DETAILS -->
-            <div class="profile-details">
+            </button>
 
-                <h3 id="profileName">
-                    User
-                </h3>
 
-                <p id="profileEmail">
-                    email\@example.com
-                </p>
+            <!-- PROFILE DROPDOWN -->
+            <div
+                id="profileDropdown"
+                class="profile-dropdown"
+            >
 
-                <span id="profileRole">
-                    Customer
-                </span>
+                <div class="profile-header">
+
+                    <div class="profile-big-circle">
+
+                        <img
+                            id="profileBigImage"
+                            src=""
+                            alt="Profile"
+                        >
+
+                        <span id="profileBigInitial">
+                            U
+                        </span>
+
+                    </div>
+
+                    <div class="profile-details">
+
+                        <h3 id="profileName">
+                            User
+                        </h3>
+
+                        <p id="profileEmail">
+                            email@example.com
+                        </p>
+
+                        <span id="profileRole">
+                            Customer
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <button
+                    id="logoutBtn"
+                    class="logout-btn"
+                    type="button"
+                >
+                    🚪 Logout
+                </button>
 
             </div>
 
         </div>
 
-        <hr>
-
-        <button
-            id="logoutBtn"
-            class="logout-btn"
-            type="button"
-        >
-            🚪 Logout
-        </button>
-
     </div>
 
-</div>
-
-
-</div>
 </header>
+    
 <!-- USER WELCOME AREA -->
 <section
     id="welcomeSection"
