@@ -1798,6 +1798,390 @@ body.admin-mode .header-quote {
     }
 
 }
+
+/* =====================================================
+   MOBILE HEADER - NEW
+   ===================================================== */
+
+.mobile-menu-btn {
+    display: none;
+}
+
+.mobile-actions {
+    display: none;
+}
+
+.mobile-menu-dropdown {
+    display: none;
+}
+
+
+/* =====================================================
+   MOBILE HEADER
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    .professional-header {
+
+        min-height: 84px;
+
+        height: 84px;
+
+        padding: 8px 12px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        flex-wrap: nowrap;
+
+        border-radius: 0;
+
+    }
+
+
+    /* HAMBURGER */
+
+    .mobile-menu-btn {
+
+        display: flex;
+
+        width: 42px;
+
+        height: 42px;
+
+        flex-shrink: 0;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: transparent;
+
+        border: none;
+
+        color: white;
+
+        font-size: 32px;
+
+        line-height: 1;
+
+        cursor: pointer;
+
+        padding: 0;
+
+    }
+
+
+    /* BRAND */
+
+    .brand-area {
+
+        width: auto;
+
+        min-width: 0;
+
+        flex: 1;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-start;
+
+        gap: 8px;
+
+    }
+
+
+    .brand-logo {
+
+        width: 55px;
+
+        height: 55px;
+
+        flex-shrink: 0;
+
+    }
+
+
+    .brand-text {
+
+        margin-left: 0;
+
+        min-width: 0;
+
+    }
+
+
+    .brand-text h1 {
+
+        font-size: 20px;
+
+        line-height: 1;
+
+        white-space: nowrap;
+
+    }
+
+
+    .brand-text p {
+
+        font-size: 8px;
+
+        margin-top: 5px;
+
+        white-space: nowrap;
+
+    }
+
+
+    /* HIDE DESKTOP NAV */
+
+    .professional-nav {
+
+        display: none;
+
+    }
+
+
+    /* MOBILE CALL + GET QUOTE */
+
+    .mobile-actions {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        flex-shrink: 0;
+
+    }
+
+
+    .mobile-call-btn {
+
+        width: 44px;
+
+        height: 44px;
+
+        border-radius: 50%;
+
+        background: #ff2525;
+
+        color: white;
+
+        text-decoration: none;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 20px;
+
+        box-shadow:
+            0 4px 12px rgba(255,0,0,.25);
+
+    }
+
+
+    .mobile-quote-btn {
+
+        width: 58px;
+
+        height: 48px;
+
+        border-radius: 14px;
+
+        background: #ff2525;
+
+        color: white;
+
+        text-decoration: none;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        text-align: center;
+
+        font-size: 11px;
+
+        font-weight: 800;
+
+        line-height: 1.1;
+
+        box-shadow:
+            0 4px 12px rgba(255,0,0,.25);
+
+    }
+
+
+    /* USER AREA */
+
+    .header-user-area {
+
+        position: static;
+
+        display: flex;
+
+        margin: 0;
+
+        flex-shrink: 0;
+
+    }
+
+
+    .header-signin {
+
+        padding: 8px;
+
+        border: none;
+
+    }
+
+
+    .header-signin .signin-text {
+
+        display: none;
+
+    }
+
+
+    /* PROFILE */
+
+    .header-profile {
+
+        position: relative;
+
+    }
+
+
+    .header-profile .profile-circle {
+
+        width: 44px;
+
+        height: 44px;
+
+        border: 2px solid #ddd;
+
+    }
+
+
+    .header-profile .profile-arrow {
+
+        right: -8px;
+
+        font-size: 17px;
+
+    }
+
+
+    /* PROFILE DROPDOWN */
+
+    .header-profile .profile-dropdown {
+
+        top: 55px;
+
+        right: -5px;
+
+        width: 285px;
+
+    }
+
+
+    /* MOBILE MENU */
+
+    .mobile-menu-dropdown {
+
+        position: absolute;
+
+        top: 92px;
+
+        left: 12px;
+
+        width: 240px;
+
+        background: #111;
+
+        border: 1px solid #333;
+
+        border-radius: 12px;
+
+        padding: 8px;
+
+        box-shadow:
+            0 15px 40px rgba(0,0,0,.5);
+
+        z-index: 99999;
+
+    }
+
+
+    .mobile-menu-dropdown.show {
+
+        display: block;
+
+        animation: mobileMenuOpen .2s ease;
+
+    }
+
+
+    .mobile-menu-dropdown a {
+
+        display: block;
+
+        color: white;
+
+        text-decoration: none;
+
+        padding: 13px;
+
+        border-radius: 7px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+    }
+
+
+    .mobile-menu-dropdown a:hover {
+
+        background: #ff2d2d;
+
+    }
+
+}
+
+
+@keyframes mobileMenuOpen {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(-8px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
 </style>
 <link rel="icon" href="images/logo.png">
 </head>
@@ -1805,6 +2189,11 @@ body.admin-mode .header-quote {
 <body>
 
 <header class="professional-header">
+
+    <!-- MOBILE MENU BUTTON -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button">
+        ☰
+    </button>
 
     <!-- BRAND -->
     <div class="brand-area">
@@ -1817,8 +2206,7 @@ body.admin-mode .header-quote {
 
         <div class="brand-text">
             <h1>
-                <span>PRIYANSHU</span>
-                ROADLINES
+                <span>PRIYANSHU</span> ROADLINES
             </h1>
 
             <p>— FOR QUICK & SAFE SERVICE —</p>
@@ -1827,7 +2215,7 @@ body.admin-mode .header-quote {
     </div>
 
 
-    <!-- NAVIGATION -->
+    <!-- DESKTOP NAVIGATION -->
     <nav class="professional-nav">
 
         <a href="tracking.html" id="headerTrack">
@@ -1850,8 +2238,7 @@ body.admin-mode .header-quote {
             <span>Fleet</span>
         </a>
 
-
-        <!-- CUSTOMER ONLY -->
+        <!-- CUSTOMER -->
         <a
             href="quote.html"
             id="headerMyQuotes"
@@ -1861,7 +2248,6 @@ body.admin-mode .header-quote {
             <span class="nav-icon">▤</span>
             <span>My Quotes</span>
         </a>
-
 
         <!-- STAFF + ADMIN -->
         <a
@@ -1874,8 +2260,7 @@ body.admin-mode .header-quote {
             <span>POD</span>
         </a>
 
-
-        <!-- ADMIN ONLY -->
+        <!-- ADMIN -->
         <a
             href="admin-dashboard.html"
             id="headerAdmin"
@@ -1883,9 +2268,8 @@ body.admin-mode .header-quote {
             style="display:none;"
         >
             <span class="nav-icon">⚙</span>
-            <span>Admin Dashboard</span>
+            <span>Admin</span>
         </a>
-
 
         <!-- GET QUOTE -->
         <a
@@ -1900,8 +2284,33 @@ body.admin-mode .header-quote {
     </nav>
 
 
+    <!-- MOBILE ACTION BUTTONS -->
+    <div class="mobile-actions">
+
+        <a
+            href="tel:8171703677"
+            class="mobile-call-btn"
+            aria-label="Call"
+        >
+            📞
+        </a>
+
+        <a
+            href="quote.html"
+            id="mobileGetQuote"
+            class="mobile-quote-btn"
+        >
+            Get<br>Quote
+        </a>
+
+    </div>
+
+
     <!-- USER AREA -->
-    <div id="userSection" class="header-user-area">
+    <div
+        id="userSection"
+        class="header-user-area"
+    >
 
         <!-- SIGN IN -->
         <a
@@ -1910,7 +2319,7 @@ body.admin-mode .header-quote {
             class="header-signin"
         >
             <span>♙</span>
-            Sign In
+            <span class="signin-text">Sign In</span>
         </a>
 
 
@@ -1994,6 +2403,55 @@ body.admin-mode .header-quote {
             </div>
 
         </div>
+
+    </div>
+
+
+    <!-- MOBILE DROPDOWN -->
+    <div
+        class="mobile-menu-dropdown"
+        id="mobileMenuDropdown"
+    >
+
+        <a href="tracking.html">
+            ⌕ &nbsp; Track LR
+        </a>
+
+        <a href="about.html">
+            ⓘ &nbsp; About
+        </a>
+
+        <a href="services.html">
+            ▣ &nbsp; Services
+        </a>
+
+        <a href="fleet.html">
+            ▱ &nbsp; Fleet
+        </a>
+
+        <a
+            href="quote.html"
+            class="mobile-customer-menu"
+            id="mobileMyQuotes"
+        >
+            ▤ &nbsp; My Quotes
+        </a>
+
+        <a
+            href="pod.html"
+            class="mobile-staff-menu"
+            id="mobilePOD"
+        >
+            ◇ &nbsp; POD
+        </a>
+
+        <a
+            href="admin-dashboard.html"
+            class="mobile-admin-menu"
+            id="mobileAdmin"
+        >
+            ⚙ &nbsp; Admin Dashboard
+        </a>
 
     </div>
 
