@@ -1196,12 +1196,17 @@ to {
 
 }
 /* =====================================================
-   PROFESSIONAL PRIYANSHU ROADLINES HEADER
+   PRIYANSHU ROADLINES — NEW HEADER
    ===================================================== */
 
-.professional-header {
+.desktop-header {
+    width: 100%;
+    min-height: 160px;
 
-    min-height: 120px;
+    display: flex;
+    align-items: center;
+
+    padding: 10px 26px;
 
     background:
         linear-gradient(
@@ -1213,23 +1218,15 @@ to {
 
     color: white;
 
-    display: flex;
-
-    align-items: center;
-
-    padding: 14px 28px;
-
-    gap: 25px;
-
     border-bottom: 2px solid #ff2d2d;
-
-    position: relative;
-
-    z-index: 5000;
 
     box-shadow:
         0 5px 20px rgba(0,0,0,.45);
 
+    position: relative;
+    z-index: 5000;
+
+    gap: 20px;
 }
 
 
@@ -1237,72 +1234,54 @@ to {
    BRAND
    ===================================================== */
 
-.brand-area {
-
+.desktop-brand {
     display: flex;
-
     align-items: center;
-
-    min-width: 370px;
 
     flex-shrink: 0;
 
+    width: 390px;
 }
 
 
-.brand-logo {
-
-    width: 105px;
-
-    height: 105px;
+.desktop-brand-logo {
+    width: 115px;
+    height: 115px;
 
     object-fit: contain;
 
     flex-shrink: 0;
-
 }
 
 
-.brand-text {
-
+.desktop-brand-text {
     margin-left: 15px;
-
 }
 
 
-.brand-text h1 {
-
+.desktop-brand-text h1 {
     margin: 0;
 
-    padding: 0;
-
-    font-size: 36px;
-
+    font-size: 38px;
     line-height: .95;
 
     font-weight: 800;
 
-    letter-spacing: .5px;
+    letter-spacing: .3px;
 
     color: white;
 
     text-shadow: none;
-
-    animation: none;
-
 }
 
 
-.brand-text h1 span {
-
-    color: #ff2d2d;
-
+.desktop-brand-text h1 span {
+    color: #ff2525;
 }
 
 
-.brand-text p {
-
-    margin-top: 9px;
+.desktop-brand-text p {
+    margin: 10px 0 0;
 
     font-size: 13px;
 
@@ -1310,8 +1289,7 @@ to {
 
     color: #ddd;
 
-    letter-spacing: .5px;
-
+    letter-spacing: .4px;
 }
 
 
@@ -1319,83 +1297,129 @@ to {
    NAVIGATION
    ===================================================== */
 
-.professional-nav {
-
-    display: flex;
-
-    align-items: stretch;
-
-    justify-content: center;
-
-    gap: 5px;
-
+.desktop-nav {
     flex: 1;
 
+    height: 100%;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+
+    gap: 2px;
 }
 
 
-.professional-nav > a {
+.desktop-nav-item {
+    min-width: 70px;
 
-    min-width: 72px;
-
-    padding: 9px 11px;
+    padding: 15px 9px;
 
     display: flex;
-
     flex-direction: column;
 
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
+    gap: 7px;
 
-    gap: 6px;
-
-    color: #eee;
+    color: #eeeeee;
 
     text-decoration: none;
 
-    border-radius: 4px;
-
     font-size: 13px;
-
     font-weight: 600;
 
     white-space: nowrap;
+
+    position: relative;
 
     transition:
         background .25s ease,
         color .25s ease,
         transform .25s ease;
-
 }
 
 
-.professional-nav > a:hover {
+/* ICON */
 
-    background: rgba(255,45,45,.12);
-
-    color: white;
-
-    transform: translateY(-2px);
-
-}
-
-
-.nav-icon {
-
+.desktop-nav-icon {
     font-size: 26px;
 
     line-height: 1;
 
     font-weight: normal;
-
 }
 
 
-.professional-nav > a:hover .nav-icon {
+/* HOVER */
 
-    color: #ff2d2d;
+.desktop-nav-item:hover {
+    color: white;
 
+    background: rgba(255,45,45,.12);
+
+    transform: translateY(-2px);
+}
+
+
+.desktop-nav-item:hover .desktop-nav-icon {
+    color: #ff2525;
+}
+
+
+/* =====================================================
+   ACTIVE HOME
+   ===================================================== */
+
+.desktop-nav-item.active {
+    color: #ff2525;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255,0,0,.12),
+            rgba(255,0,0,.03)
+        );
+}
+
+
+.desktop-nav-item.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 0;
+
+    height: 3px;
+
+    background: #ff2525;
+
+    box-shadow:
+        0 0 10px rgba(255,0,0,.7);
+}
+
+
+.desktop-nav-item.active .desktop-nav-icon {
+    color: #ff2525;
+}
+
+
+/* =====================================================
+   RIGHT SIDE
+   ===================================================== */
+
+.desktop-header-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
 }
 
 
@@ -1403,40 +1427,48 @@ to {
    GET QUOTE
    ===================================================== */
 
-.header-quote {
+.desktop-get-quote {
+    min-width: 126px;
+    height: 48px;
 
-    background: #ff2525 !important;
+    padding: 0 18px;
 
-    color: white !important;
+    display: flex;
 
-    min-width: 125px !important;
+    align-items: center;
+    justify-content: center;
 
-    flex-direction: row !important;
+    gap: 8px;
 
-    gap: 8px !important;
+    background: #ff2525;
 
-    padding: 13px 16px !important;
+    color: white;
 
-    border-radius: 7px !important;
+    text-decoration: none;
 
-    font-size: 15px !important;
+    border-radius: 8px;
 
-    font-weight: 700 !important;
-
-    margin-left: 8px;
+    font-size: 15px;
+    font-weight: 700;
 
     box-shadow:
         0 5px 15px rgba(255,0,0,.25);
 
+    transition:
+        background .25s ease,
+        transform .25s ease;
 }
 
 
-.header-quote:hover {
+.desktop-get-quote:hover {
+    background: #d90000;
 
-    background: #d90000 !important;
+    transform: translateY(-2px);
+}
 
-    transform: translateY(-2px) !important;
 
+.desktop-quote-icon {
+    font-size: 20px;
 }
 
 
@@ -1444,24 +1476,33 @@ to {
    USER AREA
    ===================================================== */
 
-.header-user-area {
-
+.desktop-user-area {
     display: flex;
 
     align-items: center;
 
     flex-shrink: 0;
 
-    margin-left: 5px;
+    padding-left: 10px;
 
+    border-left: 1px solid #333;
 }
 
 
-.header-signin {
+/* =====================================================
+   SIGN IN
+   ===================================================== */
+
+.desktop-signin {
+    min-width: 105px;
+    height: 48px;
+
+    padding: 0 16px;
 
     display: flex;
 
     align-items: center;
+    justify-content: center;
 
     gap: 8px;
 
@@ -1469,881 +1510,215 @@ to {
 
     text-decoration: none;
 
-    padding: 12px 18px;
+    border: 1px solid #444;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    transition: .25s ease;
+}
+
+
+.desktop-signin:hover {
+    border-color: #ff2525;
+
+    background:
+        rgba(255,45,45,.1);
+}
+
+
+.desktop-signin-icon {
+    font-size: 23px;
+}
+
+
+/* =====================================================
+   PROFILE
+   ===================================================== */
+
+.desktop-profile {
+    position: relative;
+}
+
+
+.desktop-profile-button {
+    width: 72px;
+    height: 50px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
 
     border: 1px solid #444;
 
     border-radius: 8px;
 
-    font-weight: 700;
-
-    transition: .25s;
-
-}
-
-
-.header-signin:hover {
-
-    border-color: #ff2d2d;
-
-    background: rgba(255,45,45,.1);
-
-}
-
-
-/* =====================================================
-   PROFILE BUTTON
-   ===================================================== */
-
-.header-profile {
-
-    position: relative;
-
-}
-
-
-.header-profile .profile-circle {
-
-    width: 50px;
-
-    height: 50px;
-
-    position: relative;
-
-    border: 2px solid #ddd;
-
-    background: #111;
-
-    animation: none;
-
-}
-
-
-.header-profile .profile-circle:hover {
-
-    border-color: #ff2d2d;
-
-    transform: scale(1.05);
-
-}
-
-
-.header-profile .profile-arrow {
-
-    position: absolute;
-
-    right: -18px;
-
-    font-size: 20px;
+    background: #080808;
 
     color: white;
 
+    cursor: pointer;
+
+    transition: .25s ease;
 }
 
 
-.header-profile .profile-circle img {
+.desktop-profile-button:hover {
+    border-color: #ff2525;
+
+    background: #111;
+}
+
+
+.desktop-profile-button img {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
 
     display: none;
+}
 
+
+.desktop-profile-button #profileInitial {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+
+    color: #111;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+.desktop-profile-arrow {
+    position: absolute;
+
+    right: 5px;
+
+    font-size: 18px;
+
+    color: white;
 }
 
 
 /* =====================================================
-   PROFILE DROPDOWN
+   PROFILE DROPDOWN POSITION
    ===================================================== */
 
-.header-profile .profile-dropdown {
-
-    top: 63px;
-
+.desktop-profile .profile-dropdown {
+    top: 60px;
     right: 0;
-
 }
 
 
 /* =====================================================
-   ROLE VISIBILITY
+   ROLE LINKS
    ===================================================== */
 
-.header-role-link {
-
+.desktop-customer-item,
+.desktop-staff-item,
+.desktop-admin-item {
     display: none;
-
 }
 
 
 /* =====================================================
-   STAFF / ADMIN HEADER
+   STAFF / ADMIN — HIDE GET QUOTE
    ===================================================== */
 
-body.staff-mode .header-quote,
-body.admin-mode .header-quote {
-
+body.staff-mode .desktop-get-quote,
+body.admin-mode .desktop-get-quote {
     display: none !important;
-
 }
 
 
 /* =====================================================
-   TABLET
+   STAFF / ADMIN — RIGHT SIDE STILL WORKS
    ===================================================== */
 
-@media(max-width:1100px) {
+body.staff-mode .desktop-user-area,
+body.admin-mode .desktop-user-area {
+    border-left: 1px solid #333;
+}
 
-    .professional-header {
 
-        padding: 12px 18px;
+/* =====================================================
+   HEADER RESPONSIVENESS
+   ===================================================== */
+
+@media (max-width: 1200px) {
+
+    .desktop-header {
+        padding: 10px 16px;
 
         gap: 10px;
-
     }
 
 
-    .brand-area {
-
-        min-width: 300px;
-
+    .desktop-brand {
+        width: 330px;
     }
 
 
-    .brand-logo {
-
-        width: 82px;
-
-        height: 82px;
-
+    .desktop-brand-logo {
+        width: 90px;
+        height: 90px;
     }
 
 
-    .brand-text h1 {
-
-        font-size: 28px;
-
+    .desktop-brand-text h1 {
+        font-size: 30px;
     }
 
 
-    .brand-text p {
-
+    .desktop-brand-text p {
         font-size: 10px;
-
     }
 
 
-    .professional-nav {
+    .desktop-nav-item {
+        min-width: 58px;
 
-        gap: 1px;
-
-    }
-
-
-    .professional-nav > a {
-
-        min-width: 60px;
-
-        padding: 7px;
+        padding-left: 5px;
+        padding-right: 5px;
 
         font-size: 11px;
-
     }
 
 
-    .nav-icon {
-
+    .desktop-nav-icon {
         font-size: 21px;
-
     }
 
 
-    .header-quote {
+    .desktop-get-quote {
+        min-width: 110px;
 
-        min-width: 105px !important;
-
-        padding: 11px !important;
-
-        font-size: 13px !important;
-
-    }
-
-}
-
-
-/* =====================================================
-   MOBILE HEADER
-   ===================================================== */
-
-@media(max-width:768px) {
-
-    .professional-header {
-
-        min-height: auto;
-
-        padding: 12px 14px;
-
-        flex-wrap: wrap;
-
-        gap: 12px;
-
-    }
-
-
-    .brand-area {
-
-        width: 100%;
-
-        min-width: 0;
-
-        justify-content: flex-start;
-
-    }
-
-
-    .brand-logo {
-
-        width: 70px;
-
-        height: 70px;
-
-    }
-
-
-    .brand-text {
-
-        margin-left: 10px;
-
-    }
-
-
-    .brand-text h1 {
-
-        font-size: 24px;
-
-    }
-
-
-    .brand-text p {
-
-        font-size: 9px;
-
-        margin-top: 5px;
-
-    }
-
-
-    .professional-nav {
-
-        width: 100%;
-
-        overflow-x: auto;
-
-        justify-content: flex-start;
-
-        padding-bottom: 3px;
-
-        scrollbar-width: none;
-
-    }
-
-
-    .professional-nav::-webkit-scrollbar {
-
-        display: none;
-
-    }
-
-
-    .professional-nav > a {
-
-        min-width: 65px;
-
-        flex-shrink: 0;
-
-        font-size: 10px;
-
-    }
-
-
-    .nav-icon {
-
-        font-size: 20px;
-
-    }
-
-
-    .header-quote {
-
-        min-width: 105px !important;
-
-        flex-shrink: 0;
-
-    }
-
-
-    .header-user-area {
-
-        position: absolute;
-
-        top: 25px;
-
-        right: 15px;
-
-    }
-
-
-    .header-signin {
-
-        padding: 8px 11px;
-
-        font-size: 12px;
-
-    }
-
-}
-
-/* =====================================================
-   FINAL MOBILE HEADER
-   ===================================================== */
-
-@media (max-width: 768px) {
-
-    /* HEADER */
-
-    .professional-header {
-        position: relative !important;
-
-        width: 100% !important;
-        min-height: 78px !important;
-        height: 78px !important;
-
-        padding: 8px 10px !important;
-
-        display: flex !important;
-        align-items: center !important;
-
-        gap: 8px !important;
-
-        flex-wrap: nowrap !important;
-
-        overflow: visible !important;
-    }
-
-
-    /* -----------------------------------------
-       HAMBURGER
-       ----------------------------------------- */
-
-    .mobile-menu-btn {
-
-        display: flex !important;
-
-        width: 42px !important;
-        height: 42px !important;
-
-        flex-shrink: 0 !important;
-
-        align-items: center !important;
-        justify-content: center !important;
-
-        background: transparent !important;
-
-        border: none !important;
-
-        color: white !important;
-
-        font-size: 34px !important;
-
-        line-height: 1 !important;
-
-        padding: 0 !important;
-
-        cursor: pointer !important;
-    }
-
-
-    /* -----------------------------------------
-       BRAND
-       ----------------------------------------- */
-
-    .brand-area {
-
-        width: auto !important;
-
-        min-width: 0 !important;
-
-        flex: 1 1 auto !important;
-
-        display: flex !important;
-
-        align-items: center !important;
-
-        justify-content: flex-start !important;
-
-        gap: 7px !important;
-
-        overflow: hidden !important;
-    }
-
-
-    .brand-logo {
-
-        width: 55px !important;
-        height: 55px !important;
-
-        flex-shrink: 0 !important;
-
-        object-fit: contain !important;
-    }
-
-
-    .brand-text {
-
-        margin-left: 0 !important;
-
-        min-width: 0 !important;
-
-        overflow: hidden !important;
-    }
-
-
-    .brand-text h1 {
-
-        font-size: 19px !important;
-
-        line-height: 1 !important;
-
-        white-space: nowrap !important;
-
-        overflow: hidden !important;
-
-        text-overflow: clip !important;
-
-        margin: 0 !important;
-    }
-
-
-    .brand-text p {
-
-        font-size: 7px !important;
-
-        margin-top: 5px !important;
-
-        white-space: nowrap !important;
-    }
-
-
-    /* -----------------------------------------
-       HIDE DESKTOP NAVIGATION
-       ----------------------------------------- */
-
-    .professional-nav {
-
-        display: none !important;
-    }
-
-
-    /* -----------------------------------------
-       MOBILE ACTIONS
-       ----------------------------------------- */
-
-    .mobile-actions {
-
-        display: flex !important;
-
-        align-items: center !important;
-
-        gap: 6px !important;
-
-        flex-shrink: 0 !important;
-    }
-
-
-    .mobile-call-btn {
-
-        width: 43px !important;
-        height: 43px !important;
-
-        flex-shrink: 0 !important;
-
-        border-radius: 50% !important;
-
-        background: #ff2525 !important;
-
-        color: white !important;
-
-        text-decoration: none !important;
-
-        display: flex !important;
-
-        align-items: center !important;
-        justify-content: center !important;
-
-        font-size: 19px !important;
-
-        box-shadow: 0 4px 12px rgba(255,0,0,.25);
-    }
-
-
-    .mobile-quote-btn {
-
-        width: 57px !important;
-        height: 45px !important;
-
-        flex-shrink: 0 !important;
-
-        border-radius: 12px !important;
-
-        background: #ff2525 !important;
-
-        color: white !important;
-
-        text-decoration: none !important;
-
-        display: flex !important;
-
-        align-items: center !important;
-        justify-content: center !important;
-
-        text-align: center !important;
-
-        font-size: 11px !important;
-
-        font-weight: 800 !important;
-
-        line-height: 1.05 !important;
-    }
-
-
-    /* -----------------------------------------
-       USER AREA
-       ----------------------------------------- */
-
-    .header-user-area {
-
-        position: relative !important;
-
-        top: auto !important;
-        right: auto !important;
-
-        width: auto !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        display: flex !important;
-
-        align-items: center !important;
-
-        flex-shrink: 0 !important;
-    }
-
-
-    /* -----------------------------------------
-       SIGN IN
-       ----------------------------------------- */
-
-    .header-signin {
-
-        padding: 6px !important;
-
-        border: none !important;
-
-        font-size: 0 !important;
-    }
-
-
-    .header-signin span:first-child {
-
-        font-size: 22px !important;
-    }
-
-
-    .signin-text {
-
-        display: none !important;
-    }
-
-
-    /* -----------------------------------------
-       PROFILE
-       ----------------------------------------- */
-
-    .header-profile {
-
-        position: relative !important;
-
-        top: auto !important;
-        right: auto !important;
-
-        display: block !important;
-    }
-
-
-    .header-profile .profile-circle {
-
-        width: 44px !important;
-        height: 44px !important;
-
-        margin: 0 !important;
-
-        border: 2px solid #ddd !important;
-
-        background: #111 !important;
-
-        display: flex !important;
-
-        align-items: center !important;
-
-        justify-content: center !important;
-    }
-
-
-    .header-profile .profile-arrow {
-
-        right: -8px !important;
-
-        font-size: 17px !important;
-    }
-
-
-    /* PROFILE DROPDOWN */
-
-    .header-profile .profile-dropdown {
-
-        position: absolute !important;
-
-        top: 54px !important;
-
-        right: 0 !important;
-
-        width: 280px !important;
-    }
-
-
-    /* -----------------------------------------
-       MOBILE MENU
-       ----------------------------------------- */
-
-    .mobile-menu-dropdown {
-
-        position: absolute !important;
-
-        top: 86px !important;
-
-        left: 10px !important;
-
-        width: 245px !important;
-
-        background: #111 !important;
-
-        border: 1px solid #333 !important;
-
-        border-radius: 12px !important;
-
-        padding: 8px !important;
-
-        box-shadow: 0 15px 40px rgba(0,0,0,.55) !important;
-
-        z-index: 99999 !important;
-
-        display: none !important;
-    }
-
-
-    .mobile-menu-dropdown.show {
-
-        display: block !important;
-    }
-
-
-    .mobile-menu-dropdown a {
-
-        display: block !important;
-
-        color: white !important;
-
-        text-decoration: none !important;
-
-        padding: 13px !important;
-
-        border-radius: 7px !important;
-
-        font-size: 14px !important;
-
-        font-weight: 600 !important;
-    }
-
-
-    .mobile-menu-dropdown a:hover {
-
-        background: #ff2d2d !important;
-    }
-
-
-    /* -----------------------------------------
-       WELCOME SECTION
-       ----------------------------------------- */
-
-    .welcome-section {
-
-        min-height: 105px !important;
-
-        width: 100% !important;
-
-        overflow: hidden !important;
-    }
-
-
-    .welcome-content {
-
-        width: 100% !important;
-
-        padding: 10px 5px !important;
-
-        overflow: hidden !important;
-    }
-
-
-    .welcome-main-row {
-
-        gap: 5px !important;
-
-        white-space: nowrap !important;
-
-        transform: scale(.82);
-    }
-
-
-    #welcomeTitle {
-
-        font-size: 18px !important;
-    }
-
-
-    .welcome-badge {
-
-        font-size: 10px !important;
-    }
-
-
-    .welcome-divider {
-
-        font-size: 17px !important;
-    }
-
-
-    #welcomeDesignation {
-
-        font-size: 11px !important;
-    }
-
-
-    #welcomeMessage {
-
-        font-size: 10px !important;
-
-        margin-top: 5px !important;
-
-        padding: 0 10px !important;
-    }
-
-
-    /* -----------------------------------------
-       HIDE OLD FIXED BUTTONS ON MOBILE
-       ----------------------------------------- */
-
-    .call-btn {
-
-        display: none !important;
-    }
-
-
-    #quoteBtn {
-
-        display: none !important;
-    }
-
-
-    /* -----------------------------------------
-       KEEP WHATSAPP
-       ----------------------------------------- */
-
-    .whatsapp {
-
-        bottom: 18px !important;
-
-        right: 12px !important;
-
-        padding: 13px 18px !important;
-
-        font-size: 15px !important;
-    }
-
-
-    .top-btn {
-
-        left: 15px !important;
-
-        bottom: 18px !important;
-
-        padding: 13px !important;
-    }
-
-}
-/* =====================================================
-   DESKTOP / MOBILE HEADER SEPARATION
-   ===================================================== */
-
-/* DESKTOP HEADER */
-.desktop-header {
-    display: flex;
-}
-
-/* MOBILE HEADER + MENU */
-.mobile-header,
-.mobile-menu-dropdown {
-    display: none;
-}
-
-
-/* =====================================================
-   MOBILE
-   ===================================================== */
-
-@media (max-width: 768px) {
-
-    .desktop-header {
-        display: none !important;
-    }
-
-    .mobile-header {
-        display: flex !important;
-    }
-
-    .mobile-menu-dropdown {
-        display: none;
-    }
-
-    .mobile-menu-dropdown.show {
-        display: block !important;
+        font-size: 13px;
     }
 }
-
-
-/* =====================================================
-   DESKTOP
-   ===================================================== */
-
-@media (min-width: 769px) {
-
-    .desktop-header {
-        display: flex !important;
-    }
-
-    .mobile-header,
-    .mobile-menu-dropdown {
-        display: none !important;
-    }
-}
+    
 </style>
 <link rel="icon" href="images/logo.png">
 </head>
