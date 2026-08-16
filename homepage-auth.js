@@ -17,20 +17,19 @@ const firebaseConfig = {
 apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
 
 authDomain:
-    "priyanshu-roadlines-pod.firebaseapp.com",
+"priyanshu-roadlines-pod.firebaseapp.com",
 
 projectId:
-    "priyanshu-roadlines-pod",
+"priyanshu-roadlines-pod",
 
 storageBucket:
-    "priyanshu-roadlines-pod.firebasestorage.app",
+"priyanshu-roadlines-pod.firebasestorage.app",
 
 messagingSenderId:
-    "735411516260",
+"735411516260",
 
 appId:
-    "1:735411516260:web:397d6a80141f032c0a0071"
-
+"1:735411516260:web:397d6a80141f032c0a0071"
 
 };
 
@@ -88,7 +87,11 @@ document.getElementById("podMenu");
 
 const loader =
 document.getElementById("loader");
+const menuBtn =
+document.getElementById("menuBtn");
 
+const menuDropdown =
+document.getElementById("menuDropdown");
 const welcomeSection =
 document.getElementById("welcomeSection");
 
@@ -102,7 +105,7 @@ const welcomeMessage =
 document.getElementById("welcomeMessage");
 
 /* =========================================
-   PROFESSIONAL HEADER ELEMENTS
+PROFESSIONAL HEADER ELEMENTS
 ========================================= */
 
 const headerMyQuotes =
@@ -116,15 +119,6 @@ document.getElementById("headerAdmin");
 
 const headerGetQuote =
 document.getElementById("headerGetQuote");
-
-const mobileMyQuotes =
-document.getElementById("mobileMyQuotes");
-
-const mobilePOD =
-document.getElementById("mobilePOD");
-
-const mobileAdmin =
-document.getElementById("mobileAdmin");
 
 const customerMenuItems =
 document.querySelectorAll(".customer-menu");
@@ -155,65 +149,62 @@ function showLoader() {
 
 if (loader) {
 
-    loader.style.display = "flex";
+loader.style.display = "flex";
 
 }
-
 
 }
 
 function hideLoader() {
 
-    if (!loader) return;
+if (!loader) return;
 
-    const elapsed =
-        Date.now() - loaderStartTime;
+const elapsed =
+    Date.now() - loaderStartTime;
 
-    const remaining =
-        Math.max(
-            0,
-            MIN_LOADER_TIME - elapsed
-        );
+const remaining =
+    Math.max(
+        0,
+        MIN_LOADER_TIME - elapsed
+    );
 
-    setTimeout(() => {
+setTimeout(() => {
 
-        loader.style.display = "none";
+    loader.style.display = "none";
 
-        // Start welcome animation AFTER loader disappears
-        startWelcomeAnimation();
+    // Start welcome animation AFTER loader disappears
+    startWelcomeAnimation();
 
-    }, remaining);
+}, remaining);
 
 }
 /* =========================================
-   START WELCOME ANIMATION
-   ========================================= */
+START WELCOME ANIMATION
+========================================= */
 
 function startWelcomeAnimation() {
 
-    if (!welcomeSection) return;
+if (!welcomeSection) return;
 
-    // Only animate if welcome section is visible
-    if (welcomeSection.style.display !== "none") {
+// Only animate if welcome section is visible
+if (welcomeSection.style.display !== "none") {
 
-        // Remove old animation
-        welcomeSection.classList.remove(
-            "welcome-animate"
-        );
+    // Remove old animation
+    welcomeSection.classList.remove(
+        "welcome-animate"
+    );
 
-        // Force browser to restart animation
-        void welcomeSection.offsetWidth;
+    // Force browser to restart animation
+    void welcomeSection.offsetWidth;
 
-        // Start animation
-        welcomeSection.classList.add(
-            "welcome-animate"
-        );
-
-    }
+    // Start animation
+    welcomeSection.classList.add(
+        "welcome-animate"
+    );
 
 }
 
-
+}
 
 showLoader();
 
@@ -226,118 +217,113 @@ function getInitial(name) {
 if (!name) return "U";
 
 return name
-    .trim()
-    .charAt(0)
-    .toUpperCase();
-
+.trim()
+.charAt(0)
+.toUpperCase();
 
 }
 /* =========================================
-   HEADER ROLE CONTROL
+HEADER ROLE CONTROL
 ========================================= */
 
 function resetHeader() {
 
-    if (headerMyQuotes) {
-        headerMyQuotes.style.display = "none";
-    }
+if (headerMyQuotes) {
+    headerMyQuotes.style.display = "none";
+}
 
-    if (headerPOD) {
-        headerPOD.style.display = "none";
-    }
+if (headerPOD) {
+    headerPOD.style.display = "none";
+}
 
-    if (headerAdmin) {
-        headerAdmin.style.display = "none";
-    }
+if (headerAdmin) {
+    headerAdmin.style.display = "none";
+}
 
-    if (headerGetQuote) {
-        headerGetQuote.style.display = "flex";
-    }
+if (headerGetQuote) {
+    headerGetQuote.style.display = "flex";
+}
 
-    document.body.classList.remove(
-        "staff-mode",
-        "admin-mode"
-    );
+document.body.classList.remove(
+    "staff-mode",
+    "admin-mode"
+);
 
 }
 
-
 /* =========================================
-   GUEST HEADER
+GUEST HEADER
 ========================================= */
 
 function showGuestHeader() {
 
-    resetHeader();
+resetHeader();
 
 }
 
-
 /* =========================================
-   CUSTOMER HEADER
+CUSTOMER HEADER
 ========================================= */
 
 function showCustomerHeader() {
 
-    resetHeader();
+resetHeader();
 
-    if (headerMyQuotes) {
-        headerMyQuotes.style.display = "flex";
-    }
+if (headerMyQuotes) {
+    headerMyQuotes.style.display = "flex";
+}
 
-    if (headerGetQuote) {
-        headerGetQuote.style.display = "flex";
-    }
+if (headerGetQuote) {
+    headerGetQuote.style.display = "flex";
+}
 
 }
 
-
 /* =========================================
-   STAFF HEADER
+STAFF HEADER
 ========================================= */
 
 function showStaffHeader() {
 
-    resetHeader();
+resetHeader();
 
-    if (headerPOD) {
-        headerPOD.style.display = "flex";
-    }
+if (headerPOD) {
+    headerPOD.style.display = "flex";
+}
 
-    if (headerGetQuote) {
-        headerGetQuote.style.display = "none";
-    }
+if (headerGetQuote) {
+    headerGetQuote.style.display = "none";
+}
 
-    document.body.classList.add(
-        "staff-mode"
-    );
+document.body.classList.add(
+    "staff-mode"
+);
 
 }
 
-
 /* =========================================
-   ADMIN HEADER
+ADMIN HEADER
 ========================================= */
 
 function showAdminHeader() {
 
-    resetHeader();
+resetHeader();
 
-    if (headerPOD) {
-        headerPOD.style.display = "flex";
-    }
+if (headerPOD) {
+    headerPOD.style.display = "flex";
+}
 
-    if (headerAdmin) {
-        headerAdmin.style.display = "flex";
-    }
+if (headerAdmin) {
+    headerAdmin.style.display = "flex";
+}
 
-    if (headerGetQuote) {
-        headerGetQuote.style.display = "none";
-    }
+if (headerGetQuote) {
+    headerGetQuote.style.display = "none";
+}
 
-    document.body.classList.add(
-        "admin-mode"
-    );
+document.body.classList.add(
+    "admin-mode"
+);
 
 }
 
@@ -347,37 +333,38 @@ GUEST
 
 function showGuest() {
 
-    currentRole = "guest";
+currentRole = "guest";
 
-    // Show Sign In
-    if (signinBtn) {
-        signinBtn.style.display = "block";
-    }
+// Show Sign In
+if (signinBtn) {
+    signinBtn.style.display = "block";
+}
 
-    // Hide Profile
-    if (profileContainer) {
-        profileContainer.style.display = "none";
-    }
+// Hide Profile
+if (profileContainer) {
+    profileContainer.style.display = "none";
+}
 
-    // Close Profile Dropdown
-    if (profileDropdown) {
-        profileDropdown.style.display = "none";
-    }
+// Close Profile Dropdown
+if (profileDropdown) {
+    profileDropdown.style.display = "none";
+}
 
-    // Hide POD
-    if (podMenu) {
-        podMenu.style.display = "none";
-    }
+// Hide POD
+if (podMenu) {
+    podMenu.style.display = "none";
+}
 
-    // Hide Welcome Section
-    if (welcomeSection) {
-        welcomeSection.style.display = "none";
-    }
+// Hide Welcome Section
+if (welcomeSection) {
+    welcomeSection.style.display = "none";
+}
 
-    // Hide all role-based menu items
-    hideAllRoleMenus();
-    showGuestHeader();
-    console.log("Guest User");
+// Hide all role-based menu items
+hideAllRoleMenus();
+showGuestHeader();
+console.log("Guest User");
+
 }
 /* =========================================
 LOGGED-IN USER
@@ -394,89 +381,89 @@ const initial = getInitial(userName);
 /* Hide Sign In */
 
 if (signinBtn) {
-    signinBtn.style.display = "none";
+signinBtn.style.display = "none";
 }
 
 /* Show Profile */
 
 if (profileContainer) {
-    profileContainer.style.display = "block";
+profileContainer.style.display = "block";
 }
 
 /* Profile Initial */
 
 if (profileInitial) {
-    profileInitial.innerText = initial;
+profileInitial.innerText = initial;
 }
 
 if (profileBigInitial) {
-    profileBigInitial.innerText = initial;
+profileBigInitial.innerText = initial;
 }
 
 /* Profile Image */
 
 if (photoURL) {
 
-    if (profileImage) {
-        profileImage.src = photoURL;
-        profileImage.style.display = "block";
-    }
+if (profileImage) {
+    profileImage.src = photoURL;
+    profileImage.style.display = "block";
+}
 
-    if (profileBigImage) {
-        profileBigImage.src = photoURL;
-        profileBigImage.style.display = "block";
-    }
+if (profileBigImage) {
+    profileBigImage.src = photoURL;
+    profileBigImage.style.display = "block";
+}
 
-    if (profileInitial) {
-        profileInitial.style.display = "none";
-    }
+if (profileInitial) {
+    profileInitial.style.display = "none";
+}
 
-    if (profileBigInitial) {
-        profileBigInitial.style.display = "none";
-    }
+if (profileBigInitial) {
+    profileBigInitial.style.display = "none";
+}
 
 } else {
 
-    if (profileImage) {
-        profileImage.style.display = "none";
-    }
+if (profileImage) {
+    profileImage.style.display = "none";
+}
 
-    if (profileBigImage) {
-        profileBigImage.style.display = "none";
-    }
+if (profileBigImage) {
+    profileBigImage.style.display = "none";
+}
 
-    if (profileInitial) {
-        profileInitial.style.display = "block";
-    }
+if (profileInitial) {
+    profileInitial.style.display = "block";
+}
 
-    if (profileBigInitial) {
-        profileBigInitial.style.display = "block";
-    }
+if (profileBigInitial) {
+    profileBigInitial.style.display = "block";
+}
 
 }
 
 /* Profile Name */
 
 if (profileName) {
-    profileName.innerText = userName;
+profileName.innerText = userName;
 }
 
 /* Profile Email */
 
 if (profileEmail) {
-    profileEmail.innerText = userEmail;
+profileEmail.innerText = userEmail;
 }
 
 /* Profile Role */
 
 if (profileRole) {
 
-    profileRole.innerText =
-        role === "admin"
-            ? "Administrator"
-            : role === "staff"
-            ? "Staff"
-            : "Customer";
+profileRole.innerText =
+    role === "admin"
+        ? "Administrator"
+        : role === "staff"
+        ? "Staff"
+        : "Customer";
 
 }
 
@@ -484,26 +471,24 @@ if (profileRole) {
 
 if (podMenu) {
 
-    if (
-        role === "staff" ||
-        role === "admin"
-    ) {
+if (
+    role === "staff" ||
+    role === "admin"
+) {
 
-        podMenu.style.display = "block";
+    podMenu.style.display = "block";
 
-    } else {
+} else {
 
-        podMenu.style.display = "none";
-
-    }
+    podMenu.style.display = "none";
 
 }
 
+}
 
 if (role === "admin") {
 
 showAdminInterface(userName);
-
 
 }
 
@@ -511,13 +496,11 @@ else if (role === "staff") {
 
 showStaffInterface(userName);
 
-
 }
 
 else {
 
 showCustomerInterface(userName);
-
 
 }
 console.log(
@@ -535,40 +518,41 @@ STAFF / ADMIN LOCAL LOGIN
 
 function checkOperatorLogin() {
 
-    const loggedIn =
-        localStorage.getItem("loggedIn") === "true";
+const loggedIn =
+    localStorage.getItem("loggedIn") === "true";
 
-    const role =
-        localStorage.getItem("role");
+const role =
+    localStorage.getItem("role");
 
-    const name =
-        localStorage.getItem("name");
+const name =
+    localStorage.getItem("name");
 
-    const email =
-        localStorage.getItem("email") || "";
+const email =
+    localStorage.getItem("email") || "";
 
-    const photoURL =
-        localStorage.getItem("photoURL") || "";
+const photoURL =
+    localStorage.getItem("photoURL") || "";
 
-    if (
-        loggedIn &&
-        (role === "staff" || role === "admin") &&
-        name
-    ) {
-
-        return {
-            loggedIn: true,
-            role: role,
-            name: name,
-            email: email,
-            photoURL: photoURL
-        };
-
-    }
+if (
+    loggedIn &&
+    (role === "staff" || role === "admin") &&
+    name
+) {
 
     return {
-        loggedIn: false
+        loggedIn: true,
+        role: role,
+        name: name,
+        email: email,
+        photoURL: photoURL
     };
+
+}
+
+return {
+    loggedIn: false
+};
+
 }
 
 /* =========================================
@@ -579,31 +563,31 @@ onAuthStateChanged(
 auth,
 async (user) => {
 
-    /* -------------------------------
-       CUSTOMER
-    \------------------------------- */
+/* -------------------------------
+   CUSTOMER
+------------------------------- */
 
-    if (user) {
+if (user) {
 
-        try {
+    try {
 
-            const snap =
-                await getDoc(
-                    doc(
-                        db,
-                        "users",
-                        user.uid
-                    )
-                );
-
-
-            if (snap.exists()) {
-
-                const data =
-                    snap.data();
+        const snap =
+            await getDoc(
+                doc(
+                    db,
+                    "users",
+                    user.uid
+                )
+            );
 
 
-                showLoggedInUser(
+        if (snap.exists()) {
+
+            const data =
+                snap.data();
+
+
+            showLoggedInUser(
 
 data.name ||
 user.displayName ||
@@ -620,53 +604,52 @@ data.photoURL ||
 user.photoURL ||
 ""
 
-
 );
 
-                hideLoader();
-
-                return;
-
-            }
-
-
-            showGuest();
-
             hideLoader();
 
             return;
 
         }
 
-        catch (error) {
 
-            console.error(
-                "Profile error:",
-                error
-            );
+        showGuest();
 
-            showGuest();
+        hideLoader();
 
-            hideLoader();
-
-            return;
-
-        }
+        return;
 
     }
 
+    catch (error) {
 
-    /* -------------------------------
-       STAFF / ADMIN
-    \------------------------------- */
+        console.error(
+            "Profile error:",
+            error
+        );
 
-    const operator =
-        checkOperatorLogin();
+        showGuest();
+
+        hideLoader();
+
+        return;
+
+    }
+
+}
 
 
-    if (operator.loggedIn) {
+/* -------------------------------
+   STAFF / ADMIN
+------------------------------- */
 
-       showLoggedInUser(
+const operator =
+    checkOperatorLogin();
+
+
+if (operator.loggedIn) {
+
+   showLoggedInUser(
 
 operator.name,
 
@@ -676,26 +659,24 @@ operator.email || "",
 
 operator.photoURL || ""
 
-
 );
-
-        hideLoader();
-
-        return;
-
-    }
-
-
-    /* -------------------------------
-       GUEST
-    /------------------------------- */
-
-    showGuest();
 
     hideLoader();
 
+    return;
+
 }
 
+
+/* -------------------------------
+   GUEST
+/------------------------------- */
+
+showGuest();
+
+hideLoader();
+
+}
 
 );
 
@@ -707,28 +688,27 @@ profileCircle?.addEventListener(
 "click",
 function(event) {
 
-    event.stopPropagation();
+event.stopPropagation();
 
 
-    if (
-        profileDropdown.style.display
-        === "block"
-    ) {
+if (
+    profileDropdown.style.display
+    === "block"
+) {
 
-        profileDropdown.style.display =
-            "none";
-
-    }
-
-    else {
-
-        profileDropdown.style.display =
-            "block";
-
-    }
+    profileDropdown.style.display =
+        "none";
 
 }
 
+else {
+
+    profileDropdown.style.display =
+        "block";
+
+}
+
+}
 
 );
 
@@ -740,18 +720,17 @@ document.addEventListener(
 "click",
 function(event) {
 
-    if (
-        profileContainer &&
-        !profileContainer.contains(event.target)
-    ) {
+if (
+    profileContainer &&
+    !profileContainer.contains(event.target)
+) {
 
-        profileDropdown.style.display =
-            "none";
-
-    }
+    profileDropdown.style.display =
+        "none";
 
 }
 
+}
 
 );
 
@@ -763,425 +742,321 @@ logoutBtn?.addEventListener(
 "click",
 async () => {
 
-    try {
+try {
 
-        showLoader();
-
-
-        /* Firebase customer */
-
-        if (auth.currentUser) {
-
-            await signOut(auth);
-
-        }
+    showLoader();
 
 
-        /* Staff / Admin */
+    /* Firebase customer */
 
-        localStorage.removeItem(
-            "loggedIn"
-        );
+    if (auth.currentUser) {
 
-        localStorage.removeItem(
-            "role"
-        );
-
-        localStorage.removeItem(
-            "name"
-        );
-
-        localStorage.removeItem(
-            "designation"
-        );
-
-
-        currentRole = "guest";
-
-
-        alert(
-            "Logged Out Successfully"
-        );
-
-
-        window.location.href =
-            "index.html";
+        await signOut(auth);
 
     }
 
-    catch (error) {
 
-        console.error(
-            "Logout Error:",
-            error
-        );
+    /* Staff / Admin */
 
-        alert(
-            "Logout failed."
-        );
+    localStorage.removeItem(
+        "loggedIn"
+    );
 
-        hideLoader();
+    localStorage.removeItem(
+        "role"
+    );
 
-    }
+    localStorage.removeItem(
+        "name"
+    );
+
+    localStorage.removeItem(
+        "designation"
+    );
+
+
+    currentRole = "guest";
+
+
+    alert(
+        "Logged Out Successfully"
+    );
+
+
+    window.location.href =
+        "index.html";
 
 }
 
+catch (error) {
+
+    console.error(
+        "Logout Error:",
+        error
+    );
+
+    alert(
+        "Logout failed."
+    );
+
+    hideLoader();
+
+}
+
+}
 
 );
 
 /* =========================================
-   AUTHENTICATION NAVIGATION GUARD
+TRACK LR
 ========================================= */
 
-function requireLogin(event) {
+document
+.getElementById("trackBtn")
+?.addEventListener(
+"click",
+function(e) {
 
-    if (currentRole === "guest") {
+    if (
+        currentRole === "guest"
+    ) {
 
-        event.preventDefault();
+        e.preventDefault();
 
-        window.location.href = "signin.html";
+        window.location.href =
+            "signin.html";
 
-        return false;
     }
 
-    return true;
 }
 
+);
 
 /* =========================================
-   TRACK LR
+GET QUOTE
 ========================================= */
 
 document
-    .getElementById("trackBtn")
-    ?.addEventListener(
-        "click",
-        requireLogin
-    );
+.getElementById("quoteBtn")
+?.addEventListener(
+"click",
+function(e) {
 
+    if (
+        currentRole === "guest"
+    ) {
+
+        e.preventDefault();
+
+        window.location.href =
+            "signin.html";
+
+    }
+
+}
+
+);
 
 /* =========================================
-   GET QUOTE
+ENQUIRY
 ========================================= */
 
 document
-    .getElementById("quoteBtn")
-    ?.addEventListener(
-        "click",
-        requireLogin
-    );
+.getElementById("enquiryBtn")
+?.addEventListener(
+"click",
+function(e) {
 
+    if (
+        currentRole === "guest"
+    ) {
 
-/* =========================================
-   ENQUIRY
-========================================= */
+        e.preventDefault();
 
-document
-    .getElementById("enquiryBtn")
-    ?.addEventListener(
-        "click",
-        requireLogin
-    );
+        window.location.href =
+            "signin.html";
+
+    }
+
+}
+
+);
 
 /* =========================================
 MENU
 ========================================= */
 
+menuBtn?.addEventListener(
+"click",
+function(event) {
 
+event.stopPropagation();
+
+menuDropdown?.classList.toggle("show");
+
+}
+
+);
+
+/* CLOSE MENU WHEN CLICKING OUTSIDE */
+
+document.addEventListener(
+"click",
+function(event) {
+
+if (
+    menuDropdown &&
+    menuBtn &&
+    !menuDropdown.contains(event.target) &&
+    !menuBtn.contains(event.target)
+) {
+
+    menuDropdown.classList.remove("show");
+
+}
+
+}
+
+);
 function hideAllRoleMenus() {
 
-    /* OLD ROLE MENUS */
+customerMenuItems.forEach(item => {
+item.style.display = "none";
+});
 
-    customerMenuItems.forEach(item => {
-        item.style.display = "none";
-    });
+staffMenuItems.forEach(item => {
+item.style.display = "none";
+});
 
-    staffMenuItems.forEach(item => {
-        item.style.display = "none";
-    });
-
-    adminMenuItems.forEach(item => {
-        item.style.display = "none";
-    });
-
-
-    /* MOBILE ROLE MENUS */
-
-    if (mobileMyQuotes) {
-        mobileMyQuotes.style.display = "none";
-    }
-
-    if (mobilePOD) {
-        mobilePOD.style.display = "none";
-    }
-
-    if (mobileAdmin) {
-        mobileAdmin.style.display = "none";
-    }
+adminMenuItems.forEach(item => {
+item.style.display = "none";
+});
 
 }
 
 function showCustomerInterface(name) {
-    
-    hideAllRoleMenus();
 
-     showCustomerHeader();
-    
-    if (welcomeSection) {
+hideAllRoleMenus();
 
-        welcomeSection.style.display = "flex";
+ showCustomerHeader();
 
-        // Reset animation
-        welcomeSection.classList.remove("welcome-animate");
 
-    }
+if (welcomeSection) {
 
-    if (welcomeTitle) {
+    welcomeSection.style.display = "flex";
 
-        welcomeTitle.innerHTML =
-            'Welcome, <span class="welcome-name">' +
-            name +
-            '</span> 👋';
+    // Reset animation
+    welcomeSection.classList.remove("welcome-animate");
 
-    }
-
-    if (welcomeDesignation) {
-
-        welcomeDesignation.innerText =
-            "Customer";
-
-    }
-
-    if (welcomeMessage) {
-
-        welcomeMessage.innerText =
-            "We're glad to have you with PRIYANSHU ROADLINES.";
-
-    }
-
-    customerMenuItems.forEach(item => {
-        item.style.display = "block";
-    });
-    if (mobileMyQuotes) {
-    mobileMyQuotes.style.display = "block";
 }
+
+if (welcomeTitle) {
+
+    welcomeTitle.innerHTML =
+        'Welcome, <span class="welcome-name">' +
+        name +
+        '</span> 👋';
+
+}
+
+if (welcomeDesignation) {
+
+    welcomeDesignation.innerText =
+        "Customer";
+
+}
+
+if (welcomeMessage) {
+
+    welcomeMessage.innerText =
+        "We're glad to have you with PRIYANSHU ROADLINES.";
+
+}
+
+customerMenuItems.forEach(item => {
+    item.style.display = "block";
+});
 
 }
 
 function showStaffInterface(name) {
 
-    hideAllRoleMenus();
-    showStaffHeader();
-    if (welcomeSection) {
+hideAllRoleMenus();
+showStaffHeader();
+if (welcomeSection) {
 
-        welcomeSection.style.display = "flex";
+    welcomeSection.style.display = "flex";
 
-        // Reset animation
-        welcomeSection.classList.remove("welcome-animate");
+    // Reset animation
+    welcomeSection.classList.remove("welcome-animate");
 
-    }
-
-    if (welcomeTitle) {
-
-        welcomeTitle.innerHTML =
-            'Welcome, <span class="welcome-name">' +
-            name +
-            '</span> 👋';
-
-    }
-
-    if (welcomeDesignation) {
-
-        welcomeDesignation.innerText =
-            "Staff Member";
-
-    }
-
-    if (welcomeMessage) {
-
-        welcomeMessage.innerText =
-            "Your staff services and POD tools are available from the Menu.";
-
-    }
-
-    staffMenuItems.forEach(item => {
-        item.style.display = "block";
-    });
-if (mobilePOD) {
-    mobilePOD.style.display = "block";
 }
+
+if (welcomeTitle) {
+
+    welcomeTitle.innerHTML =
+        'Welcome, <span class="welcome-name">' +
+        name +
+        '</span> 👋';
+
+}
+
+if (welcomeDesignation) {
+
+    welcomeDesignation.innerText =
+        "Staff Member";
+
+}
+
+if (welcomeMessage) {
+
+    welcomeMessage.innerText =
+        "Your staff services and POD tools are available from the Menu.";
+
+}
+
+staffMenuItems.forEach(item => {
+    item.style.display = "block";
+});
+
 }
 
 function showAdminInterface(name) {
 
-    hideAllRoleMenus();
-    showAdminHeader();
-    if (welcomeSection) {
+hideAllRoleMenus();
+showAdminHeader();
+if (welcomeSection) {
 
-        welcomeSection.style.display = "flex";
+    welcomeSection.style.display = "flex";
 
-        // Reset animation
-        welcomeSection.classList.remove("welcome-animate");
-
-    }
-
-    if (welcomeTitle) {
-
-        welcomeTitle.innerHTML =
-            'Welcome, <span class="welcome-name">' +
-            name +
-            '</span> 👋';
-
-    }
-
-    if (welcomeDesignation) {
-
-        welcomeDesignation.innerText =
-            "Administrator";
-
-    }
-
-    if (welcomeMessage) {
-
-        welcomeMessage.innerText =
-            "Administrator controls and management tools are available from the Menu.";
-
-    }
-
-    adminMenuItems.forEach(item => {
-        item.style.display = "block";
-    });
-if (mobilePOD) {
-    mobilePOD.style.display = "block";
-}
-
-if (mobileAdmin) {
-    mobileAdmin.style.display = "block";
-}
-}
-/* =========================================
-   MOBILE MENU
-========================================= */
-
-const mobileMenuBtn =
-    document.getElementById("mobileMenuBtn");
-
-const mobileMenuDropdown =
-    document.getElementById("mobileMenuDropdown");
-
-
-mobileMenuBtn?.addEventListener(
-    "click",
-    function(event) {
-
-        event.stopPropagation();
-
-        mobileMenuDropdown?.classList.toggle("show");
-
-    }
-);
-
-
-/* CLOSE MOBILE MENU */
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            mobileMenuDropdown &&
-            mobileMenuBtn &&
-            !mobileMenuDropdown.contains(event.target) &&
-            !mobileMenuBtn.contains(event.target)
-        ) {
-
-            mobileMenuDropdown.classList.remove("show");
-
-        }
-
-    }
-);
-
-/* =========================================
-   ROLE PROTECTED HEADER LINKS
-========================================= */
-
-function requireRole(allowedRoles) {
-
-    return function(event) {
-
-        if (
-            !allowedRoles.includes(currentRole)
-        ) {
-
-            event.preventDefault();
-
-            window.location.href = "signin.html";
-
-        }
-
-    };
+    // Reset animation
+    welcomeSection.classList.remove("welcome-animate");
 
 }
 
+if (welcomeTitle) {
 
-/* MY QUOTES */
+    welcomeTitle.innerHTML =
+        'Welcome, <span class="welcome-name">' +
+        name +
+        '</span> 👋';
 
-document
-    .getElementById("headerMyQuotes")
-    ?.addEventListener(
-        "click",
-        requireRole(["customer"])
-    );
+}
 
+if (welcomeDesignation) {
 
-/* POD */
+    welcomeDesignation.innerText =
+        "Administrator";
 
-document
-    .getElementById("headerPOD")
-    ?.addEventListener(
-        "click",
-        requireRole(["staff", "admin"])
-    );
+}
 
+if (welcomeMessage) {
 
-/* ADMIN */
+    welcomeMessage.innerText =
+        "Administrator controls and management tools are available from the Menu.";
 
-document
-    .getElementById("headerAdmin")
-    ?.addEventListener(
-        "click",
-        requireRole(["admin"])
-    );
+}
 
-
-/* MOBILE MY QUOTES */
-
-document
-    .getElementById("mobileMyQuotes")
-    ?.addEventListener(
-        "click",
-        requireRole(["customer"])
-    );
-
-
-/* MOBILE POD */
-
-document
-    .getElementById("mobilePOD")
-    ?.addEventListener(
-        "click",
-        requireRole(["staff", "admin"])
-    );
-
-
-/* MOBILE ADMIN */
-
-document
-    .getElementById("mobileAdmin")
-    ?.addEventListener(
-        "click",
-        requireRole(["admin"])
-    );
-
-
+adminMenuItems.forEach(item => {
+    item.style.display = "block";
+});
