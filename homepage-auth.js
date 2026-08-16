@@ -105,6 +105,22 @@ document.getElementById("welcomeDesignation");
 const welcomeMessage =
 document.getElementById("welcomeMessage");
 
+/* =========================================
+   PROFESSIONAL HEADER ELEMENTS
+========================================= */
+
+const headerMyQuotes =
+document.getElementById("headerMyQuotes");
+
+const headerPOD =
+document.getElementById("headerPOD");
+
+const headerAdmin =
+document.getElementById("headerAdmin");
+
+const headerGetQuote =
+document.getElementById("headerGetQuote");
+
 const customerMenuItems =
 document.querySelectorAll(".customer-menu");
 
@@ -211,6 +227,114 @@ return name
 
 
 }
+/* =========================================
+   HEADER ROLE CONTROL
+========================================= */
+
+function resetHeader() {
+
+    if (headerMyQuotes) {
+        headerMyQuotes.style.display = "none";
+    }
+
+    if (headerPOD) {
+        headerPOD.style.display = "none";
+    }
+
+    if (headerAdmin) {
+        headerAdmin.style.display = "none";
+    }
+
+    if (headerGetQuote) {
+        headerGetQuote.style.display = "flex";
+    }
+
+    document.body.classList.remove(
+        "staff-mode",
+        "admin-mode"
+    );
+
+}
+
+
+/* =========================================
+   GUEST HEADER
+========================================= */
+
+function showGuestHeader() {
+
+    resetHeader();
+
+}
+
+
+/* =========================================
+   CUSTOMER HEADER
+========================================= */
+
+function showCustomerHeader() {
+
+    resetHeader();
+
+    if (headerMyQuotes) {
+        headerMyQuotes.style.display = "flex";
+    }
+
+    if (headerGetQuote) {
+        headerGetQuote.style.display = "flex";
+    }
+
+}
+
+
+/* =========================================
+   STAFF HEADER
+========================================= */
+
+function showStaffHeader() {
+
+    resetHeader();
+
+    if (headerPOD) {
+        headerPOD.style.display = "flex";
+    }
+
+    if (headerGetQuote) {
+        headerGetQuote.style.display = "none";
+    }
+
+    document.body.classList.add(
+        "staff-mode"
+    );
+
+}
+
+
+/* =========================================
+   ADMIN HEADER
+========================================= */
+
+function showAdminHeader() {
+
+    resetHeader();
+
+    if (headerPOD) {
+        headerPOD.style.display = "flex";
+    }
+
+    if (headerAdmin) {
+        headerAdmin.style.display = "flex";
+    }
+
+    if (headerGetQuote) {
+        headerGetQuote.style.display = "none";
+    }
+
+    document.body.classList.add(
+        "admin-mode"
+    );
+
+}
 
 /* =========================================
 GUEST
@@ -247,7 +371,7 @@ function showGuest() {
 
     // Hide all role-based menu items
     hideAllRoleMenus();
-
+    showGuestHeader();
     console.log("Guest User");
 }
 /* =========================================
@@ -831,9 +955,11 @@ adminMenuItems.forEach(item => {
 }
 
 function showCustomerInterface(name) {
-
+    
     hideAllRoleMenus();
 
+     showCustomerHeader();
+    
     if (welcomeSection) {
 
         welcomeSection.style.display = "flex";
@@ -875,7 +1001,7 @@ function showCustomerInterface(name) {
 function showStaffInterface(name) {
 
     hideAllRoleMenus();
-
+    showStaffHeader();
     if (welcomeSection) {
 
         welcomeSection.style.display = "flex";
@@ -917,7 +1043,7 @@ function showStaffInterface(name) {
 function showAdminInterface(name) {
 
     hideAllRoleMenus();
-
+    showAdminHeader();
     if (welcomeSection) {
 
         welcomeSection.style.display = "flex";
