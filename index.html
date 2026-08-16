@@ -601,113 +601,142 @@ box-shadow: 0 5px 12px rgba(255,0,0,.25);
 
 
 }
-* =========================================
-PROFESSIONAL WELCOME SECTION
-========================================= *
+
 
 /* =========================================
-   PROFESSIONAL COMPACT WELCOME SECTION
+   PROFESSIONAL TWO-LINE WELCOME SECTION
 ========================================= */
 
 .welcome-section {
-    background: linear-gradient(
-        135deg,
-        #111,
-        #1b1b1b,
-        #080808
-    );
+    background: #ffffff;
+    color: #111;
 
-    color: white;
-    padding: 24px 20px;
+    padding: 16px 20px 14px;
 
     text-align: center;
 
-    border-bottom: 1px solid rgba(255,45,45,.35);
+    border-bottom: 1px solid #e5e5e5;
 
-    box-shadow:
-        0 4px 15px rgba(0,0,0,.25);
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
 
     overflow: hidden;
 }
 
 .welcome-content {
     max-width: 1100px;
-    margin: auto;
+    margin: 0 auto;
 
-    animation: welcomeEnter .7s ease forwards;
+    animation: welcomeEnter .6s ease forwards;
 }
 
-/* ONLINE BADGE */
+
+/* FIRST LINE */
+
+.welcome-main-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    min-height: 34px;
+
+    white-space: nowrap;
+}
+
+
+/* ONLINE */
 
 .welcome-badge {
-    display: inline-block;
+    display: inline-flex;
 
-    color: #25D366;
+    align-items: center;
+
+    color: #16a34a;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    letter-spacing: .3px;
+
+    padding: 4px 10px;
+
     border: 1px solid #25D366;
 
-    padding: 4px 12px;
-
     border-radius: 20px;
-
-    font-size: 11px;
-    font-weight: bold;
-
-    margin-bottom: 8px;
-
-    letter-spacing: .5px;
 
     animation: onlinePulse 2s infinite;
 }
 
-/* WELCOME TITLE */
+
+/* WELCOME NAME */
 
 #welcomeTitle {
-    font-size: 30px;
+    margin: 0;
+
+    color: #111;
+
+    font-size: 25px;
+
+    font-weight: 700;
 
     line-height: 1.2;
 
-    margin: 0 0 4px;
-
-    color: white;
-
-    text-shadow:
-        0 0 8px rgba(255,45,45,.35);
+    text-shadow: none;
 }
+
 
 /* ROLE */
 
 #welcomeDesignation {
-    font-size: 15px;
+    margin: 0;
 
     color: #ff2d2d;
 
-    font-weight: bold;
+    font-size: 16px;
 
-    margin: 0 0 5px;
+    font-weight: 700;
 
-    letter-spacing: .3px;
+    line-height: 1.2;
 }
 
-/* MESSAGE */
 
-#welcomeMessage {
-    color: #bdbdbd;
+/* DIVIDERS */
+
+.welcome-divider {
+    color: #b5b5b5;
+
+    font-size: 20px;
+
+    font-weight: 300;
+}
+
+
+/* SECOND LINE */
+
+.welcome-message {
+    margin-top: 5px;
+
+    color: #666;
 
     font-size: 13px;
 
-    display: block;
-
     line-height: 1.4;
+
+    font-weight: 400;
 }
 
 
-/* WELCOME ANIMATION */
+/* ENTRY ANIMATION */
 
 @keyframes welcomeEnter {
 
     from {
         opacity: 0;
-        transform: translateY(-15px);
+        transform: translateY(-8px);
     }
 
     to {
@@ -718,23 +747,20 @@ PROFESSIONAL WELCOME SECTION
 }
 
 
-/* ONLINE ANIMATION */
+/* ONLINE PULSE */
 
 @keyframes onlinePulse {
 
     0% {
-        box-shadow:
-            0 0 0 0 rgba(37,211,102,.35);
+        box-shadow: 0 0 0 0 rgba(37,211,102,.25);
     }
 
     70% {
-        box-shadow:
-            0 0 0 7px rgba(37,211,102,0);
+        box-shadow: 0 0 0 6px rgba(37,211,102,0);
     }
 
     100% {
-        box-shadow:
-            0 0 0 0 rgba(37,211,102,0);
+        box-shadow: 0 0 0 0 rgba(37,211,102,0);
     }
 
 }
@@ -745,22 +771,37 @@ PROFESSIONAL WELCOME SECTION
 @media(max-width:768px) {
 
     .welcome-section {
-        padding: 20px 15px;
+        padding: 13px 10px;
+    }
+
+    .welcome-main-row {
+        gap: 7px;
+    }
+
+    .welcome-badge {
+        font-size: 11px;
+        padding: 3px 7px;
     }
 
     #welcomeTitle {
-        font-size: 24px;
+        font-size: 18px;
     }
 
     #welcomeDesignation {
-        font-size: 14px;
-    }
-
-    #welcomeMessage {
         font-size: 12px;
     }
 
+    .welcome-divider {
+        font-size: 16px;
+    }
+
+    .welcome-message {
+        font-size: 11px;
+        margin-top: 4px;
+    }
+
 }
+
 * =========================================
 HEADER MENU
 ========================================= *
@@ -1050,35 +1091,46 @@ to {
 </div>
 </header>
 <!-- USER WELCOME AREA -->
-
 <section
-id="welcomeSection"
-class="welcome-section"
-style="display:none;"
+    id="welcomeSection"
+    class="welcome-section"
+    style="display:none;"
 >
 
-<div class="welcome-content">
+    <div class="welcome-content">
 
-    <div class="welcome-badge">
-        ● ONLINE
+        <div class="welcome-main-row">
+
+            <div class="welcome-badge">
+                ● ONLINE
+            </div>
+
+            <span class="welcome-divider">|</span>
+
+            <h2 id="welcomeTitle">
+                Welcome
+            </h2>
+
+            <span class="welcome-divider">|</span>
+
+            <p id="welcomeDesignation">
+                Customer
+            </p>
+
+        </div>
+
+        <div
+            id="welcomeMessage"
+            class="welcome-message"
+        >
+            We're glad to have you with PRIYANSHU ROADLINES.
+        </div>
+
     </div>
 
-    <h2 id="welcomeTitle">
-        Welcome
-    </h2>
-
-    <p id="welcomeDesignation">
-        Customer
-    </p>
-
-    <span id="welcomeMessage">
-        We're glad to have you with PRIYANSHU ROADLINES.
-    </span>
-
-</div>
-
-
 </section>
+
+
 
 <section class="hero">
 
