@@ -881,18 +881,34 @@ MENU
 
 function hideAllRoleMenus() {
 
-customerMenuItems.forEach(item => {
-    item.style.display = "none";
-});
+    /* OLD ROLE MENUS */
 
-staffMenuItems.forEach(item => {
-    item.style.display = "none";
-});
+    customerMenuItems.forEach(item => {
+        item.style.display = "none";
+    });
 
-adminMenuItems.forEach(item => {
-    item.style.display = "none";
-});
+    staffMenuItems.forEach(item => {
+        item.style.display = "none";
+    });
 
+    adminMenuItems.forEach(item => {
+        item.style.display = "none";
+    });
+
+
+    /* MOBILE ROLE MENUS */
+
+    if (mobileMyQuotes) {
+        mobileMyQuotes.style.display = "none";
+    }
+
+    if (mobilePOD) {
+        mobilePOD.style.display = "none";
+    }
+
+    if (mobileAdmin) {
+        mobileAdmin.style.display = "none";
+    }
 
 }
 
@@ -937,6 +953,9 @@ function showCustomerInterface(name) {
     customerMenuItems.forEach(item => {
         item.style.display = "block";
     });
+    if (mobileMyQuotes) {
+    mobileMyQuotes.style.display = "block";
+}
 
 }
 
@@ -979,7 +998,9 @@ function showStaffInterface(name) {
     staffMenuItems.forEach(item => {
         item.style.display = "block";
     });
-
+if (mobilePOD) {
+    mobilePOD.style.display = "block";
+}
 }
 
 function showAdminInterface(name) {
@@ -1021,7 +1042,13 @@ function showAdminInterface(name) {
     adminMenuItems.forEach(item => {
         item.style.display = "block";
     });
+if (mobilePOD) {
+    mobilePOD.style.display = "block";
+}
 
+if (mobileAdmin) {
+    mobileAdmin.style.display = "block";
+}
 }
 /* =========================================
    MOBILE MENU
@@ -1065,5 +1092,87 @@ document.addEventListener(
 
     }
 );
+
+/* =========================================
+   ROLE PROTECTED HEADER LINKS
+========================================= */
+
+function requireRole(allowedRoles) {
+
+    return function(event) {
+
+        if (
+            !allowedRoles.includes(currentRole)
+        ) {
+
+            event.preventDefault();
+
+            window.location.href = "signin.html";
+
+        }
+
+    };
+
+}
+
+
+/* MY QUOTES */
+
+document
+    .getElementById("headerMyQuotes")
+    ?.addEventListener(
+        "click",
+        requireRole(["customer"])
+    );
+
+
+/* POD */
+
+document
+    .getElementById("headerPOD")
+    ?.addEventListener(
+        "click",
+        requireRole(["staff", "admin"])
+    );
+
+
+/* ADMIN */
+
+document
+    .getElementById("headerAdmin")
+    ?.addEventListener(
+        "click",
+        requireRole(["admin"])
+    );
+
+
+/* MOBILE MY QUOTES */
+
+document
+    .getElementById("mobileMyQuotes")
+    ?.addEventListener(
+        "click",
+        requireRole(["customer"])
+    );
+
+
+/* MOBILE POD */
+
+document
+    .getElementById("mobilePOD")
+    ?.addEventListener(
+        "click",
+        requireRole(["staff", "admin"])
+    );
+
+
+/* MOBILE ADMIN */
+
+document
+    .getElementById("mobileAdmin")
+    ?.addEventListener(
+        "click",
+        requireRole(["admin"])
+    );
 
 
