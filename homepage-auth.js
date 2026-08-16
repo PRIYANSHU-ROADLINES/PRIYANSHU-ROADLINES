@@ -143,23 +143,54 @@ if (loader) {
 
 function hideLoader() {
 
-if (!loader) return;
+    if (!loader) return;
 
-const elapsed =
-    Date.now() - loaderStartTime;
+    const elapsed =
+        Date.now() - loaderStartTime;
 
-const remaining =
-    Math.max(
-        0,
-        MIN_LOADER_TIME - elapsed
-    );
+    const remaining =
+        Math.max(
+            0,
+            MIN_LOADER_TIME - elapsed
+        );
 
-setTimeout(() => {
+    setTimeout(() => {
 
-    loader.style.display = "none";
+        loader.style.display = "none";
 
-}, remaining);
+        // Start welcome animation AFTER loader disappears
+        startWelcomeAnimation();
 
+    }, remaining);
+
+}
+/* =========================================
+   START WELCOME ANIMATION
+   ========================================= */
+
+function startWelcomeAnimation() {
+
+    if (!welcomeSection) return;
+
+    // Only animate if welcome section is visible
+    if (welcomeSection.style.display !== "none") {
+
+        // Remove old animation
+        welcomeSection.classList.remove(
+            "welcome-animate"
+        );
+
+        // Force browser to restart animation
+        void welcomeSection.offsetWidth;
+
+        // Start animation
+        welcomeSection.classList.add(
+            "welcome-animate"
+        );
+
+    }
+
+}
 
 }
 
@@ -798,90 +829,131 @@ adminMenuItems.forEach(item => {
 
 
 }
+
 function showCustomerInterface(name) {
 
-hideAllRoleMenus();
+    hideAllRoleMenus();
 
-if (welcomeSection) {
-    welcomeSection.style.display = "block";
+    if (welcomeSection) {
+
+        welcomeSection.style.display = "flex";
+
+        // Reset animation
+        welcomeSection.classList.remove("welcome-animate");
+
+    }
+
+    if (welcomeTitle) {
+
+        welcomeTitle.innerHTML =
+            'Welcome, <span class="welcome-name">' +
+            name +
+            '</span> 👋';
+
+    }
+
+    if (welcomeDesignation) {
+
+        welcomeDesignation.innerText =
+            "Customer";
+
+    }
+
+    if (welcomeMessage) {
+
+        welcomeMessage.innerText =
+            "We're glad to have you with PRIYANSHU ROADLINES.";
+
+    }
+
+    customerMenuItems.forEach(item => {
+        item.style.display = "block";
+    });
+
 }
 
-if (welcomeTitle) {
-    welcomeTitle.innerText =
-        "Welcome, " + name + " 👋";
-}
-
-if (welcomeDesignation) {
-    welcomeDesignation.innerText =
-        "Customer";
-}
-
-if (welcomeMessage) {
-    welcomeMessage.innerText =
-        "We're glad to have you with PRIYANSHU ROADLINES.";
-}
-
-customerMenuItems.forEach(item => {
-    item.style.display = "block";
-});
-
-
-}
 function showStaffInterface(name) {
 
-hideAllRoleMenus();
+    hideAllRoleMenus();
 
-if (welcomeSection) {
-    welcomeSection.style.display = "block";
+    if (welcomeSection) {
+
+        welcomeSection.style.display = "flex";
+
+        // Reset animation
+        welcomeSection.classList.remove("welcome-animate");
+
+    }
+
+    if (welcomeTitle) {
+
+        welcomeTitle.innerHTML =
+            'Welcome, <span class="welcome-name">' +
+            name +
+            '</span> 👋';
+
+    }
+
+    if (welcomeDesignation) {
+
+        welcomeDesignation.innerText =
+            "Staff Member";
+
+    }
+
+    if (welcomeMessage) {
+
+        welcomeMessage.innerText =
+            "Your staff services and POD tools are available from the Menu.";
+
+    }
+
+    staffMenuItems.forEach(item => {
+        item.style.display = "block";
+    });
+
 }
 
-if (welcomeTitle) {
-    welcomeTitle.innerText =
-        "Welcome, " + name + " 👋";
-}
-
-if (welcomeDesignation) {
-    welcomeDesignation.innerText =
-        "Staff Member";
-}
-
-if (welcomeMessage) {
-    welcomeMessage.innerText =
-        "Your staff services and POD tools are available from the Menu.";
-}
-
-staffMenuItems.forEach(item => {
-    item.style.display = "block";
-});
-
-
-}
 function showAdminInterface(name) {
 
-hideAllRoleMenus();
+    hideAllRoleMenus();
 
-if (welcomeSection) {
-    welcomeSection.style.display = "block";
+    if (welcomeSection) {
+
+        welcomeSection.style.display = "flex";
+
+        // Reset animation
+        welcomeSection.classList.remove("welcome-animate");
+
+    }
+
+    if (welcomeTitle) {
+
+        welcomeTitle.innerHTML =
+            'Welcome, <span class="welcome-name">' +
+            name +
+            '</span> 👋';
+
+    }
+
+    if (welcomeDesignation) {
+
+        welcomeDesignation.innerText =
+            "Administrator";
+
+    }
+
+    if (welcomeMessage) {
+
+        welcomeMessage.innerText =
+            "Administrator controls and management tools are available from the Menu.";
+
+    }
+
+    adminMenuItems.forEach(item => {
+        item.style.display = "block";
+    });
+
 }
 
-if (welcomeTitle) {
-    welcomeTitle.innerText =
-        "Welcome, " + name + " 👋";
-}
-
-if (welcomeDesignation) {
-    welcomeDesignation.innerText =
-        "Administrator";
-}
-
-if (welcomeMessage) {
-    welcomeMessage.innerText =
-        "Administrator controls and management tools are available from the Menu.";
-}
-
-adminMenuItems.forEach(item => {
-    item.style.display = "block";
-});
-    
-}
 
