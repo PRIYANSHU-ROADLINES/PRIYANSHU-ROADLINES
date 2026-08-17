@@ -237,58 +237,140 @@ window.logout = async function () {
     window.location.href = "index.html";
 };
 // Auth State
-onAuthStateChanged(podAuth, (user) => {
-  
-  const adminPanel = document.getElementById("adminPanel");
-  const loginBox = document.getElementById("loginBox");
-  const searchPanel = document.getElementById("searchPanel");
+onAuthStateChanged(podAuth, async (user) => {
+
+  const adminPanel =
+    document.getElementById("adminPanel");
+
+  const loginBox =
+    document.getElementById("loginBox");
+
+  const searchPanel =
+    document.getElementById("searchPanel");
+
   const loginHistorySection =
-  document.getElementById("loginHistorySection");
+    document.getElementById("loginHistorySection");
+
   const deviceApprovalSection =
-document.getElementById("deviceApprovalSection");
+    document.getElementById("deviceApprovalSection");
+
   const trustedDevicesSection =
-document.getElementById("trustedDevicesSection");
-  
+    document.getElementById("trustedDevicesSection");
+
+
   if (user) {
 
-    isAdminLoggedIn = true;
+    // Get user's role
+    const userProfile = await getDoc(
+      doc(db, "users", user.uid)
+    );
 
-    adminPanel.style.display = "block";
-    
-if(loginHistorySection){
-    loginHistorySection.style.display = "block";
-}
+    if (!userProfile.exists()) {
 
-if(deviceApprovalSection){
-    deviceApprovalSection.style.display = "block";
-}
+      await signOut(podAuth);
 
-if(trustedDevicesSection){
-    trustedDevicesSection.style.display = "block";
-}
+      alert("User profile not found.");
 
-    if (searchPanel) {
-      searchPanel.style.display = "block";
+      return;
     }
-    
+
+    const userData = userProfile.data();
+    const role = userData.role;
+
+
+    // --------------------------------
+    // COMMON POD ACCESS
+    // --------------------------------
 
     if (loginBox) {
       loginBox.style.display = "none";
     }
 
-    loadRecentPods();
-    loadDashboard();
-    loadSystemStats();
+    if (searchPanel) {
+      searchPanel.style.display = "block";
+    }
 
-    
+
+    // --------------------------------
+    // OWNER ONLY ADMIN SECTION
+    // --------------------------------
+
+    if (role === "owner") {
+
+      isAdminLoggedIn = true;
+
+      if (adminPanel) {
+        adminPanel.style.display = "block";
+      }
+
+      if (loginHistorySection) {
+        loginHistorySection.style.display = "block";
+      }
+
+      if (deviceApprovalSection) {
+        deviceApprovalSection.style.display = "block";
+      }
+
+      if (trustedDevicesSection) {
+        trustedDevicesSection.style.display = "block";
+      }
+
+      loadRecentPods();
+      loadDashboard();
+      loadSystemStats();
+
+    }
+
+
+    // --------------------------------
+    // EMPLOYEE
+    // --------------------------------
+
+    else if (role === "employee") {
+
+      isAdminLoggedIn = false;
+
+      // Hide all owner-only sections
+      if (adminPanel) {
+        adminPanel.style.display = "none";
+      }
+
+      if (loginHistorySection) {
+        loginHistorySection.style.display = "none";
+      }
+
+      if (deviceApprovalSection) {
+        deviceApprovalSection.style.display = "none";
+      }
+
+      if (trustedDevicesSection) {
+        trustedDevicesSection.style.display = "none";
+      }
+
+      // Employee still gets POD functions
+      loadRecentPods();
+
+    }
+
   } else {
 
     isAdminLoggedIn = false;
 
-    adminPanel.style.display = "none";
-    if(loginHistorySection){
-  loginHistorySection.style.display = "none";
-}
+    if (adminPanel) {
+      adminPanel.style.display = "none";
+    }
+
+    if (loginHistorySection) {
+      loginHistorySection.style.display = "none";
+    }
+
+    if (deviceApprovalSection) {
+      deviceApprovalSection.style.display = "none";
+    }
+
+    if (trustedDevicesSection) {
+      trustedDevicesSection.style.display = "none";
+    }
 
     if (searchPanel) {
       searchPanel.style.display = "none";
@@ -297,7 +379,9 @@ if(trustedDevicesSection){
     if (loginBox) {
       loginBox.style.display = "block";
     }
+
   }
+
 });
   
 // Upload POD
