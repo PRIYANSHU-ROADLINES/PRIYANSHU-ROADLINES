@@ -832,26 +832,33 @@ function(e) {
 GET QUOTE
 ========================================= */
 
-document
-.getElementById("quoteBtn")
-?.addEventListener(
-"click",
-function(e) {
+// =========================================
+// GET QUOTE — SIGN-IN REQUIRED
+// =========================================
 
-    if (
-        currentRole === "guest"
-    ) {
+function protectGetQuoteButton(buttonId) {
 
-        e.preventDefault();
+    const button =
+        document.getElementById(buttonId);
 
-        window.location.href =
-            "signin.html";
+    if (!button) return;
 
-    }
+    button.addEventListener("click", function(e) {
+
+        if (currentRole === "guest") {
+
+            e.preventDefault();
+
+            window.location.href = "signin.html";
+
+        }
+
+    });
 
 }
 
-);
+protectGetQuoteButton("headerGetQuote");
+protectGetQuoteButton("heroGetQuote");
 
 /* =========================================
 ENQUIRY
