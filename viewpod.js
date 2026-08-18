@@ -25,8 +25,7 @@ const podAuthApp =
 const auth =
     getAuth(podAuthApp);
 
-const db =
-    getFirestore(podAuthApp);
+export const db = getFirestore(podAuthApp);
 
 
 const params = new URLSearchParams(window.location.search);
