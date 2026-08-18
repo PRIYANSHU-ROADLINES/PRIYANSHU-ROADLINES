@@ -47,7 +47,7 @@ checkSecurity(() => {
 
     loadPOD(grNo);
 
-});
+}, "owner");
 
 async function loadPOD(grNo){
 
