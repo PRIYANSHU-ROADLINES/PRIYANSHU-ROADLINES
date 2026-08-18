@@ -6,10 +6,7 @@ import {
   getDoc,
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-import {
-    getAuth,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
 import { checkSecurity } from "./security.js";
 
 // Firebase Config
