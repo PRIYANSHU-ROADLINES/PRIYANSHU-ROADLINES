@@ -1,4 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import {
+    getApp
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
     getFirestore,
@@ -13,75 +15,134 @@ import {
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
-    authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
-    projectId: "priyanshu-roadlines-pod",
-    storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
-    messagingSenderId: "735411516260",
-    appId: "1:735411516260:web:397d6a80141f032c0a0071"
-};
 
-const app = initializeApp(firebaseConfig);
+// ============================================
+// USE THE SAME POD AUTH APP
+// ============================================
 
-const auth = getAuth(app);
+const podAuthApp =
+    getApp("POD_AUTH_APP");
 
-const db = getFirestore(app);
+const auth =
+    getAuth(podAuthApp);
+
+const db =
+    getFirestore(podAuthApp);
+
+
+// ============================================
+// DEVICE ID
+// ============================================
 
 function getDeviceId() {
 
-    let deviceId = localStorage.getItem("deviceId");
+    let deviceId =
+        localStorage.getItem("deviceId");
 
     if (!deviceId) {
 
         deviceId =
-        "device_" +
-        Math.random().toString(36).substring(2,15);
+            "device_" +
+            Math.random()
+                .toString(36)
+                .substring(2, 15);
 
-        localStorage.setItem("deviceId", deviceId);
+        localStorage.setItem(
+            "deviceId",
+            deviceId
+        );
     }
 
     return deviceId;
 }
 
-export function checkSecurity(callback){
 
-    onAuthStateChanged(auth, async(user)=>{
+// ============================================
+// SECURITY CHECK
+// ============================================
 
-        if(!user){
+export function checkSecurity(callback) {
 
-            alert("Please login first.");
+    onAuthStateChanged(
+        auth,
+        async (user) => {
 
-            window.location.replace("pod.html");
+            // --------------------------------
+            // NOT LOGGED IN
+            // --------------------------------
 
-            return;
+            if (!user) {
+
+                alert(
+                    "Please login first."
+                );
+
+                window.location.replace(
+                    "pod.html"
+                );
+
+                return;
+            }
+
+
+            // --------------------------------
+            // CHECK TRUSTED DEVICE
+            // --------------------------------
+
+            const deviceId =
+                getDeviceId();
+
+            const q = query(
+
+                collection(
+                    db,
+                    "trustedDevices"
+                ),
+
+                where(
+                    "deviceId",
+                    "==",
+                    deviceId
+                ),
+
+                where(
+                    "approved",
+                    "==",
+                    true
+                )
+
+            );
+
+
+            const snap =
+                await getDocs(q);
+
+
+            // --------------------------------
+            // DEVICE NOT APPROVED
+            // --------------------------------
+
+            if (snap.empty) {
+
+                alert(
+                    "Device not approved."
+                );
+
+                window.location.replace(
+                    "pod.html"
+                );
+
+                return;
+            }
+
+
+            // --------------------------------
+            // EVERYTHING OK
+            // --------------------------------
+
+            callback();
+
         }
-
-        const deviceId = getDeviceId();
-
-        const q = query(
-
-            collection(db,"trustedDevices"),
-
-            where("deviceId","==",deviceId),
-
-            where("approved","==",true)
-
-        );
-
-        const snap = await getDocs(q);
-
-        if(snap.empty){
-
-            alert("Device not approved.");
-
-            window.location.replace("pod.html");
-
-            return;
-        }
-
-        callback();
-
-    });
+    );
 
 }
