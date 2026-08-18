@@ -1,33 +1,47 @@
 import {
+    initializeApp,
+    getApps,
     getApp
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-
-import {
-    getFirestore,
-    collection,
-    query,
-    where,
-    getDocs
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
     getAuth,
     onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
+    authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
+    projectId: "priyanshu-roadlines-pod",
+    storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
+    messagingSenderId: "735411516260",
+    appId: "1:735411516260:web:397d6a80141f032c0a0071"
+};
+
 
 // ============================================
-// USE THE SAME POD AUTH APP
+// GET OR CREATE POD AUTH APP
 // ============================================
 
-const podAuthApp =
-    getApp("POD_AUTH_APP");
+const podAuthApp = getApps().some(
+    app => app.name === "POD_AUTH_APP"
+)
+    ? getApp("POD_AUTH_APP")
+    : initializeApp(firebaseConfig, "POD_AUTH_APP");
 
-const auth =
-    getAuth(podAuthApp);
 
-const db =
-    getFirestore(podAuthApp);
+const auth = getAuth(podAuthApp);
+const db = getFirestore(podAuthApp);
 
 
 // ============================================
@@ -36,8 +50,7 @@ const db =
 
 function getDeviceId() {
 
-    let deviceId =
-        localStorage.getItem("deviceId");
+    let deviceId = localStorage.getItem("deviceId");
 
     if (!deviceId) {
 
@@ -61,43 +74,84 @@ function getDeviceId() {
 // SECURITY CHECK
 // ============================================
 
-export function checkSecurity(callback) {
+export function checkSecurity(callback, requiredRole = null) {
 
-    onAuthStateChanged(
-        auth,
-        async (user) => {
+    onAuthStateChanged(auth, async (user) => {
 
-            // --------------------------------
-            // NOT LOGGED IN
-            // --------------------------------
+        if (!user) {
 
-            if (!user) {
+            alert("Please login first.");
 
-                alert(
-                    "Please login first."
-                );
+            window.location.replace("pod.html");
 
-                window.location.replace(
-                    "pod.html"
-                );
+            return;
+        }
+
+
+        try {
+
+            // ====================================
+            // CHECK USER PROFILE
+            // ====================================
+
+            const userSnap = await getDoc(
+                doc(db, "users", user.uid)
+            );
+
+
+            if (!userSnap.exists()) {
+
+                alert("User profile not found.");
+
+                await auth.signOut();
+
+                window.location.replace("pod.html");
 
                 return;
             }
 
 
-            // --------------------------------
-            // CHECK TRUSTED DEVICE
-            // --------------------------------
+            const userData = userSnap.data();
 
-            const deviceId =
-                getDeviceId();
+            const role = userData.role;
 
-            const q = query(
 
-                collection(
-                    db,
-                    "trustedDevices"
-                ),
+            console.log(
+                "Authenticated POD User:",
+                user.email,
+                "Role:",
+                role
+            );
+
+
+            // ====================================
+            // ROLE CHECK
+            // ====================================
+
+            if (
+                requiredRole &&
+                role !== requiredRole
+            ) {
+
+                alert(
+                    "You are not authorized to access this page."
+                );
+
+                window.location.replace("pod.html");
+
+                return;
+            }
+
+
+            // ====================================
+            // TRUSTED DEVICE CHECK
+            // ====================================
+
+            const deviceId = getDeviceId();
+
+
+            const trustedQuery = query(
+                collection(db, "trustedDevices"),
 
                 where(
                     "deviceId",
@@ -110,39 +164,77 @@ export function checkSecurity(callback) {
                     "==",
                     true
                 )
-
             );
 
 
-            const snap =
-                await getDocs(q);
+            const trustedSnapshot =
+                await getDocs(trustedQuery);
 
 
-            // --------------------------------
-            // DEVICE NOT APPROVED
-            // --------------------------------
-
-            if (snap.empty) {
+            if (trustedSnapshot.empty) {
 
                 alert(
-                    "Device not approved."
+                    "This device is not approved."
                 );
 
-                window.location.replace(
-                    "pod.html"
-                );
+                await auth.signOut();
+
+                window.location.replace("pod.html");
 
                 return;
             }
 
 
-            // --------------------------------
-            // EVERYTHING OK
-            // --------------------------------
+            // ====================================
+            // CHECK BLOCKED DEVICE
+            // ====================================
+
+            const trustedData =
+                trustedSnapshot.docs[0].data();
+
+
+            if (
+                trustedData.status === "Blocked"
+            ) {
+
+                alert(
+                    "This device has been blocked by Admin."
+                );
+
+                await auth.signOut();
+
+                window.location.replace("pod.html");
+
+                return;
+            }
+
+
+            // ====================================
+            // SECURITY PASSED
+            // ====================================
+
+            console.log(
+                "Security Passed"
+            );
 
             callback();
 
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                "Security Check Error:",
+                error
+            );
+
+            alert(
+                "Security verification failed."
+            );
+
+            window.location.replace("pod.html");
+        }
+
+    });
 
 }
