@@ -19,13 +19,9 @@ const firebaseConfig = {
   appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
-const podAuthApp =
-    getApp("POD_AUTH_APP");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const auth =
-    getAuth(podAuthApp);
-
-export const db = getFirestore(podAuthApp);
 
 
 const params = new URLSearchParams(window.location.search);
