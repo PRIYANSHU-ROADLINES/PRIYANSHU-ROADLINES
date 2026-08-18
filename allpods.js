@@ -16,10 +16,7 @@ import {
   serverTimestamp,
   writeBatch
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-import {
-    getAuth,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
 
 import { checkSecurity } from "./security.js";
 
@@ -34,18 +31,17 @@ const firebaseConfig = {
   appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
-import { getApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-const podAuthApp = getApp("POD_AUTH_APP");
-const auth = getAuth(podAuthApp);
-const db = getFirestore(podAuthApp); 
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 checkSecurity(() => {
 
-    console.log("Security Passed");
+    console.log("Owner Security Passed");
 
     loadAllPods();
 
-});
+},"owner");
 
 let allPods = [];
 let filteredPods = [];
