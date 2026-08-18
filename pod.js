@@ -260,7 +260,10 @@ onAuthStateChanged(podAuth, async (user) => {
 
   if (user) {
 
-    // Get user's role
+    // --------------------------------
+    // GET USER ROLE
+    // --------------------------------
+
     const userProfile = await getDoc(
       doc(db, "users", user.uid)
     );
@@ -275,16 +278,33 @@ onAuthStateChanged(podAuth, async (user) => {
     }
 
     const userData = userProfile.data();
+
     const role = userData.role;
 
+    console.log("Logged in POD role:", role);
+
 
     // --------------------------------
-    // COMMON POD ACCESS
+    // COMMON POD INTERFACE
+    // OWNER + EMPLOYEE
     // --------------------------------
+
+    isAdminLoggedIn = (role === "owner");
+
 
     if (loginBox) {
       loginBox.style.display = "none";
     }
+
+
+    // IMPORTANT:
+    // Do NOT hide adminPanel for employees.
+    // It contains the main POD interface.
+
+    if (adminPanel) {
+      adminPanel.style.display = "block";
+    }
+
 
     if (searchPanel) {
       searchPanel.style.display = "block";
@@ -292,16 +312,10 @@ onAuthStateChanged(podAuth, async (user) => {
 
 
     // --------------------------------
-    // OWNER ONLY ADMIN SECTION
+    // OWNER ONLY SECTIONS
     // --------------------------------
 
     if (role === "owner") {
-
-      isAdminLoggedIn = true;
-
-      if (adminPanel) {
-        adminPanel.style.display = "block";
-      }
 
       if (loginHistorySection) {
         loginHistorySection.style.display = "block";
@@ -315,7 +329,7 @@ onAuthStateChanged(podAuth, async (user) => {
         trustedDevicesSection.style.display = "block";
       }
 
-      loadRecentPods();
+      // Owner dashboard functions
       loadDashboard();
       loadSystemStats();
 
@@ -328,12 +342,7 @@ onAuthStateChanged(podAuth, async (user) => {
 
     else if (role === "employee") {
 
-      isAdminLoggedIn = false;
-
-      // Hide all owner-only sections
-      if (adminPanel) {
-        adminPanel.style.display = "none";
-      }
+      // Hide ONLY owner-management sections
 
       if (loginHistorySection) {
         loginHistorySection.style.display = "none";
@@ -347,34 +356,67 @@ onAuthStateChanged(podAuth, async (user) => {
         trustedDevicesSection.style.display = "none";
       }
 
-      // Employee still gets POD functions
-      loadRecentPods();
-
     }
 
-  } else {
+
+    // --------------------------------
+    // UNKNOWN ROLE
+    // --------------------------------
+
+    else {
+
+      await signOut(podAuth);
+
+      alert(
+        "You are not authorized to access the POD system."
+      );
+
+      return;
+    }
+
+
+    // --------------------------------
+    // COMMON POD DATA
+    // --------------------------------
+
+    loadRecentPods();
+
+  }
+
+
+  // --------------------------------
+  // NOT LOGGED IN
+  // --------------------------------
+
+  else {
 
     isAdminLoggedIn = false;
+
 
     if (adminPanel) {
       adminPanel.style.display = "none";
     }
 
+
+    if (searchPanel) {
+      searchPanel.style.display = "none";
+    }
+
+
     if (loginHistorySection) {
       loginHistorySection.style.display = "none";
     }
+
 
     if (deviceApprovalSection) {
       deviceApprovalSection.style.display = "none";
     }
 
+
     if (trustedDevicesSection) {
       trustedDevicesSection.style.display = "none";
     }
 
-    if (searchPanel) {
-      searchPanel.style.display = "none";
-    }
 
     if (loginBox) {
       loginBox.style.display = "block";
@@ -383,7 +425,6 @@ onAuthStateChanged(podAuth, async (user) => {
   }
 
 });
-  
 // Upload POD
 async function compressImage(file) {
 
