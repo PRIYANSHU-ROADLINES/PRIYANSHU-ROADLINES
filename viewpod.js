@@ -22,9 +22,15 @@ const firebaseConfig = {
   appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const podAuthApp =
+    getApp("POD_AUTH_APP");
+
+const auth =
+    getAuth(podAuthApp);
+
+const db =
+    getFirestore(podAuthApp);
+
 
 const params = new URLSearchParams(window.location.search);
 const grNo = params.get("gr");
