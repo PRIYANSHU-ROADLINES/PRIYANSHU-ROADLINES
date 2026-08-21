@@ -1,4 +1,8 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import {
+    initializeApp,
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
   getFirestore,
@@ -6,6 +10,9 @@ import {
   getDoc,
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import {
+    getAuth
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 import { checkSecurity } from "./security.js";
 
