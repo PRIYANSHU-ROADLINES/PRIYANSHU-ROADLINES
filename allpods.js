@@ -1,4 +1,9 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import {
+    initializeApp,
+    getApps,
+    getApp
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
 import {
   getFirestore,
   doc,
@@ -32,8 +37,14 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const podAuthApp = getApps().some(
+    app => app.name === "POD_AUTH_APP"
+)
+    ? getApp("POD_AUTH_APP")
+    : initializeApp(firebaseConfig, "POD_AUTH_APP");
+
+const db = getFirestore(podAuthApp);
+
 
 checkSecurity(() => {
 
