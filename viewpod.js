@@ -19,8 +19,14 @@ const firebaseConfig = {
   appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const podAuthApp = getApps().some(
+    app => app.name === "POD_AUTH_APP"
+)
+    ? getApp("POD_AUTH_APP")
+    : initializeApp(firebaseConfig, "POD_AUTH_APP");
+
+const auth = getAuth(podAuthApp);
+const db = getFirestore(podAuthApp);
 
 
 
