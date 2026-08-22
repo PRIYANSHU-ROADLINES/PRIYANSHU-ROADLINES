@@ -1,24 +1,23 @@
 const operatorLoggedIn =
-localStorage.getItem("loggedIn") === "true";
+    localStorage.getItem("loggedIn") === "true";
 
 const role =
-localStorage.getItem("role");
+    localStorage.getItem("role");
 
 if (!operatorLoggedIn) {
 
-```
-alert("Please sign in first.");
+    alert("Please sign in first.");
 
-window.location.replace("signin.html");
-```
+    window.location.replace("signin.html");
 
 }
-else if (role !== "staff" && role !== "admin") {
+else if (
+    role !== "staff" &&
+    role !== "administrator"
+) {
 
-```
-alert("You are not authorized to access POD.");
+    alert("You are not authorized to access POD.");
 
-window.location.replace("index.html");
-```
+    window.location.replace("index.html");
 
 }
