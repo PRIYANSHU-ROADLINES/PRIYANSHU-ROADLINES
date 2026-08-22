@@ -122,16 +122,43 @@ window.editPOD = function () {
         "editpod.html?gr=" + grNo;
 
 };
-window.deletePOD = async function () {
+window.deletePOD = async function(){
 
-    const confirmDelete = confirm("Delete this POD?");
+    // Employee cannot delete POD
+    if(window.podRole !== "owner"){
 
-    if (!confirmDelete) return;
+        alert("You are not authorized to delete POD.");
 
-    await deleteDoc(doc(db, "pods", grNo));
+        return;
+    }
 
-    alert("POD Deleted Successfully");
+    const confirmDelete =
+    confirm("Delete this POD?");
 
-    window.location.href = "pod.html";
+    if(!confirmDelete) return;
+
+    try{
+
+        await deleteDoc(
+            doc(db,"pods",grNo)
+        );
+
+        alert("POD Deleted Successfully");
+
+        window.location.href =
+        "pod.html";
+
+    }catch(error){
+
+        console.error(
+            "Delete POD Error:",
+            error
+        );
+
+        alert(
+            "Unable to delete POD."
+        );
+
+    }
 
 };
