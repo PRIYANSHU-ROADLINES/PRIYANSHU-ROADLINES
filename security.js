@@ -116,7 +116,12 @@ export function checkSecurity(callback, requiredRole = null) {
 const role = userData.role;
 
 window.podRole = role;
-
+console.log(
+    "Authenticated POD User:",
+    user.email,
+    "POD Role:",
+    podRole
+);
 
             // ====================================
             // ROLE CHECK
