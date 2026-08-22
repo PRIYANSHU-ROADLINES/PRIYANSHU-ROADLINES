@@ -121,9 +121,9 @@ if (!userProfile.exists()) {
 
 const userData = userProfile.data();
 
-const role = userData.role;
 
-console.log("POD Login Role:", role);
+
+
 
 // CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
 // CUSTOMER IS NOT ALLOWED TO LOGIN TO POD
@@ -279,9 +279,9 @@ onAuthStateChanged(podAuth, async (user) => {
 
     const userData = userProfile.data();
 
-    const role = userData.role;
+    
 
-    console.log("Logged in POD role:", role);
+    
 
 
     // --------------------------------
