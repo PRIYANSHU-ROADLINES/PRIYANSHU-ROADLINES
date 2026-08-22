@@ -279,7 +279,7 @@ onAuthStateChanged(podAuth, async (user) => {
     }
 
     const userData = userProfile.data();
-
+    const role = userData.role;
     
 
     
