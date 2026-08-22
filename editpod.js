@@ -49,7 +49,7 @@ history.back();
 }
 checkSecurity(() => {
 
-    console.log("Security Passed");
+    console.log("Owner Security Passed");
 
     loadPOD(grNo);
 
