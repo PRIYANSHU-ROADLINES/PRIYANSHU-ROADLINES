@@ -111,36 +111,35 @@ export function checkSecurity(callback, requiredRole = null) {
             }
 
 
-            const userData = userSnap.data();
+           const userData = userSnap.data();
 
-            const role = userData.role;
+const podRole = userData.podRole;
 
-
-            console.log(
-                "Authenticated POD User:",
-                user.email,
-                "Role:",
-                role
-            );
+console.log(
+    "Authenticated POD User:",
+    user.email,
+    "POD Role:",
+    podRole
+);
 
 
             // ====================================
             // ROLE CHECK
             // ====================================
 
-            if (
-                requiredRole &&
-                role !== requiredRole
-            ) {
+            if (requiredRole) {
 
-                alert(
-                    "You are not authorized to access this page."
-                );
+    if (podRole !== requiredRole) {
 
-                window.location.replace("pod.html");
+        alert(
+            "You are not authorized to access this page."
+        );
 
-                return;
-            }
+        window.location.replace("pod.html");
+
+        return;
+    }
+}
 
 
             // ====================================
