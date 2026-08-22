@@ -105,13 +105,15 @@ Download POD
 </a>
 <br><br>
 
-<button onclick="editPOD()">
-✏ Edit POD
-</button>
+${window.podRole === "owner" ? `
+    <button onclick="editPOD()">
+        ✏ Edit POD
+    </button>
 
-<button onclick="deletePOD()">
-🗑 Delete POD
-</button>
+    <button onclick="deletePOD()">
+        🗑 Delete POD
+    </button>
+` : ""}
 
 `;
 
