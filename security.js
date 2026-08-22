@@ -114,7 +114,7 @@ export function checkSecurity(callback, requiredRole = null) {
            const userData = userSnap.data();
 
 const podRole = userData.podRole;
-window.podRole = role;
+
 
 console.log(
     "Authenticated POD User:",
