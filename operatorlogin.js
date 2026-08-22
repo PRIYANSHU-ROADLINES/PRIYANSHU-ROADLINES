@@ -73,14 +73,26 @@ localStorage.setItem("designation",data.designation);
 
 if(found){
 
-alert("Operator Verified Successfully");
+    const role = localStorage.getItem("role");
 
-window.location.href="index.html";
+    if (role === "staff") {
+
+        alert("Staff Verified Successfully");
+
+    }
+    else if (role === "administrator") {
+
+        alert("Administrator Login Successfully");
+
+    }
+    else {
+
+        alert("Invalid Operator Details");
+
+    }
+
+    window.location.href = "index.html";
 
 }else{
 
-alert("Invalid Operator Details");
 
-}
-
-}
