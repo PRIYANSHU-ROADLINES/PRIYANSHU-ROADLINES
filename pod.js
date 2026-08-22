@@ -120,6 +120,7 @@ if (!userProfile.exists()) {
 }
 
 const userData = userProfile.data();
+const role = userData.role;
 
 
 
