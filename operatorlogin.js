@@ -3,10 +3,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 import {
 getFirestore,
 collection,
-getDocs
+getDocs,
+doc,
+setDoc,
+getDoc,
+updateDoc,
+serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
 const firebaseConfig = {
 apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
 authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
@@ -19,6 +23,61 @@ appId: "1:735411516260:web:397d6a80141f032c0a0071"
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+async function recordFailedAttempt(email, mobile) {
+
+    const attemptRef =
+        doc(db, "securityAttempts", "operatorVerification");
+
+    const attemptSnap =
+        await getDoc(attemptRef);
+
+    let attempts = 0;
+
+    if (attemptSnap.exists()) {
+        attempts = attemptSnap.data().attempts || 0;
+    }
+
+    attempts++;
+
+    await setDoc(attemptRef, {
+
+        attempts: attempts,
+
+        lastAttemptEmail: email,
+
+        lastAttemptMobile: mobile,
+
+        lastAttemptTime: serverTimestamp()
+
+    });
+
+    // 10th failed attempt
+    if (attempts >= 10) {
+
+        await setDoc(
+            doc(db, "securityAlerts", "operatorVerificationAlert"),
+            {
+
+                type:
+                    "Repeated Failed Operator Verification",
+
+                attempts: attempts,
+
+                email: email,
+
+                mobile: mobile,
+
+                timestamp:
+                    serverTimestamp(),
+
+                status: "New"
+
+            }
+        );
+
+    }
+
+}
 
 document
 .getElementById("verifyBtn")
@@ -72,6 +131,13 @@ localStorage.setItem("designation",data.designation);
 });
 
 if (found) {
+    await setDoc(
+    doc(db, "securityAttempts", "operatorVerification"),
+    {
+        attempts: 0,
+        lastSuccessfulLogin: serverTimestamp()
+    }
+);
 
     const role = localStorage.getItem("role");
 
@@ -98,6 +164,11 @@ if (found) {
 }
 
 else {
+
+    await recordFailedAttempt(
+        email,
+        mobile
+    );
 
     alert("Operator Not Identified");
 
