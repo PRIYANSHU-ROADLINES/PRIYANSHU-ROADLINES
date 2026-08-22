@@ -117,12 +117,7 @@ const role = userData.role;
 
 window.podRole = role;
 
-console.log(
-    "Authenticated POD User:",
-    user.email,
-    "POD Role:",
-    role
-);
+
             // ====================================
             // ROLE CHECK
             // ====================================
