@@ -128,18 +128,27 @@ console.log(
             // ROLE CHECK
             // ====================================
 
-            if (requiredRole) {
+           
+if (
+    requiredRole &&
+    role !== requiredRole
+) {
 
-    if (podRole !== requiredRole) {
+    console.log(
+        "ROLE CHECK FAILED",
+        "Required:",
+        requiredRole,
+        "Actual:",
+        role
+    );
 
-        alert(
-            "You are not authorized to access this page."
-        );
+    alert(
+        "You are not authorized to access this page."
+    );
 
-        window.location.replace("pod.html");
+    window.location.replace("pod.html");
 
-        return;
-    }
+    return;
 }
 
 
