@@ -121,6 +121,7 @@ if (!userProfile.exists()) {
 
 const userData = userProfile.data();
 const role = userData.role;
+console.log("POD Login Role:", role);
 
 
 
@@ -280,6 +281,7 @@ onAuthStateChanged(podAuth, async (user) => {
 
     const userData = userProfile.data();
     const role = userData.role;
+    console.log("Logged in POD role:", role);
     
 
     
