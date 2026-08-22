@@ -48,11 +48,11 @@ const db = getFirestore(podAuthApp);
 
 checkSecurity(() => {
 
-    console.log("Owner Security Passed");
+    console.log("POD Security Passed");
 
     loadAllPods();
 
-},"owner");
+});
 
 let allPods = [];
 let filteredPods = [];
