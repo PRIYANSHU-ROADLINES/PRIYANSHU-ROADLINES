@@ -113,18 +113,16 @@ export function checkSecurity(callback, requiredRole = null) {
 
           const userData = userSnap.data();
 
-const podRole = userData.podRole;
+const role = userData.role;
 
-window.podRole = podRole;
+window.podRole = role;
 
 console.log(
     "Authenticated POD User:",
     user.email,
     "POD Role:",
-    podRole
+    role
 );
-
-
             // ====================================
             // ROLE CHECK
             // ====================================
@@ -132,7 +130,7 @@ console.log(
            
 if (
     requiredRole &&
-    podRole !== requiredRole
+    role !== requiredRole
 ) {
 
     console.log(
@@ -140,7 +138,7 @@ if (
         "Required:",
         requiredRole,
         "Actual:",
-        podRole
+        role
     );
 
     alert(
