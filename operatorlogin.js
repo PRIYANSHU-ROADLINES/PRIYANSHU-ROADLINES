@@ -71,7 +71,7 @@ localStorage.setItem("designation",data.designation);
 
 });
 
-if(found){
+if (found) {
 
     const role = localStorage.getItem("role");
 
@@ -80,19 +80,27 @@ if(found){
         alert("Staff Verified Successfully");
 
     }
+
     else if (role === "administrator") {
 
         alert("Administrator Login Successfully");
 
     }
+
     else {
 
-        alert("Invalid Operator Details");
+        alert("Operator Not Identified");
 
     }
 
     window.location.href = "index.html";
-}
+
 }
 
+else {
 
+    alert("Operator Not Identified");
+
+    window.location.href = "index.html";
+
+}
