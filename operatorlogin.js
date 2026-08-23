@@ -1,14 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-getDocs,
-doc,
-setDoc,
-getDoc,
-updateDoc,
-serverTimestamp
+    getFirestore,
+    collection,
+    getDocs,
+    addDoc,
+    serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 const firebaseConfig = {
@@ -23,59 +20,24 @@ appId: "1:735411516260:web:397d6a80141f032c0a0071"
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-async function recordFailedAttempt(email, mobile) {
+async function recordFailedAttempt(email, mobile, fullname) {
 
-    const attemptRef =
-        doc(db, "securityAttempts", "operatorVerification");
+    await addDoc(
+        collection(db, "securityAttempts"),
+        {
 
-    const attemptSnap =
-        await getDoc(attemptRef);
+            email: email,
 
-    let attempts = 0;
+            mobile: mobile,
 
-    if (attemptSnap.exists()) {
-        attempts = attemptSnap.data().attempts || 0;
-    }
+            fullname: fullname,
 
-    attempts++;
+            timestamp: serverTimestamp(),
 
-    await setDoc(attemptRef, {
+            type: "Failed Operator Verification"
 
-        attempts: attempts,
-
-        lastAttemptEmail: email,
-
-        lastAttemptMobile: mobile,
-
-        lastAttemptTime: serverTimestamp()
-
-    });
-
-    // 10th failed attempt
-    if (attempts >= 10) {
-
-        await setDoc(
-            doc(db, "securityAlerts", "operatorVerificationAlert"),
-            {
-
-                type:
-                    "Repeated Failed Operator Verification",
-
-                attempts: attempts,
-
-                email: email,
-
-                mobile: mobile,
-
-                timestamp:
-                    serverTimestamp(),
-
-                status: "New"
-
-            }
-        );
-
-    }
+        }
+    );
 
 }
 
@@ -130,14 +92,6 @@ localStorage.setItem("designation",data.designation);
 
 });
 
-if (found) {
-    await setDoc(
-    doc(db, "securityAttempts", "operatorVerification"),
-    {
-        attempts: 0,
-        lastSuccessfulLogin: serverTimestamp()
-    }
-);
 
     const role = localStorage.getItem("role");
 
@@ -166,10 +120,10 @@ if (found) {
 else {
 
     await recordFailedAttempt(
-        email,
-        mobile
-    );
-
+    email,
+    mobile,
+    fullname
+);
     alert("Operator Not Identified");
 
     window.location.href = "index.html";
