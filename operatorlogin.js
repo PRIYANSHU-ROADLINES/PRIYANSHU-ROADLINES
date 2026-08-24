@@ -165,4 +165,4 @@ async function verifyOperator() {
         "index.html";
 
 }
-}
+
