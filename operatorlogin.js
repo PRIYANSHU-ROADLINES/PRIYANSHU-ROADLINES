@@ -128,7 +128,7 @@ async function verifyOperator() {
         }
 
         else if (
-            operatorRole === "administrator"
+            operatorRole === "admin"
         ) {
 
             alert(
