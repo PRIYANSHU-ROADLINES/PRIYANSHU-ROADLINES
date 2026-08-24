@@ -118,7 +118,8 @@ async function verifyOperator() {
             operatorDesignation
         );
 
-
+        console.log("Operator role received:", operatorRole);
+console.log("Operator role type:", typeof operatorRole);
         if (operatorRole === "staff") {
 
             alert(
@@ -126,7 +127,7 @@ async function verifyOperator() {
             );
 
         }
-
+        
         else if (
             operatorRole === "admin"
         ) {
