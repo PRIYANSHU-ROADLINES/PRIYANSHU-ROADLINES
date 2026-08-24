@@ -3,130 +3,166 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 import {
     getFirestore,
     collection,
-    getDocs,
-    addDoc,
-    serverTimestamp
+    getDocs
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+// ============================================
+// FIREBASE CONFIG
+// ============================================
+
 const firebaseConfig = {
-apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
-authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
-projectId: "priyanshu-roadlines-pod",
-storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
-messagingSenderId: "735411516260",
-appId: "1:735411516260:web:397d6a80141f032c0a0071"
+    apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
+    authDomain: "priyanshu-roadlines-pod.firebaseapp.com",
+    projectId: "priyanshu-roadlines-pod",
+    storageBucket: "priyanshu-roadlines-pod.firebasestorage.app",
+    messagingSenderId: "735411516260",
+    appId: "1:735411516260:web:397d6a80141f032c0a0071"
 };
+
 
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
-async function recordFailedAttempt(email, mobile, fullname) {
 
-    await addDoc(
-        collection(db, "securityAttempts"),
-        {
 
-            email: email,
-
-            mobile: mobile,
-
-            fullname: fullname,
-
-            timestamp: serverTimestamp(),
-
-            type: "Failed Operator Verification"
-
-        }
-    );
-
-}
+// ============================================
+// OPERATOR LOGIN
+// ============================================
 
 document
-.getElementById("verifyBtn")
-.addEventListener("click",verifyOperator);
-
-async function verifyOperator(){
-
-const mobile =
-document.getElementById("mobile").value.trim();
-
-const fullname =
-document.getElementById("fullname").value.trim();
-
-const email =
-document.getElementById("email").value.trim();
-
-const uniqueCode =
-document.getElementById("uniqueCode").value.trim();
-
-const snap =
-await getDocs(collection(db,"operators"));
-
-let found = false;
-
-snap.forEach((doc)=>{
-
-const data = doc.data();
-
-if(
-
-data.mobile===mobile &&
-data.fullName===fullname &&
-data.email===email &&
-data.uniqueCode===uniqueCode &&
-data.active===true
-
-){
-
-found=true;
-
-localStorage.setItem("loggedIn","true");
-
-localStorage.setItem("role",data.role);
-
-localStorage.setItem("name",data.fullName);
-
-localStorage.setItem("designation",data.designation);
-
-}
-
-});
+    .getElementById("verifyBtn")
+    .addEventListener("click", verifyOperator);
 
 
-    const role = localStorage.getItem("role");
+async function verifyOperator() {
 
-    if (role === "staff") {
+    const mobile =
+        document.getElementById("mobile").value.trim();
 
-        alert("Staff Verified Successfully");
+    const fullname =
+        document.getElementById("fullname").value.trim();
 
+    const email =
+        document.getElementById("email").value.trim();
+
+    const uniqueCode =
+        document.getElementById("uniqueCode").value.trim();
+
+
+    const snap =
+        await getDocs(
+            collection(db, "operators")
+        );
+
+
+    let found = false;
+
+    let operatorRole = "";
+
+    let operatorName = "";
+
+    let operatorDesignation = "";
+
+
+    snap.forEach((docItem) => {
+
+        const data = docItem.data();
+
+
+        if (
+            data.mobile === mobile &&
+            data.fullName === fullname &&
+            data.email === email &&
+            data.uniqueCode === uniqueCode &&
+            data.active === true
+        ) {
+
+            found = true;
+
+            operatorRole = data.role;
+
+            operatorName = data.fullName;
+
+            operatorDesignation = data.designation;
+
+        }
+
+    });
+
+
+    // ============================================
+    // SUCCESSFUL OPERATOR LOGIN
+    // ============================================
+
+    if (found) {
+
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
+
+        localStorage.setItem(
+            "role",
+            operatorRole
+        );
+
+        localStorage.setItem(
+            "name",
+            operatorName
+        );
+
+        localStorage.setItem(
+            "designation",
+            operatorDesignation
+        );
+
+
+        if (operatorRole === "staff") {
+
+            alert(
+                "Staff Verified Successfully"
+            );
+
+        }
+
+        else if (
+            operatorRole === "administrator"
+        ) {
+
+            alert(
+                "Administrator Login Successfully"
+            );
+
+        }
+
+        else {
+
+            alert(
+                "Operator Not Identified"
+            );
+
+        }
+
+
+        window.location.href =
+            "index.html";
+
+        return;
     }
 
-    else if (role === "administrator") {
 
-        alert("Administrator Login Successfully");
+    // ============================================
+    // FAILED OPERATOR LOGIN
+    // ============================================
 
-    }
+    alert(
+        "Operator Not Identified"
+    );
 
-    else {
-
-        alert("Operator Not Identified");
-
-    }
-
-    window.location.href = "index.html";
-
-}
-
-else {
-
-    await recordFailedAttempt(
-    email,
-    mobile,
-    fullname
-);
-    alert("Operator Not Identified");
-
-    window.location.href = "index.html";
+    window.location.href =
+        "index.html";
 
 }
 }
