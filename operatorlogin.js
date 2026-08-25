@@ -7,7 +7,10 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-
+import {
+    recordFailedLoginAttempt
+}
+from "./js/security/securityAttempts.js";
 // ============================================
 // FIREBASE CONFIG
 // ============================================
@@ -157,7 +160,30 @@ console.log("Operator role type:", typeof operatorRole);
     // ============================================
     // FAILED OPERATOR LOGIN
     // ============================================
+    try {
 
+    await recordFailedLoginAttempt({
+
+        loginType: "operator",
+
+        email: email,
+
+        mobile: mobile,
+
+        fullname: fullname
+
+    });
+
+}
+catch (error) {
+
+    console.error(
+        "Security attempt recording failed:",
+        error
+    );
+
+}
+    
     alert(
         "Operator Not Identified"
     );
