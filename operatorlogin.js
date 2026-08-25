@@ -184,12 +184,11 @@ catch (error) {
 
 }
     
-    alert(
-        "Operator Not Identified"
-    );
+   alert(
+    "Operator Not Identified"
+);
 
-    window.location.href =
-        "index.html";
+return;
 
 }
 
