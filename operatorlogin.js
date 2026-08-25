@@ -3,9 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 import {
     getFirestore,
     collection,
-    getDocs,
-    addDoc,
-    serverTimestamp
+    getDocs
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -28,24 +26,6 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-async function recordFailedAttempt(email, mobile, fullname) {
-
-    await addDoc(
-        collection(db, "securityAttempts"),
-        {
-            type: "Failed Login Attempt",
-
-            email: email,
-
-            mobile: mobile,
-
-            fullname: fullname,
-
-            timestamp: serverTimestamp()
-        }
-    );
-
-}
 
 // ============================================
 // OPERATOR LOGIN
@@ -178,18 +158,12 @@ console.log("Operator role type:", typeof operatorRole);
     // FAILED OPERATOR LOGIN
     // ============================================
 
-    await recordFailedAttempt(
-    email,
-    mobile,
-    fullname
-);
+    alert(
+        "Operator Not Identified"
+    );
 
-alert(
-    "Operator Not Identified"
-);
-
-window.location.href =
-    "index.html";
+    window.location.href =
+        "index.html";
 
 }
 
