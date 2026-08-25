@@ -1,13 +1,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-getDocs,
-doc,
-setDoc,
-getDoc,
-serverTimestamp
+    getFirestore,
+    collection,
+    getDocs,
+    addDoc,
+    serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -30,82 +28,25 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-// ============================================
-// FAILED OPERATOR ATTEMPT TRACKER
-// ============================================
-
 async function recordFailedAttempt(email, mobile, fullname) {
 
-    const attemptRef = doc(
-        db,
-        "securityAttempts",
-        "operatorVerification"
+    await addDoc(
+        collection(db, "securityAttempts"),
+        {
+            type: "Failed Login Attempt",
+
+            email: email,
+
+            mobile: mobile,
+
+            fullname: fullname,
+
+            timestamp: serverTimestamp()
+        }
     );
 
-    const attemptSnap = await getDoc(attemptRef);
-
-    let attempts = 0;
-
-    if (attemptSnap.exists()) {
-        attempts = attemptSnap.data().attempts || 0;
-    }
-
-    attempts++;
-
-    await setDoc(attemptRef, {
-
-        attempts: attempts,
-
-        email: email,
-
-        mobile: mobile,
-
-        fullname: fullname,
-
-        lastAttemptTime: serverTimestamp(),
-
-        type: "Failed Operator Verification"
-
-    });
-
-    // ========================================
-    // 5 FAILED ATTEMPTS = CREATE ADMIN ALERT
-    // ========================================
-
-    if (attempts === 5) {
-
-        await setDoc(
-            doc(
-                db,
-                "securityAlerts",
-                "operatorVerificationAlert"
-            ),
-            {
-
-                type:
-                    "5 Failed Operator Login Attempts",
-
-                attempts: attempts,
-
-                email: email,
-
-                mobile: mobile,
-
-                fullname: fullname,
-
-                timestamp:
-                    serverTimestamp(),
-
-                status: "New",
-
-                blocked: false
-
-            }
-        );
-
-    }
-
 }
+
 // ============================================
 // OPERATOR LOGIN
 // ============================================
