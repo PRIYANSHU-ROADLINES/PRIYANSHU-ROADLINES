@@ -1,5 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-
 import {
     getFirestore,
     collection,
@@ -8,6 +6,10 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
+import {
+    createSecurityAlert
+}
+from "./securityAlerts.js";
 
 // ============================================
 // FIREBASE CONFIG
@@ -65,6 +67,10 @@ export async function recordFailedLoginAttempt({
 
     const deviceId = getDeviceId();
 
+    // ============================================
+    // RECORD FAILED ATTEMPT
+    // ============================================
+
     await addDoc(
         collection(db, "securityAttempts"),
         {
@@ -85,5 +91,60 @@ export async function recordFailedLoginAttempt({
 
         }
     );
+
+
+    // ============================================
+    // COUNT FAILED ATTEMPTS FOR THIS DEVICE
+    // ============================================
+
+    const counterRef = doc(
+        db,
+        "securityAttempts",
+        deviceId
+    );
+
+    const currentCounter = localStorage.getItem(
+        "securityAttemptCount"
+    );
+
+    let attempts =
+        Number(currentCounter || 0) + 1;
+
+
+    localStorage.setItem(
+        "securityAttemptCount",
+        attempts.toString()
+    );
+
+
+    console.log(
+        "Security attempt count:",
+        attempts
+    );
+
+
+    // ============================================
+    // 5 FAILED ATTEMPTS
+    // ============================================
+
+    if (attempts >= 5) {
+
+        await createSecurityAlert({
+
+            email: email,
+
+            mobile: mobile,
+
+            fullname: fullname,
+
+            attempts: attempts
+
+        });
+
+        console.log(
+            "SECURITY ALERT CREATED"
+        );
+
+    }
 
 }
