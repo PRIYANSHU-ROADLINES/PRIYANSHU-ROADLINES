@@ -110,7 +110,39 @@ async function verifyOperator() {
     // SUCCESSFUL OPERATOR LOGIN
     // ============================================
 
+// ============================================
+// OPERATOR NOT FOUND
+// ============================================
+
+if (!found) {
+
     try {
+
+        await recordFailedLoginAttempt({
+            loginType: "operator",
+            email: email,
+            mobile: mobile,
+            fullname: fullname
+        });
+
+    } catch (error) {
+
+        // Keep technical security-module errors out of console
+    }
+
+    alert(
+        "Operator Not Identified"
+    );
+
+    return;
+}
+
+
+// ============================================
+// FIREBASE AUTHENTICATION
+// ============================================
+
+try {
 
     const credential =
         await signInWithEmailAndPassword(
@@ -123,6 +155,10 @@ async function verifyOperator() {
         credential.user;
 
 
+    // ============================================
+    // VERIFY AUTH UID
+    // ============================================
+
     if (
         !operatorAuthUid ||
         firebaseUser.uid !== operatorAuthUid
@@ -131,7 +167,7 @@ async function verifyOperator() {
         await auth.signOut();
 
         alert(
-            "Administrator authentication failed.\n\nThe operator account is not correctly linked."
+            "Authentication failed.\n\nThe operator account is not correctly linked."
         );
 
         return;
@@ -146,101 +182,77 @@ async function verifyOperator() {
 
     return;
 }
-    
 
-    localStorage.setItem(
-        "loggedIn",
-        "true"
-    );
-        
 
-        localStorage.setItem(
-            "role",
-            operatorRole
-        );
+// ============================================
+// CREATE LOCAL SESSION
+// ============================================
 
-        localStorage.setItem(
-            "name",
-            operatorName
-        );
+localStorage.setItem(
+    "loggedIn",
+    "true"
+);
 
-        localStorage.setItem(
-            "designation",
-            operatorDesignation
-        );
-        localStorage.setItem(
+localStorage.setItem(
+    "role",
+    operatorRole
+);
+
+localStorage.setItem(
+    "name",
+    operatorName
+);
+
+localStorage.setItem(
+    "designation",
+    operatorDesignation
+);
+
+localStorage.setItem(
     "email",
     email
 );
 
-        console.log("Operator role received:", operatorRole);
-console.log("Operator role type:", typeof operatorRole);
-        if (operatorRole === "staff") {
 
-            alert(
-                "Staff Verified Successfully"
-            );
+// ============================================
+// SUCCESS MESSAGE
+// ============================================
 
-        }
-        
-        else if (
-            operatorRole === "admin"
-        ) {
+if (operatorRole === "staff") {
 
-            alert(
-                "Administrator Login Successfully"
-            );
-
-        }
-
-        else {
-
-            alert(
-                "Operator Not Identified"
-            );
-
-        }
-
-
-        window.location.href =
-            "index.html";
-
-        return;
-    }
-
-
-    // ============================================
-    // FAILED OPERATOR LOGIN
-    // ============================================
-    try {
-
-    await recordFailedLoginAttempt({
-
-        loginType: "operator",
-
-        email: email,
-
-        mobile: mobile,
-
-        fullname: fullname
-
-    });
-
-}
-catch (error) {
-
-    console.error(
-        "Security attempt recording failed:",
-        error
+    alert(
+        "Staff Verified Successfully"
     );
 
 }
-    
-   alert(
-    "Operator Not Identified"
-);
 
-return;
+else if (operatorRole === "admin") {
+
+    alert(
+        "Administrator Login Successfully"
+    );
 
 }
 
+else {
+
+    await auth.signOut();
+
+    localStorage.clear();
+
+    alert(
+        "Operator role is not authorized."
+    );
+
+    return;
+}
+
+
+// ============================================
+// RETURN TO MAIN PAGE
+// ============================================
+
+window.location.href =
+    "index.html";
+
+return;
