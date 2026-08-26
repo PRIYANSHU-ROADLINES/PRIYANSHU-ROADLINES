@@ -1,9 +1,10 @@
 import {
     getFirestore,
-    collection,
-    addDoc,
+    doc,
+    setDoc,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
 // ============================================
@@ -14,47 +15,37 @@ export async function createSecurityAlert({
     email,
     mobile,
     fullname,
-    attempts,
-    deviceId
+    attempts
 }) {
 
     const db = getFirestore();
 
-    await addDoc(
-        collection(db, "securityAlerts"),
-        {
-
-            type:
-                "5 Failed Operator Login Attempts",
-
-            loginType:
-                "operator",
-
-            attempts:
-                attempts,
-
-            deviceId:
-                deviceId,
-
-            email:
-                email || "",
-
-            mobile:
-                mobile || "",
-
-            fullname:
-                fullname || "",
-
-            timestamp:
-                serverTimestamp(),
-
-            status:
-                "New",
-
-            blocked:
-                false
-
-        }
+    const alertRef = doc(
+        db,
+        "securityAlerts",
+        "operatorVerificationAlert"
     );
+
+    await setDoc(alertRef, {
+
+        type: "5 Failed Operator Login Attempts",
+
+        loginType: "operator",
+
+        attempts: attempts,
+
+        email: email || "",
+
+        mobile: mobile || "",
+
+        fullname: fullname || "",
+
+        timestamp: serverTimestamp(),
+
+        status: "New",
+
+        blocked: false
+
+    });
 
 }
