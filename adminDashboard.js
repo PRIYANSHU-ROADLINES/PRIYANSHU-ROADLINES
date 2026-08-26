@@ -3,7 +3,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 import {
     getFirestore,
     collection,
-    getDocs
+    getDocs,
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
@@ -74,7 +76,243 @@ async function checkAdminAccess() {
         return;
     }
 
+// ============================================
+// LOAD SECURITY ALERTS
+// ============================================
 
+async function loadSecurityAlerts() {
+
+    try {
+
+        const alertsQuery = query(
+            collection(db, "securityAlerts"),
+            orderBy("timestamp", "desc")
+        );
+
+        const snapshot =
+            await getDocs(alertsQuery);
+
+        const alertsContainer =
+            document.getElementById("alertsContainer");
+
+        const newAlertsCount =
+            document.getElementById("newAlertsCount");
+
+        const reviewedAlertsCount =
+            document.getElementById("reviewedAlertsCount");
+
+        const blockedDevicesCount =
+            document.getElementById("blockedDevicesCount");
+
+        const totalAlertsCount =
+            document.getElementById("totalAlertsCount");
+
+        const alertStatus =
+            document.getElementById("alertStatus");
+
+
+        let newCount = 0;
+        let reviewedCount = 0;
+        let blockedCount = 0;
+        let totalCount = 0;
+
+
+        if (alertsContainer) {
+
+            alertsContainer.innerHTML = "";
+
+        }
+
+
+        snapshot.forEach((alertDoc) => {
+
+            const alert =
+                alertDoc.data();
+
+            totalCount++;
+
+
+            if (alert.status === "New") {
+
+                newCount++;
+
+            }
+
+
+            if (alert.status === "Reviewed") {
+
+                reviewedCount++;
+
+            }
+
+
+            if (alert.blocked === true) {
+
+                blockedCount++;
+
+            }
+
+
+            const alertCard =
+                document.createElement("div");
+
+            alertCard.className =
+                "security-alert-card";
+
+
+            const timestamp =
+                alert.timestamp &&
+                alert.timestamp.toDate
+                    ? alert.timestamp.toDate().toLocaleString()
+                    : "Unknown";
+
+
+            alertCard.innerHTML = `
+
+                <div class="alert-card-header">
+
+                    <strong>
+                        🔴 Security Alert
+                    </strong>
+
+                    <span>
+                        ${alert.status || "New"}
+                    </span>
+
+                </div>
+
+
+                <div class="alert-card-body">
+
+                    <p>
+                        <strong>Operator:</strong>
+                        ${alert.fullname || "Unknown"}
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        ${alert.email || "Not available"}
+                    </p>
+
+                    <p>
+                        <strong>Mobile:</strong>
+                        ${alert.mobile || "Not available"}
+                    </p>
+
+                    <p>
+                        <strong>Failed Attempts:</strong>
+                        ${alert.attempts || 0}
+                    </p>
+
+                    <p>
+                        <strong>Device ID:</strong>
+                        ${alert.deviceId || "Not available"}
+                    </p>
+
+                    <p>
+                        <strong>Time:</strong>
+                        ${timestamp}
+                    </p>
+
+                </div>
+
+            `;
+
+
+            if (alertsContainer) {
+
+                alertsContainer.appendChild(
+                    alertCard
+                );
+
+            }
+
+        });
+
+
+        if (newAlertsCount) {
+
+            newAlertsCount.textContent =
+                newCount;
+
+        }
+
+
+        if (reviewedAlertsCount) {
+
+            reviewedAlertsCount.textContent =
+                reviewedCount;
+
+        }
+
+
+        if (blockedDevicesCount) {
+
+            blockedDevicesCount.textContent =
+                blockedCount;
+
+        }
+
+
+        if (totalAlertsCount) {
+
+            totalAlertsCount.textContent =
+                totalCount;
+
+        }
+
+
+        if (alertStatus) {
+
+            if (newCount > 0) {
+
+                alertStatus.textContent =
+                    `${newCount} NEW ALERT${newCount > 1 ? "S" : ""}`;
+
+            } else {
+
+                alertStatus.textContent =
+                    "NO NEW ALERTS";
+
+            }
+
+        }
+
+
+        if (
+            alertsContainer &&
+            totalCount === 0
+        ) {
+
+            alertsContainer.innerHTML = `
+
+                <div class="no-alerts">
+
+                    <div class="icon">
+                        🛡️
+                    </div>
+
+                    <p>
+                        No security alerts found.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load security alerts."
+        );
+
+    }
+
+}
     // ============================================
     // VERIFY ADMIN IN FIRESTORE
     // ============================================
@@ -148,6 +386,7 @@ async function checkAdminAccess() {
                 adminData.designation || "Administrator";
 
         }
+        await loadSecurityAlerts();
 
     }
     catch (error) {
