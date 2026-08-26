@@ -42,44 +42,9 @@ document.addEventListener(
 
 async function checkAdminAccess() {
 
-    // ============================================
-    // GET CURRENT OPERATOR LOGIN SESSION
-    // ============================================
-
-    const loggedIn =
-        localStorage.getItem("loggedIn");
-
-    const role =
-        localStorage.getItem("role");
-
-    const email =
-        localStorage.getItem("email");
-    console.log(
-    "ADMIN DASHBOARD SESSION:",
-    {
-        loggedIn: loggedIn,
-        role: role,
-        email: email,
-        name: localStorage.getItem("name"),
-        designation: localStorage.getItem("designation")
-    }
-);
-
-
-    console.log(
-        "Dashboard loggedIn:",
-        loggedIn
-    );
-
-    console.log(
-        "Dashboard role:",
-        role
-    );
-
-    console.log(
-        "Dashboard email:",
-        email
-    );
+    const loggedIn = localStorage.getItem("loggedIn");
+    const role = localStorage.getItem("role");
+    const email = localStorage.getItem("email");
 
 
     // ============================================
@@ -88,13 +53,9 @@ async function checkAdminAccess() {
 
     if (loggedIn !== "true") {
 
-        console.warn(
-            "Admin Dashboard: No login session."
-        );
+        alert("Access Denied!\n\nAdmin login is required to access this page.");
 
-        window.location.replace(
-            "index.html"
-        );
+        window.location.replace("index.html");
 
         return;
     }
@@ -106,59 +67,45 @@ async function checkAdminAccess() {
 
     if (role !== "admin") {
 
-        console.warn(
-            "Admin Dashboard: User is not an admin."
-        );
+        alert("Access Denied!\n\nYou do not have permission to access the Admin Dashboard.");
 
-        window.location.replace(
-            "index.html"
-        );
+        window.location.replace("index.html");
 
         return;
     }
 
 
     // ============================================
-    // VERIFY ADMIN IN OPERATORS COLLECTION
+    // VERIFY ADMIN IN FIRESTORE
     // ============================================
 
     try {
 
-        const operatorsSnapshot =
-            await getDocs(
-                collection(
-                    db,
-                    "operators"
-                )
-            );
+        const operatorsSnapshot = await getDocs(
+            collection(db, "operators")
+        );
 
 
         let adminFound = false;
-
         let adminData = null;
 
 
-        operatorsSnapshot.forEach(
-            (operatorDoc) => {
+        operatorsSnapshot.forEach((operatorDoc) => {
 
-                const data =
-                    operatorDoc.data();
+            const data = operatorDoc.data();
 
+            if (
+                data.role === "admin" &&
+                data.active === true &&
+                data.email === email
+            ) {
 
-                if (
-                    data.role === "admin" &&
-                    data.active === true &&
-                    data.email === email
-                ) {
-
-                    adminFound = true;
-
-                    adminData = data;
-
-                }
+                adminFound = true;
+                adminData = data;
 
             }
-        );
+
+        });
 
 
         // ============================================
@@ -167,94 +114,54 @@ async function checkAdminAccess() {
 
         if (!adminFound) {
 
-            console.warn(
-                "Admin Dashboard: Admin verification failed."
+            alert(
+                "Access Denied!\n\nYour administrator account could not be verified."
             );
 
-           
+            window.location.replace("index.html");
 
-           console.error(
-    "ADMIN VERIFICATION FAILED"
-);
-
-return;
+            return;
         }
 
 
         // ============================================
-        // ADMIN VERIFIED
-        // ============================================
-
-        console.log(
-            "================================"
-        );
-
-        console.log(
-            "ADMIN DASHBOARD ACCESS GRANTED"
-        );
-
-        console.log(
-            "Admin:",
-            adminData.fullName
-        );
-
-        console.log(
-            "Email:",
-            adminData.email
-        );
-
-        console.log(
-            "Designation:",
-            adminData.designation
-        );
-
-        console.log(
-            "================================"
-        );
-
-
-        // ============================================
-        // DISPLAY ADMIN INFORMATION
+        // ACCESS GRANTED
         // ============================================
 
         const adminName =
-            document.getElementById(
-                "adminName"
-            );
+            document.getElementById("adminName");
 
         if (adminName) {
 
             adminName.textContent =
-                adminData.fullName;
+                adminData.fullName || "Administrator";
 
         }
 
 
         const adminDesignation =
-            document.getElementById(
-                "adminDesignation"
-            );
+            document.getElementById("adminDesignation");
 
         if (adminDesignation) {
 
             adminDesignation.textContent =
-                adminData.designation ||
-                "Administrator";
+                adminData.designation || "Administrator";
 
         }
 
     }
     catch (error) {
 
-        console.error(
-            "Admin Dashboard verification error:",
-            error
+        // Do not expose technical Firebase information
+        // to the browser console.
+
+        alert(
+            "Unable to verify administrator access.\n\nPlease try again."
         );
 
-        window.location.replace(
-            "index.html"
-        );
+        window.location.replace("index.html");
 
+        return;
     }
 
 }
