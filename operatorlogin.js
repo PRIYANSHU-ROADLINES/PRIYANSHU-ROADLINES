@@ -120,6 +120,10 @@ async function verifyOperator() {
             "designation",
             operatorDesignation
         );
+        localStorage.setItem(
+    "email",
+    email
+);
 
         console.log("Operator role received:", operatorRole);
 console.log("Operator role type:", typeof operatorRole);
