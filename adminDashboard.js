@@ -54,6 +54,16 @@ async function checkAdminAccess() {
 
     const email =
         localStorage.getItem("email");
+    console.log(
+    "ADMIN DASHBOARD SESSION:",
+    {
+        loggedIn: loggedIn,
+        role: role,
+        email: email,
+        name: localStorage.getItem("name"),
+        designation: localStorage.getItem("designation")
+    }
+);
 
 
     console.log(
@@ -161,32 +171,13 @@ async function checkAdminAccess() {
                 "Admin Dashboard: Admin verification failed."
             );
 
-            localStorage.removeItem(
-                "loggedIn"
-            );
+           
 
-            localStorage.removeItem(
-                "role"
-            );
+           console.error(
+    "ADMIN VERIFICATION FAILED"
+);
 
-            localStorage.removeItem(
-                "name"
-            );
-
-            localStorage.removeItem(
-                "designation"
-            );
-
-            localStorage.removeItem(
-                "email"
-            );
-
-
-            window.location.replace(
-                "index.html"
-            );
-
-            return;
+return;
         }
 
 
