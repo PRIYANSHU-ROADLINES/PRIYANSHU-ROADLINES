@@ -8,6 +8,12 @@ import {
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
+    getAuth,
+    signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+import {
     recordFailedLoginAttempt
 }
 from "./js/security/securityAttempts.js";
@@ -29,6 +35,7 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+const auth = getAuth(app);
 
 // ============================================
 // OPERATOR LOGIN
@@ -53,7 +60,9 @@ async function verifyOperator() {
     const uniqueCode =
         document.getElementById("uniqueCode").value.trim();
 
-
+    const password =
+    document.getElementById("operatorPassword").value;
+    
     const snap =
         await getDocs(
             collection(db, "operators")
@@ -68,6 +77,7 @@ async function verifyOperator() {
 
     let operatorDesignation = "";
 
+    let operatorAuthUid = "";
 
     snap.forEach((docItem) => {
 
@@ -89,7 +99,8 @@ async function verifyOperator() {
             operatorName = data.fullName;
 
             operatorDesignation = data.designation;
-
+            operatorAuthUid = data.authUid;
+            
         }
 
     });
@@ -99,12 +110,49 @@ async function verifyOperator() {
     // SUCCESSFUL OPERATOR LOGIN
     // ============================================
 
-    if (found) {
+    try {
 
-        localStorage.setItem(
-            "loggedIn",
-            "true"
+    const credential =
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
         );
+
+    const firebaseUser =
+        credential.user;
+
+
+    if (
+        !operatorAuthUid ||
+        firebaseUser.uid !== operatorAuthUid
+    ) {
+
+        await auth.signOut();
+
+        alert(
+            "Administrator authentication failed.\n\nThe operator account is not correctly linked."
+        );
+
+        return;
+    }
+
+
+} catch (authError) {
+
+    alert(
+        "Authentication failed.\n\nPlease check your password."
+    );
+
+    return;
+}
+    
+
+    localStorage.setItem(
+        "loggedIn",
+        "true"
+    );
+        
 
         localStorage.setItem(
             "role",
