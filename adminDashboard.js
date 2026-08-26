@@ -1,14 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
-    getAuth,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-
-import {
     getFirestore,
-    doc,
-    getDoc
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
@@ -32,122 +27,243 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 
 // ============================================
-// ADMIN ACCESS CHECK
+// ADMIN DASHBOARD ACCESS CHECK
 // ============================================
 
-onAuthStateChanged(auth, async (user) => {
+document.addEventListener(
+    "DOMContentLoaded",
+    checkAdminAccess
+);
 
-    // ----------------------------------------
-    // NO FIREBASE LOGIN
-    // ----------------------------------------
 
-    if (!user) {
+async function checkAdminAccess() {
+
+    // ============================================
+    // GET CURRENT OPERATOR LOGIN SESSION
+    // ============================================
+
+    const loggedIn =
+        localStorage.getItem("loggedIn");
+
+    const role =
+        localStorage.getItem("role");
+
+    const email =
+        localStorage.getItem("email");
+
+
+    console.log(
+        "Dashboard loggedIn:",
+        loggedIn
+    );
+
+    console.log(
+        "Dashboard role:",
+        role
+    );
+
+    console.log(
+        "Dashboard email:",
+        email
+    );
+
+
+    // ============================================
+    // NO LOGIN
+    // ============================================
+
+    if (loggedIn !== "true") {
 
         console.warn(
-            "Admin dashboard access denied: User not logged in."
+            "Admin Dashboard: No login session."
         );
 
-        window.location.href =
-            "index.html";
+        window.location.replace(
+            "index.html"
+        );
 
         return;
     }
 
 
-    // ----------------------------------------
-    // GET USER ROLE
-    // ----------------------------------------
+    // ============================================
+    // MUST BE ADMIN
+    // ============================================
+
+    if (role !== "admin") {
+
+        console.warn(
+            "Admin Dashboard: User is not an admin."
+        );
+
+        window.location.replace(
+            "index.html"
+        );
+
+        return;
+    }
+
+
+    // ============================================
+    // VERIFY ADMIN IN OPERATORS COLLECTION
+    // ============================================
 
     try {
 
-        const userRef = doc(
-            db,
-            "users",
-            user.uid
-        );
-
-        const userSnap =
-            await getDoc(userRef);
-
-
-        if (!userSnap.exists()) {
-
-            console.warn(
-                "Admin dashboard access denied: User record not found."
+        const operatorsSnapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "operators"
+                )
             );
 
-            await auth.signOut();
 
-            window.location.href =
-                "index.html";
+        let adminFound = false;
+
+        let adminData = null;
+
+
+        operatorsSnapshot.forEach(
+            (operatorDoc) => {
+
+                const data =
+                    operatorDoc.data();
+
+
+                if (
+                    data.role === "admin" &&
+                    data.active === true &&
+                    data.email === email
+                ) {
+
+                    adminFound = true;
+
+                    adminData = data;
+
+                }
+
+            }
+        );
+
+
+        // ============================================
+        // ADMIN NOT FOUND
+        // ============================================
+
+        if (!adminFound) {
+
+            console.warn(
+                "Admin Dashboard: Admin verification failed."
+            );
+
+            localStorage.removeItem(
+                "loggedIn"
+            );
+
+            localStorage.removeItem(
+                "role"
+            );
+
+            localStorage.removeItem(
+                "name"
+            );
+
+            localStorage.removeItem(
+                "designation"
+            );
+
+            localStorage.removeItem(
+                "email"
+            );
+
+
+            window.location.replace(
+                "index.html"
+            );
 
             return;
         }
 
 
-        const userData =
-            userSnap.data();
-
-        const role =
-            userData.role;
-
+        // ============================================
+        // ADMIN VERIFIED
+        // ============================================
 
         console.log(
-            "Admin dashboard user:",
-            user.email
+            "================================"
         );
 
         console.log(
-            "Admin dashboard role:",
-            role
+            "ADMIN DASHBOARD ACCESS GRANTED"
+        );
+
+        console.log(
+            "Admin:",
+            adminData.fullName
+        );
+
+        console.log(
+            "Email:",
+            adminData.email
+        );
+
+        console.log(
+            "Designation:",
+            adminData.designation
+        );
+
+        console.log(
+            "================================"
         );
 
 
-        // ----------------------------------------
-        // OWNER CHECK
-        // ----------------------------------------
+        // ============================================
+        // DISPLAY ADMIN INFORMATION
+        // ============================================
 
-        if (role !== "owner") {
-
-            console.warn(
-                "Admin dashboard access denied: Not an owner."
+        const adminName =
+            document.getElementById(
+                "adminName"
             );
 
-            await auth.signOut();
+        if (adminName) {
 
-            window.location.href =
-                "index.html";
+            adminName.textContent =
+                adminData.fullName;
 
-            return;
         }
 
 
-        // ----------------------------------------
-        // ACCESS GRANTED
-        // ----------------------------------------
+        const adminDesignation =
+            document.getElementById(
+                "adminDesignation"
+            );
 
-        console.log(
-            "Admin dashboard access granted."
-        );
+        if (adminDesignation) {
 
+            adminDesignation.textContent =
+                adminData.designation ||
+                "Administrator";
+
+        }
 
     }
     catch (error) {
 
         console.error(
-            "Admin dashboard authentication error:",
+            "Admin Dashboard verification error:",
             error
         );
 
-        window.location.href =
-            "index.html";
+        window.location.replace(
+            "index.html"
+        );
 
     }
 
-});
+}
