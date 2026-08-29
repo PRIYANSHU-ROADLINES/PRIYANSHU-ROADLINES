@@ -256,3 +256,6 @@ window.location.href =
     "index.html";
 
 return;
+
+}
+}
