@@ -555,127 +555,246 @@ return {
 FIREBASE AUTH
 ========================================= */
 
+/* =========================================
+FIREBASE AUTH
+========================================= */
+
 onAuthStateChanged(
-auth,
-async (user) => {
+    auth,
+    async (user) => {
 
-/* -------------------------------
-   CUSTOMER
-------------------------------- */
+        /* -------------------------------
+           STAFF / ADMIN
+           CHECK LOCAL OPERATOR SESSION FIRST
+        ------------------------------- */
 
-if (user) {
-
-    try {
-
-        const snap =
-            await getDoc(
-                doc(
-                    db,
-                    "users",
-                    user.uid
-                )
-            );
+        const operator =
+            checkOperatorLogin();
 
 
-        if (snap.exists()) {
+        if (
+            operator.loggedIn
+        ) {
 
-            const data =
-                snap.data();
+            /* --------------------------------
+               IMPORTANT:
+               Firebase user must also exist
+               -------------------------------- */
+
+            if (!user) {
+
+                showGuest();
+
+                hideLoader();
+
+                return;
+
+            }
 
 
-            showLoggedInUser(
+            /* --------------------------------
+               VERIFY FIREBASE UID
+               -------------------------------- */
 
-data.name ||
-user.displayName ||
-"User",
+            try {
 
-data.role ||
-"customer",
+                const operatorSnap =
+                    await getDocs(
+                        collection(db, "operators")
+                    );
 
-data.email ||
-user.email ||
-"",
 
-data.photoURL ||
-user.photoURL ||
-""
+                let validOperator = false;
 
-);
 
-            hideLoader();
+                operatorSnap.forEach(
+                    (docItem) => {
 
-            return;
+                        const data =
+                            docItem.data();
+
+
+                        if (
+                            data.authUid === user.uid &&
+                            data.role === operator.role &&
+                            data.active === true
+                        ) {
+
+                            validOperator = true;
+
+                        }
+
+                    }
+                );
+
+
+                if (!validOperator) {
+
+                    localStorage.removeItem(
+                        "loggedIn"
+                    );
+
+                    localStorage.removeItem(
+                        "role"
+                    );
+
+                    localStorage.removeItem(
+                        "name"
+                    );
+
+                    localStorage.removeItem(
+                        "designation"
+                    );
+
+                    localStorage.removeItem(
+                        "email"
+                    );
+
+                    await signOut(auth);
+
+                    showGuest();
+
+                    hideLoader();
+
+                    return;
+
+                }
+
+
+                /* --------------------------------
+                   VALID STAFF / ADMIN
+                   -------------------------------- */
+
+                showLoggedInUser(
+
+                    operator.name,
+
+                    operator.role,
+
+                    operator.email || "",
+
+                    operator.photoURL || ""
+
+                );
+
+                hideLoader();
+
+                return;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Operator verification error:",
+                    error
+                );
+
+                showGuest();
+
+                hideLoader();
+
+                return;
+
+            }
 
         }
 
 
+        /* -------------------------------
+           CUSTOMER
+        ------------------------------- */
+
+        if (user) {
+
+            try {
+
+                const snap =
+                    await getDoc(
+                        doc(
+                            db,
+                            "users",
+                            user.uid
+                        )
+                    );
+
+
+                if (snap.exists()) {
+
+                    const data =
+                        snap.data();
+
+
+                    showLoggedInUser(
+
+                        data.name ||
+                        user.displayName ||
+                        "User",
+
+                        data.role ||
+                        "customer",
+
+                        data.email ||
+                        user.email ||
+                        "",
+
+                        data.photoURL ||
+                        user.photoURL ||
+                        ""
+
+                    );
+
+                    hideLoader();
+
+                    return;
+
+                }
+
+
+                /* --------------------------------
+                   FIREBASE USER EXISTS BUT IS
+                   NOT A CUSTOMER
+                   -------------------------------- */
+
+                await signOut(auth);
+
+                showGuest();
+
+                hideLoader();
+
+                return;
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Profile error:",
+                    error
+                );
+
+                showGuest();
+
+                hideLoader();
+
+                return;
+
+            }
+
+        }
+
+
+        /* -------------------------------
+           GUEST
+        ------------------------------- */
+
         showGuest();
 
         hideLoader();
 
-        return;
-
     }
 
-    catch (error) {
-
-        console.error(
-            "Profile error:",
-            error
-        );
-
-        showGuest();
-
-        hideLoader();
-
-        return;
-
-    }
-
-}
-
-
-/* -------------------------------
-   STAFF / ADMIN
-------------------------------- */
-
-const operator =
-    checkOperatorLogin();
-
-
-if (operator.loggedIn) {
-
-   showLoggedInUser(
-
-operator.name,
-
-operator.role,
-
-operator.email || "",
-
-operator.photoURL || ""
-
 );
-
-    hideLoader();
-
-    return;
-
-}
-
-
-/* -------------------------------
-   GUEST
-/------------------------------- */
-
-showGuest();
-
-hideLoader();
-
-}
-
-);
-
 /* =========================================
 PROFILE CLICK
 ========================================= */
