@@ -60,8 +60,8 @@ async function verifyOperator() {
     const uniqueCode =
         document.getElementById("uniqueCode").value.trim();
 
-    const password =
-    document.getElementById("operatorPassword").value;
+    const password = uniqueCode;
+    
     
     const snap =
         await getDocs(
