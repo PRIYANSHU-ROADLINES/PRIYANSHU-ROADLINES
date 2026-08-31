@@ -222,11 +222,15 @@ addDoc(
 );
       
 
-  } catch (err) {
+} catch (err) {
+
+    console.error("POD LOGIN ERROR:", err);
+    console.error("Error Code:", err.code);
+    console.error("Error Message:", err.message);
 
     alert(err.message);
 
-  }
+}
 
 };
 // Logout
