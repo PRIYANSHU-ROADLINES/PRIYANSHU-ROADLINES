@@ -243,7 +243,10 @@ onAuthStateChanged(podAuth, async (user) => {
 
   const adminPanel =
     document.getElementById("adminPanel");
-
+  
+  const dashboardSection =
+  document.getElementById("dashboardSection");
+  
   const loginBox =
     document.getElementById("loginBox");
 
@@ -318,48 +321,56 @@ onAuthStateChanged(podAuth, async (user) => {
     // OWNER ONLY SECTIONS
     // --------------------------------
 
-    if (role === "owner") {
+ if (role === "owner") {
 
-      if (loginHistorySection) {
-        loginHistorySection.style.display = "block";
-      }
+  // SHOW DASHBOARD FOR OWNER
+  if (dashboardSection) {
+    dashboardSection.style.display = "block";
+  }
 
-      if (deviceApprovalSection) {
-        deviceApprovalSection.style.display = "block";
-      }
+  if (loginHistorySection) {
+    loginHistorySection.style.display = "block";
+  }
 
-      if (trustedDevicesSection) {
-        trustedDevicesSection.style.display = "block";
-      }
+  if (deviceApprovalSection) {
+    deviceApprovalSection.style.display = "block";
+  }
 
-      // Owner dashboard functions
-      loadDashboard();
-      loadSystemStats();
+  if (trustedDevicesSection) {
+    trustedDevicesSection.style.display = "block";
+  }
 
-    }
+  // Owner dashboard functions
+  loadDashboard();
+  loadSystemStats();
 
+}
 
     // --------------------------------
     // EMPLOYEE
     // --------------------------------
 
-    else if (role === "employee") {
+   else if (role === "employee") {
 
-      // Hide ONLY owner-management sections
+  // HIDE DASHBOARD FOR EMPLOYEE
+  if (dashboardSection) {
+    dashboardSection.style.display = "none";
+  }
 
-      if (loginHistorySection) {
-        loginHistorySection.style.display = "none";
-      }
+  // Hide owner-management sections
+  if (loginHistorySection) {
+    loginHistorySection.style.display = "none";
+  }
 
-      if (deviceApprovalSection) {
-        deviceApprovalSection.style.display = "none";
-      }
+  if (deviceApprovalSection) {
+    deviceApprovalSection.style.display = "none";
+  }
 
-      if (trustedDevicesSection) {
-        trustedDevicesSection.style.display = "none";
-      }
+  if (trustedDevicesSection) {
+    trustedDevicesSection.style.display = "none";
+  }
 
-    }
+}
 
 
     // --------------------------------
