@@ -13,7 +13,7 @@ if (!operatorLoggedIn) {
 }
 else if (
     role !== "staff" &&
-    role !== "administrator"
+    role !== "admin"
 ) {
 
     alert("You are not authorized to access POD.");
