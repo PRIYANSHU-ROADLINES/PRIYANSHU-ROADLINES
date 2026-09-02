@@ -131,36 +131,48 @@ export async function recordFailedLoginAttempt({
 
     if (attempts >= 5) {
 
-    await createSecurityAlert({
+    try {
 
-        email: email,
+        await createSecurityAlert({
 
-        mobile: mobile,
+            loginType: "operator",
 
-        fullname: fullname,
+            email: email || "",
 
-        attempts: attempts,
+            mobile: mobile || "",
 
-        deviceId: deviceId
+            fullname: fullname || "",
 
-    });
+            attempts: attempts,
 
-    console.log(
-        "SECURITY ALERT CREATED"
-    );
+            deviceId: deviceId
 
-    // ============================================
-    // RESET COUNTER AFTER ALERT
-    // ============================================
+        });
 
-    localStorage.setItem(
-        "securityAttemptCount",
-        "0"
-    );
+        console.log(
+            "SECURITY ALERT CREATED"
+        );
 
-    console.log(
-        "Security attempt counter reset to 0"
-    );
+        // ============================================
+        // RESET COUNTER AFTER SUCCESSFUL ALERT
+        // ============================================
 
-}
+        localStorage.setItem(
+            "securityAttemptCount",
+            "0"
+        );
+
+        console.log(
+            "Security attempt counter reset to 0"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "SECURITY ALERT CREATION FAILED:",
+            error
+        );
+
+    }
+
 }
