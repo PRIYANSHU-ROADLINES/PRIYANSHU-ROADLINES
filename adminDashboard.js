@@ -8,7 +8,10 @@ import {
     orderBy
 } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
-
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 // ============================================
 // FIREBASE CONFIG
 // ============================================
@@ -31,6 +34,8 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+const auth = getAuth(app);
+
 
 // ============================================
 // ADMIN DASHBOARD ACCESS CHECK
@@ -38,15 +43,39 @@ const db = getFirestore(app);
 
 document.addEventListener(
     "DOMContentLoaded",
-    checkAdminAccess
+    () => {
+
+        onAuthStateChanged(auth, async (user) => {
+
+            if (!user) {
+
+                alert(
+                    "Access Denied!\n\nPlease login again."
+                );
+
+                window.location.replace("index.html");
+
+                return;
+            }
+
+            await checkAdminAccess(user);
+
+        });
+
+    }
 );
 
 
-async function checkAdminAccess() {
+async function checkAdminAccess(user) {
 
-    const loggedIn = localStorage.getItem("loggedIn");
-    const role = localStorage.getItem("role");
-    const email = localStorage.getItem("email");
+    const loggedIn =
+        localStorage.getItem("loggedIn");
+
+    const role =
+        localStorage.getItem("role");
+
+    const email =
+        localStorage.getItem("email");
 
 
     // ============================================
@@ -55,7 +84,9 @@ async function checkAdminAccess() {
 
     if (loggedIn !== "true") {
 
-        alert("Access Denied!\n\nAdmin login is required to access this page.");
+        alert(
+            "Access Denied!\n\nAdmin login is required to access this page."
+        );
 
         window.location.replace("index.html");
 
@@ -64,12 +95,14 @@ async function checkAdminAccess() {
 
 
     // ============================================
-    // MUST BE ADMIN
+    // MUST BE MAIN WEBSITE ADMIN
     // ============================================
 
     if (role !== "admin") {
 
-        alert("Access Denied!\n\nYou do not have permission to access the Admin Dashboard.");
+        alert(
+            "Access Denied!\n\nYou do not have permission to access the Admin Dashboard."
+        );
 
         window.location.replace("index.html");
 
@@ -306,12 +339,12 @@ async function loadSecurityAlerts() {
 
     catch (error) {
 
-        console.error(
-            "Unable to load security alerts."
-        );
+    console.error(
+        "Unable to load security alerts:",
+        error
+    );
 
-    }
-
+}
 }
     // ============================================
     // VERIFY ADMIN IN FIRESTORE
@@ -333,16 +366,16 @@ async function loadSecurityAlerts() {
             const data = operatorDoc.data();
 
             if (
-                data.role === "admin" &&
-                data.active === true &&
-                data.email === email
-            ) {
+    data.role === "admin" &&
+    data.active === true &&
+    data.email === email &&
+    data.authUid === user.uid
+) {
 
-                adminFound = true;
-                adminData = data;
+    adminFound = true;
+    adminData = data;
 
-            }
-
+}
         });
 
 
