@@ -133,21 +133,21 @@ export async function recordFailedLoginAttempt({
 
     try {
 
-        await createSecurityAlert({
+       await createSecurityAlert({
 
-            loginType: "operator",
+    loginType: loginType,
 
-            email: email || "",
+    email: email,
 
-            mobile: mobile || "",
+    mobile: mobile,
 
-            fullname: fullname || "",
+    fullname: fullname,
 
-            attempts: attempts,
+    attempts: attempts,
 
-            deviceId: deviceId
+    deviceId: deviceId
 
-        });
+});
 
         console.log(
             "SECURITY ALERT CREATED"
