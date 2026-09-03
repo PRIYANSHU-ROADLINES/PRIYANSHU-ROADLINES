@@ -271,117 +271,144 @@ async function loadOperators() {
 // OPERATORS MENU
 // ============================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+// ============================================
+// OPERATORS MENU
+// ============================================
 
-        const operatorsMenuBtn =
-            document.getElementById(
-                "operatorsMenuBtn"
+const operatorsMenuBtn =
+    document.getElementById(
+        "operatorsMenuBtn"
+    );
+
+const operatorsPanel =
+    document.getElementById(
+        "operatorsPanel"
+    );
+
+const securityPanel =
+    document.querySelector(
+        ".main .panel"
+    );
+
+
+// ============================================
+// CHECK REQUIRED ELEMENTS
+// ============================================
+
+if (!operatorsMenuBtn) {
+
+    console.error(
+        "Operators button not found."
+    );
+
+}
+
+if (!operatorsPanel) {
+
+    console.error(
+        "Operators panel not found."
+    );
+
+}
+
+
+// ============================================
+// OPERATORS BUTTON
+// ============================================
+
+if (
+    operatorsMenuBtn &&
+    operatorsPanel
+) {
+
+    operatorsMenuBtn.addEventListener(
+        "click",
+        async () => {
+
+            console.log(
+                "Operators button clicked."
             );
 
 
-        const operatorsPanel =
-            document.getElementById(
-                "operatorsPanel"
-            );
+            // ====================================
+            // HIDE SECURITY ALERT PANEL
+            // ====================================
 
+            if (securityPanel) {
 
-        const securityPanel =
-            document.querySelector(
-                ".main .panel"
-            );
-
-
-        if (
-            !operatorsMenuBtn ||
-            !operatorsPanel
-        ) {
-            return;
-        }
-
-
-        operatorsMenuBtn.addEventListener(
-            "click",
-            async () => {
-
-                // ====================================
-                // HIDE SECURITY ALERT PANEL
-                // ====================================
-
-                if (securityPanel) {
-
-                    securityPanel.style.display =
-                        "none";
-
-                }
-
-
-                // ====================================
-                // SHOW OPERATORS PANEL
-                // ====================================
-
-                operatorsPanel.style.display =
-                    "block";
-
-
-                // ====================================
-                // UPDATE ACTIVE SIDEBAR BUTTON
-                // ====================================
-
-                document
-                    .querySelectorAll(
-                        ".sidebar button"
-                    )
-                    .forEach((button) => {
-
-                        button.classList.remove(
-                            "active"
-                        );
-
-                    });
-
-
-                operatorsMenuBtn.classList.add(
-                    "active"
-                );
-
-
-                // ====================================
-                // LOAD OPERATORS
-                // ====================================
-
-                await loadOperators();
+                securityPanel.style.display =
+                    "none";
 
             }
-        );
 
 
-        // ============================================
-        // REFRESH OPERATORS
-        // ============================================
+            // ====================================
+            // SHOW OPERATORS PANEL
+            // ====================================
 
-        const refreshOperatorsBtn =
-            document.getElementById(
-                "refreshOperatorsBtn"
+            operatorsPanel.style.display =
+                "block";
+
+
+            // ====================================
+            // UPDATE ACTIVE BUTTON
+            // ====================================
+
+            document
+                .querySelectorAll(
+                    ".sidebar button"
+                )
+                .forEach((button) => {
+
+                    button.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+            operatorsMenuBtn.classList.add(
+                "active"
             );
 
 
-        if (refreshOperatorsBtn) {
+            // ====================================
+            // LOAD OPERATORS
+            // ====================================
 
-            refreshOperatorsBtn.addEventListener(
-                "click",
-                async () => {
-
-                    await loadOperators();
-
-                }
-            );
+            await loadOperators();
 
         }
+    );
 
-    }
-);
+}
+
+
+// ============================================
+// REFRESH OPERATORS
+// ============================================
+
+const refreshOperatorsBtn =
+    document.getElementById(
+        "refreshOperatorsBtn"
+    );
+
+if (refreshOperatorsBtn) {
+
+    refreshOperatorsBtn.addEventListener(
+        "click",
+        async () => {
+
+            console.log(
+                "Refreshing operators..."
+            );
+
+            await loadOperators();
+
+        }
+    );
+
+}
     // ============================================
     // MUST BE MAIN WEBSITE ADMIN
     // ============================================
