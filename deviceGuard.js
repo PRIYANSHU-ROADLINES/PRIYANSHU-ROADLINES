@@ -321,6 +321,7 @@ function showBlockedScreen(deviceId) {
                     Please contact the
                     administrator if you believe
                     this is an error.
+                    email:priyanshuroadlines611@gmail.com
                 </p>
 
 
