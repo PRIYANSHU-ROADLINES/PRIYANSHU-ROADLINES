@@ -161,7 +161,7 @@ async function blockAlertDevice(alertId) {
 
     const confirmation = confirm(
         "BLOCK THIS DEVICE?\n\n" +
-        "This will mark the device as blocked in the security system.\n\n" +
+        "This device will be denied access when it next opens the website.\n\n" +
         "Do you want to continue?"
     );
 
@@ -172,18 +172,110 @@ async function blockAlertDevice(alertId) {
 
     try {
 
+        // ============================================
+        // GET THE SECURITY ALERT
+        // ============================================
+
+        const alertSnapshot = await getDocs(
+            query(
+                collection(db, "securityAlerts")
+            )
+        );
+
+
+        let alertData = null;
+
+
+        alertSnapshot.forEach((alertDoc) => {
+
+            if (alertDoc.id === alertId) {
+
+                alertData = alertDoc.data();
+
+            }
+
+        });
+
+
+        if (!alertData) {
+
+            alert(
+                "Security alert could not be found."
+            );
+
+            return;
+
+        }
+
+
+        const deviceId = alertData.deviceId;
+
+
+        if (!deviceId) {
+
+            alert(
+                "This alert does not contain a valid Device ID."
+            );
+
+            return;
+
+        }
+
+
+        // ============================================
+        // UPDATE SECURITY ALERT
+        // ============================================
+
         await updateDoc(
-            doc(db, "securityAlerts", alertId),
+            doc(
+                db,
+                "securityAlerts",
+                alertId
+            ),
             {
                 blocked: true,
-                blockedAt: new Date(),
+                blockedAt: serverTimestamp(),
                 status: "Reviewed"
             }
         );
 
 
+        // ============================================
+        // CREATE BLOCKED DEVICE RECORD
+        // ============================================
+
+        await setDoc(
+            doc(
+                db,
+                "blockedDevices",
+                deviceId
+            ),
+            {
+
+                deviceId: deviceId,
+
+                blocked: true,
+
+                blockedAt: serverTimestamp(),
+
+                sourceAlertId: alertId,
+
+                reason:
+                    "Security policy violation"
+
+            }
+        );
+
+
         console.log(
-            "Device marked as blocked."
+            "DEVICE BLOCKED:",
+            deviceId
+        );
+
+
+        alert(
+            "Device blocked successfully.\n\n" +
+            "Device ID: " + deviceId
         );
 
 
@@ -198,14 +290,14 @@ async function blockAlertDevice(alertId) {
         );
 
         alert(
-            "Unable to block this device.\n\nPlease try again."
+            "Unable to block this device.\n\n" +
+            "Please try again."
         );
 
     }
 
 }
-
-
+    
 // ============================================
 // UNBLOCK DEVICE
 // ============================================
@@ -214,7 +306,7 @@ async function unblockAlertDevice(alertId) {
 
     const confirmation = confirm(
         "UNBLOCK THIS DEVICE?\n\n" +
-        "The device will no longer be marked as blocked.\n\n" +
+        "The device will be allowed to access the website again.\n\n" +
         "Do you want to continue?"
     );
 
@@ -225,17 +317,95 @@ async function unblockAlertDevice(alertId) {
 
     try {
 
+        // ============================================
+        // GET SECURITY ALERT
+        // ============================================
+
+        const alertSnapshot = await getDocs(
+            query(
+                collection(db, "securityAlerts")
+            )
+        );
+
+
+        let alertData = null;
+
+
+        alertSnapshot.forEach((alertDoc) => {
+
+            if (alertDoc.id === alertId) {
+
+                alertData = alertDoc.data();
+
+            }
+
+        });
+
+
+        if (!alertData) {
+
+            alert(
+                "Security alert could not be found."
+            );
+
+            return;
+
+        }
+
+
+        const deviceId = alertData.deviceId;
+
+
+        if (!deviceId) {
+
+            alert(
+                "Device ID not found."
+            );
+
+            return;
+
+        }
+
+
+        // ============================================
+        // UPDATE SECURITY ALERT
+        // ============================================
+
         await updateDoc(
-            doc(db, "securityAlerts", alertId),
+            doc(
+                db,
+                "securityAlerts",
+                alertId
+            ),
             {
                 blocked: false,
-                unblockedAt: new Date()
+                unblockedAt: serverTimestamp()
             }
         );
 
 
+        // ============================================
+        // REMOVE BLOCKED DEVICE RECORD
+        // ============================================
+
+        await deleteDoc(
+            doc(
+                db,
+                "blockedDevices",
+                deviceId
+            )
+        );
+
+
         console.log(
-            "Device unblocked."
+            "DEVICE UNBLOCKED:",
+            deviceId
+        );
+
+
+        alert(
+            "Device unblocked successfully.\n\n" +
+            "Device ID: " + deviceId
         );
 
 
@@ -250,7 +420,8 @@ async function unblockAlertDevice(alertId) {
         );
 
         alert(
-            "Unable to unblock this device.\n\nPlease try again."
+            "Unable to unblock this device.\n\n" +
+            "Please try again."
         );
 
     }
