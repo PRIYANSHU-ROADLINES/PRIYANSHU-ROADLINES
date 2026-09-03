@@ -409,6 +409,114 @@ if (refreshOperatorsBtn) {
     );
 
 }
+// ============================================
+// ADD OPERATOR MODAL
+// ============================================
+
+const addOperatorBtn =
+    document.getElementById("addOperatorBtn");
+
+const addOperatorModal =
+    document.getElementById("addOperatorModal");
+
+const closeAddOperatorBtn =
+    document.getElementById("closeAddOperatorBtn");
+
+const cancelAddOperatorBtn =
+    document.getElementById("cancelAddOperatorBtn");
+
+
+// ============================================
+// OPEN MODAL
+// ============================================
+
+if (addOperatorBtn && addOperatorModal) {
+
+    addOperatorBtn.addEventListener(
+        "click",
+        () => {
+
+            console.log(
+                "Add New Operator button clicked."
+            );
+
+            addOperatorModal.style.display =
+                "flex";
+
+        }
+    );
+
+}
+
+
+// ============================================
+// CLOSE MODAL — X BUTTON
+// ============================================
+
+if (
+    closeAddOperatorBtn &&
+    addOperatorModal
+) {
+
+    closeAddOperatorBtn.addEventListener(
+        "click",
+        () => {
+
+            addOperatorModal.style.display =
+                "none";
+
+        }
+    );
+
+}
+
+
+// ============================================
+// CLOSE MODAL — CANCEL BUTTON
+// ============================================
+
+if (
+    cancelAddOperatorBtn &&
+    addOperatorModal
+) {
+
+    cancelAddOperatorBtn.addEventListener(
+        "click",
+        () => {
+
+            addOperatorModal.style.display =
+                "none";
+
+        }
+    );
+
+}
+
+
+// ============================================
+// CLOSE MODAL — OUTSIDE CLICK
+// ============================================
+
+if (addOperatorModal) {
+
+    addOperatorModal.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target ===
+                addOperatorModal
+            ) {
+
+                addOperatorModal.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+}
     // ============================================
     // MUST BE MAIN WEBSITE ADMIN
     // ============================================
