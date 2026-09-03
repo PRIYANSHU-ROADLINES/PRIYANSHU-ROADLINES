@@ -16,8 +16,12 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
     getAuth,
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    deleteUser
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
 // ============================================
 // FIREBASE CONFIG
 // ============================================
@@ -41,6 +45,19 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const auth = getAuth(app);
+
+// ============================================
+// SECONDARY AUTH FOR CREATING OPERATORS
+// ============================================
+
+const operatorCreationApp =
+    initializeApp(
+        firebaseConfig,
+        "OPERATOR_CREATION_APP"
+    );
+
+const operatorCreationAuth =
+    getAuth(operatorCreationApp);
 
 
 // ============================================
@@ -517,6 +534,436 @@ if (addOperatorModal) {
     );
 
 }
+
+    // ============================================
+// CREATE NEW OPERATOR
+// ============================================
+
+const addOperatorForm =
+    document.getElementById("addOperatorForm");
+
+if (addOperatorForm) {
+
+    addOperatorForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+            // ========================================
+            // GET FORM VALUES
+            // ========================================
+
+            const fullName =
+                document
+                    .getElementById(
+                        "operatorFullName"
+                    )
+                    .value
+                    .trim();
+
+            const email =
+                document
+                    .getElementById(
+                        "operatorEmail"
+                    )
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+            const mobile =
+                document
+                    .getElementById(
+                        "operatorMobile"
+                    )
+                    .value
+                    .trim();
+
+            const designation =
+                document
+                    .getElementById(
+                        "operatorDesignation"
+                    )
+                    .value
+                    .trim();
+
+            const role =
+                document
+                    .getElementById(
+                        "operatorRole"
+                    )
+                    .value
+                    .trim();
+
+            const uniqueCode =
+                document
+                    .getElementById(
+                        "operatorUniqueCode"
+                    )
+                    .value
+                    .trim();
+
+
+            // ========================================
+            // BASIC VALIDATION
+            // ========================================
+
+            if (
+                !fullName ||
+                !email ||
+                !mobile ||
+                !designation ||
+                !role ||
+                !uniqueCode
+            ) {
+
+                alert(
+                    "Please fill all operator details."
+                );
+
+                return;
+
+            }
+
+
+            // ========================================
+            // PASSWORD LENGTH VALIDATION
+            // ========================================
+
+            if (uniqueCode.length < 6) {
+
+                alert(
+                    "Unique Code must contain at least 6 characters."
+                );
+
+                return;
+
+            }
+
+
+            // ========================================
+            // DISABLE BUTTON
+            // ========================================
+
+            const saveOperatorBtn =
+                document.getElementById(
+                    "saveOperatorBtn"
+                );
+
+            if (saveOperatorBtn) {
+
+                saveOperatorBtn.disabled =
+                    true;
+
+                saveOperatorBtn.textContent =
+                    "Creating...";
+
+            }
+
+
+            try {
+
+                // ====================================
+                // CHECK EXISTING OPERATORS
+                // ====================================
+
+                const operatorsSnapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "operators"
+                        )
+                    );
+
+
+                let emailExists = false;
+                let mobileExists = false;
+                let codeExists = false;
+
+
+                let highestId = 0;
+
+
+                operatorsSnapshot.forEach(
+                    (operatorDoc) => {
+
+                        const operator =
+                            operatorDoc.data();
+
+
+                        // CHECK DUPLICATES
+
+                        if (
+                            operator.email
+                                ?.toLowerCase() ===
+                            email
+                        ) {
+
+                            emailExists = true;
+
+                        }
+
+
+                        if (
+                            operator.mobile ===
+                            mobile
+                        ) {
+
+                            mobileExists = true;
+
+                        }
+
+
+                        if (
+                            operator.uniqueCode ===
+                            uniqueCode
+                        ) {
+
+                            codeExists = true;
+
+                        }
+
+
+                        // =================================
+                        // FIND HIGHEST OP/ST NUMBER
+                        // =================================
+
+                        const docId =
+                            operatorDoc.id;
+
+                        const match =
+                            docId.match(
+                                /^(OP|ST)(\d+)$/
+                            );
+
+                        if (match) {
+
+                            const number =
+                                parseInt(
+                                    match[2],
+                                    10
+                                );
+
+                            if (
+                                number >
+                                highestId
+                            ) {
+
+                                highestId =
+                                    number;
+
+                            }
+
+                        }
+
+                    }
+                );
+
+
+                // ====================================
+                // DUPLICATE CHECK
+                // ====================================
+
+                if (emailExists) {
+
+                    alert(
+                        "An operator with this email already exists."
+                    );
+
+                    return;
+
+                }
+
+
+                if (mobileExists) {
+
+                    alert(
+                        "An operator with this mobile number already exists."
+                    );
+
+                    return;
+
+                }
+
+
+                if (codeExists) {
+
+                    alert(
+                        "This Unique Code is already in use."
+                    );
+
+                    return;
+
+                }
+
+
+                // ====================================
+                // GENERATE OPERATOR DOCUMENT ID
+                // ====================================
+
+                const nextNumber =
+                    highestId + 1;
+
+                const prefix =
+                    role === "admin"
+                        ? "OP"
+                        : "ST";
+
+                const operatorId =
+                    prefix +
+                    String(nextNumber)
+                        .padStart(
+                            3,
+                            "0"
+                        );
+
+
+                // ====================================
+                // CREATE FIREBASE AUTH ACCOUNT
+                // ====================================
+
+                const credential =
+                    await createUserWithEmailAndPassword(
+                        operatorCreationAuth,
+                        email,
+                        uniqueCode
+                    );
+
+
+                const newAuthUid =
+                    credential.user.uid;
+
+
+                // ====================================
+                // CREATE FIRESTORE DOCUMENT
+                // ====================================
+
+                try {
+
+                    await setDoc(
+                        doc(
+                            db,
+                            "operators",
+                            operatorId
+                        ),
+                        {
+                            role: role,
+                            active: true,
+                            authUid: newAuthUid,
+                            designation: designation,
+                            email: email,
+                            fullName: fullName,
+                            mobile: mobile,
+                            uniqueCode: uniqueCode
+                        }
+                    );
+
+                } catch (firestoreError) {
+
+                    // =================================
+                    // CLEAN UP AUTH ACCOUNT
+                    // IF FIRESTORE CREATION FAILS
+                    // =================================
+
+                    try {
+
+                        await deleteUser(
+                            credential.user
+                        );
+
+                    } catch (cleanupError) {
+
+                        console.error(
+                            "Unable to clean up Auth account:",
+                            cleanupError
+                        );
+
+                    }
+
+                    throw firestoreError;
+
+                }
+
+
+                // ====================================
+                // SUCCESS
+                // ====================================
+
+                alert(
+                    "Operator created successfully.\n\n" +
+                    "Operator ID: " +
+                    operatorId
+                );
+
+
+                // ====================================
+                // RESET FORM
+                // ====================================
+
+                addOperatorForm.reset();
+
+
+                // ====================================
+                // CLOSE MODAL
+                // ====================================
+
+                const addOperatorModal =
+                    document.getElementById(
+                        "addOperatorModal"
+                    );
+
+                if (addOperatorModal) {
+
+                    addOperatorModal.style.display =
+                        "none";
+
+                }
+
+
+                // ====================================
+                // RELOAD OPERATORS
+                // ====================================
+
+                await loadOperators();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Unable to create operator:",
+                    error
+                );
+
+
+                alert(
+                    "Unable to create operator.\n\n" +
+                    error.message
+                );
+
+
+            } finally {
+
+                // ====================================
+                // ENABLE BUTTON AGAIN
+                // ====================================
+
+                if (saveOperatorBtn) {
+
+                    saveOperatorBtn.disabled =
+                        false;
+
+                    saveOperatorBtn.textContent =
+                        "💾 Create Operator";
+
+                }
+
+            }
+
+        }
+    );
+
+}
+    
     // ============================================
     // MUST BE MAIN WEBSITE ADMIN
     // ============================================
