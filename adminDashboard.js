@@ -5,8 +5,11 @@ import {
     collection,
     getDocs,
     query,
-    orderBy
-} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+    orderBy,
+    doc,
+    updateDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
     getAuth,
@@ -108,7 +111,148 @@ async function checkAdminAccess(user) {
 
         return;
     }
+// ============================================
+// MARK ALERT AS REVIEWED
+// ============================================
 
+async function markAlertReviewed(alertId) {
+
+    try {
+
+        await updateDoc(
+            doc(db, "securityAlerts", alertId),
+            {
+                status: "Reviewed",
+                reviewedAt: new Date()
+            }
+        );
+
+        console.log(
+            "Security alert marked as reviewed."
+        );
+
+        await loadSecurityAlerts();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to review security alert:",
+            error
+        );
+
+        alert(
+            "Unable to update the security alert.\n\nPlease try again."
+        );
+
+    }
+
+}
+
+
+// ============================================
+// BLOCK DEVICE
+// ============================================
+
+async function blockAlertDevice(alertId) {
+
+    const confirmation = confirm(
+        "BLOCK THIS DEVICE?\n\n" +
+        "This will mark the device as blocked in the security system.\n\n" +
+        "Do you want to continue?"
+    );
+
+    if (!confirmation) {
+        return;
+    }
+
+
+    try {
+
+        await updateDoc(
+            doc(db, "securityAlerts", alertId),
+            {
+                blocked: true,
+                blockedAt: new Date(),
+                status: "Reviewed"
+            }
+        );
+
+
+        console.log(
+            "Device marked as blocked."
+        );
+
+
+        await loadSecurityAlerts();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to block device:",
+            error
+        );
+
+        alert(
+            "Unable to block this device.\n\nPlease try again."
+        );
+
+    }
+
+}
+
+
+// ============================================
+// UNBLOCK DEVICE
+// ============================================
+
+async function unblockAlertDevice(alertId) {
+
+    const confirmation = confirm(
+        "UNBLOCK THIS DEVICE?\n\n" +
+        "The device will no longer be marked as blocked.\n\n" +
+        "Do you want to continue?"
+    );
+
+    if (!confirmation) {
+        return;
+    }
+
+
+    try {
+
+        await updateDoc(
+            doc(db, "securityAlerts", alertId),
+            {
+                blocked: false,
+                unblockedAt: new Date()
+            }
+        );
+
+
+        console.log(
+            "Device unblocked."
+        );
+
+
+        await loadSecurityAlerts();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to unblock device:",
+            error
+        );
+
+        alert(
+            "Unable to unblock this device.\n\nPlease try again."
+        );
+
+    }
+
+}
 // ============================================
 // LOAD SECURITY ALERTS
 // ============================================
@@ -202,54 +346,118 @@ async function loadSecurityAlerts() {
 
             alertCard.innerHTML = `
 
-                <div class="alert-card-header">
+    <div class="alert-card-header">
 
-                    <strong>
-                        🔴 Security Alert
-                    </strong>
+        <strong>
+            🔴 Security Alert
+        </strong>
 
-                    <span>
-                        ${alert.status || "New"}
+        <span class="alert-status ${
+
+            alert.status === "Reviewed"
+                ? "reviewed"
+                : "new"
+
+        }">
+
+            ${alert.status || "New"}
+
+        </span>
+
+    </div>
+
+
+    <div class="alert-card-body">
+
+        <p>
+            <strong>Operator:</strong>
+            ${alert.fullname || "Unknown"}
+        </p>
+
+        <p>
+            <strong>Email:</strong>
+            ${alert.email || "Not available"}
+        </p>
+
+        <p>
+            <strong>Mobile:</strong>
+            ${alert.mobile || "Not available"}
+        </p>
+
+        <p>
+            <strong>Failed Attempts:</strong>
+            ${alert.attempts || 0}
+        </p>
+
+        <p>
+            <strong>Device ID:</strong>
+            ${alert.deviceId || "Not available"}
+        </p>
+
+        <p>
+            <strong>Time:</strong>
+            ${timestamp}
+        </p>
+
+
+        <p>
+            <strong>Device Status:</strong>
+
+            ${
+                alert.blocked === true
+                    ? "🚫 BLOCKED"
+                    : "🟢 Not Blocked"
+            }
+
+        </p>
+
+
+        <div class="alert-actions">
+
+            ${
+                alert.status !== "Reviewed"
+
+                ? `
+                    <button
+                        class="review-btn"
+                        data-alert-id="${alertDoc.id}">
+                        ✓ Mark Reviewed
+                    </button>
+                `
+
+                : `
+                    <span class="reviewed-label">
+                        ✓ Reviewed
                     </span>
+                `
+            }
 
-                </div>
 
+            ${
+                alert.blocked === true
 
-                <div class="alert-card-body">
+                ? `
+                    <button
+                        class="unblock-btn"
+                        data-alert-id="${alertDoc.id}">
+                        🔓 Unblock Device
+                    </button>
+                `
 
-                    <p>
-                        <strong>Operator:</strong>
-                        ${alert.fullname || "Unknown"}
-                    </p>
+                : `
+                    <button
+                        class="block-btn"
+                        data-alert-id="${alertDoc.id}">
+                        🚫 Block Device
+                    </button>
+                `
+            }
 
-                    <p>
-                        <strong>Email:</strong>
-                        ${alert.email || "Not available"}
-                    </p>
+        </div>
 
-                    <p>
-                        <strong>Mobile:</strong>
-                        ${alert.mobile || "Not available"}
-                    </p>
+    </div>
 
-                    <p>
-                        <strong>Failed Attempts:</strong>
-                        ${alert.attempts || 0}
-                    </p>
-
-                    <p>
-                        <strong>Device ID:</strong>
-                        ${alert.deviceId || "Not available"}
-                    </p>
-
-                    <p>
-                        <strong>Time:</strong>
-                        ${timestamp}
-                    </p>
-
-                </div>
-
-            `;
+`;
 
 
             if (alertsContainer) {
@@ -259,6 +467,73 @@ async function loadSecurityAlerts() {
                 );
 
             }
+            // ============================================
+// REVIEW BUTTON
+// ============================================
+
+const reviewButton =
+    alertCard.querySelector(".review-btn");
+
+if (reviewButton) {
+
+    reviewButton.addEventListener(
+        "click",
+        () => {
+
+            markAlertReviewed(
+                reviewButton.dataset.alertId
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// BLOCK BUTTON
+// ============================================
+
+const blockButton =
+    alertCard.querySelector(".block-btn");
+
+if (blockButton) {
+
+    blockButton.addEventListener(
+        "click",
+        () => {
+
+            blockAlertDevice(
+                blockButton.dataset.alertId
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// UNBLOCK BUTTON
+// ============================================
+
+const unblockButton =
+    alertCard.querySelector(".unblock-btn");
+
+if (unblockButton) {
+
+    unblockButton.addEventListener(
+        "click",
+        () => {
+
+            unblockAlertDevice(
+                unblockButton.dataset.alertId
+            );
+
+        }
+    );
+
+}
 
         });
 
