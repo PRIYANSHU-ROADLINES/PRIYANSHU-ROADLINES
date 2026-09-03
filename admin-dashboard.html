@@ -582,9 +582,9 @@
             🔐 Security Alerts
         </button>
 
-        <button>
-            👤 Operators
-        </button>
+        <button id="operatorsMenuBtn">
+    👤 Operators
+</button>
 
         <button>
             📱 Trusted Devices
@@ -744,7 +744,55 @@
 
         </section>
 
+<!-- ========================================
+     OPERATORS MANAGEMENT
+======================================== -->
 
+<section class="panel" id="operatorsPanel" style="display:none;">
+
+    <div class="panel-header">
+
+        <h3>
+            👤 Operators Management
+        </h3>
+
+        <button
+            id="refreshOperatorsBtn"
+            style="
+                border:none;
+                background:#1261a0;
+                color:white;
+                padding:9px 14px;
+                border-radius:6px;
+                cursor:pointer;
+                font-weight:bold;
+            ">
+            🔄 Refresh
+        </button>
+
+    </div>
+
+
+    <div
+        id="operatorsContainer"
+        style="padding:20px;">
+
+        <div class="no-alerts">
+
+            <div class="icon">
+                👤
+            </div>
+
+            <p>
+                Loading operators...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+        
     </main>
     <script
     type="module"
