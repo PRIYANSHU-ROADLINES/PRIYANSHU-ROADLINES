@@ -50,7 +50,7 @@ document.addEventListener(
             if (!user) {
 
                 alert(
-                    "Access Denied!\n\nPlease login again."
+                    "Access Denied!\n\nPlease login first."
                 );
 
                 window.location.replace("index.html");
