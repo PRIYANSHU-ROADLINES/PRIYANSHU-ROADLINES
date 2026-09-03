@@ -120,14 +120,21 @@ async function checkAdminAccess(user) {
 // OPERATORS MANAGEMENT
 // ============================================
 
+// ============================================
+// LOAD OPERATORS
+// ============================================
+
 async function loadOperators() {
 
     const operatorsContainer =
-        document.getElementById("operatorsContainer");
+        document.getElementById(
+            "operatorsContainer"
+        );
 
     if (!operatorsContainer) {
         return;
     }
+
 
     operatorsContainer.innerHTML = `
         <div class="no-alerts">
@@ -141,7 +148,10 @@ async function loadOperators() {
 
         const operatorsSnapshot =
             await getDocs(
-                collection(db, "operators")
+                collection(
+                    db,
+                    "operators"
+                )
             );
 
 
@@ -168,93 +178,382 @@ async function loadOperators() {
         operatorsContainer.innerHTML = "";
 
 
-        operatorsSnapshot.forEach((operatorDoc) => {
+        operatorsSnapshot.forEach(
+            (operatorDoc) => {
 
-            const operator =
-                operatorDoc.data();
-
-
-            const status =
-                operator.active === true
-                    ? "Active"
-                    : "Inactive";
+                const operator =
+                    operatorDoc.data();
 
 
-            const statusClass =
-                operator.active === true
-                    ? "reviewed"
-                    : "new";
+                // ====================================
+                // OPERATOR STATUS
+                // ====================================
+
+                const isActive =
+                    operator.active === true;
 
 
-            const card =
-                document.createElement("div");
+                const status =
+                    isActive
+                        ? "Active"
+                        : "Inactive";
 
 
-            card.className =
-                "security-alert-card";
+                const statusClass =
+                    isActive
+                        ? "reviewed"
+                        : "new";
 
 
-            card.style.borderLeft =
-                operator.active === true
-                    ? "5px solid #168a16"
-                    : "5px solid #777";
+                // ====================================
+                // CREATE CARD
+                // ====================================
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
 
 
-            card.innerHTML = `
-
-                <div class="alert-card-header">
-
-                    <strong>
-                        👤 ${operator.fullName || "Unknown Operator"}
-                    </strong>
-
-                    <span class="alert-status ${statusClass}">
-                        ${status}
-                    </span>
-
-                </div>
+                card.className =
+                    "security-alert-card";
 
 
-                <div class="alert-card-body">
-
-                    <p>
-                        <strong>Email:</strong>
-                        ${operator.email || "Not available"}
-                    </p>
-
-                    <p>
-                        <strong>Mobile:</strong>
-                        ${operator.mobile || "Not available"}
-                    </p>
-
-                    <p>
-                        <strong>Designation:</strong>
-                        ${operator.designation || "Not specified"}
-                    </p>
-
-                    <p>
-                        <strong>Role:</strong>
-                        ${operator.role || "Not specified"}
-                    </p>
-
-                    <p>
-                        <strong>Unique Code:</strong>
-                        ${operator.uniqueCode || operatorDoc.id}
-                    </p>
-
-                    <p>
-                        <strong>Authentication UID:</strong>
-                        ${operator.authUid || "Not available"}
-                    </p>
-
-                </div>
-
-            `;
+                card.style.borderLeft =
+                    isActive
+                        ? "5px solid #168a16"
+                        : "5px solid #777";
 
 
-            operatorsContainer.appendChild(card);
+                // ====================================
+                // CARD CONTENT
+                // ====================================
 
-        });
+                card.innerHTML = `
+
+                    <div class="alert-card-header">
+
+                        <strong>
+                            👤 ${
+                                operator.fullName ||
+                                "Unknown Operator"
+                            }
+                        </strong>
+
+                        <span
+                            class="alert-status ${statusClass}"
+                        >
+                            ${status}
+                        </span>
+
+                    </div>
+
+
+                    <div class="alert-card-body">
+
+                        <p>
+                            <strong>
+                                Operator ID:
+                            </strong>
+
+                            ${operatorDoc.id}
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Email:
+                            </strong>
+
+                            ${
+                                operator.email ||
+                                "Not available"
+                            }
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Mobile:
+                            </strong>
+
+                            ${
+                                operator.mobile ||
+                                "Not available"
+                            }
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Designation:
+                            </strong>
+
+                            ${
+                                operator.designation ||
+                                "Not specified"
+                            }
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Role:
+                            </strong>
+
+                            ${
+                                operator.role ||
+                                "Not specified"
+                            }
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Unique Code:
+                            </strong>
+
+                            ${
+                                operator.uniqueCode ||
+                                "Not available"
+                            }
+                        </p>
+
+
+                        <p>
+                            <strong>
+                                Authentication UID:
+                            </strong>
+
+                            ${
+                                operator.authUid ||
+                                "Not available"
+                            }
+                        </p>
+
+
+                        <!-- =================================
+                             OPERATOR ACTIONS
+                        ================================== -->
+
+                        <div
+                            class="alert-actions"
+                            style="
+                                margin-top:15px;
+                                display:flex;
+                                gap:10px;
+                                flex-wrap:wrap;
+                            "
+                        >
+
+                            ${
+                                isActive
+
+                                ? `
+
+                                    <button
+                                        class="deactivate-operator-btn"
+                                        data-operator-id="${operatorDoc.id}"
+                                        style="
+                                            background:#b42318;
+                                            color:white;
+                                            border:none;
+                                            padding:9px 14px;
+                                            border-radius:6px;
+                                            cursor:pointer;
+                                        "
+                                    >
+                                        🔴 Deactivate
+                                    </button>
+
+                                `
+
+                                : `
+
+                                    <button
+                                        class="activate-operator-btn"
+                                        data-operator-id="${operatorDoc.id}"
+                                        style="
+                                            background:#168a16;
+                                            color:white;
+                                            border:none;
+                                            padding:9px 14px;
+                                            border-radius:6px;
+                                            cursor:pointer;
+                                        "
+                                    >
+                                        🟢 Activate
+                                    </button>
+
+                                `
+                            }
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                operatorsContainer.appendChild(
+                    card
+                );
+
+
+                // ====================================
+                // DEACTIVATE BUTTON
+                // ====================================
+
+                const deactivateButton =
+                    card.querySelector(
+                        ".deactivate-operator-btn"
+                    );
+
+
+                if (deactivateButton) {
+
+                    deactivateButton.addEventListener(
+                        "click",
+                        async () => {
+
+                            const confirmDeactivate =
+                                confirm(
+                                    "DEACTIVATE OPERATOR?\n\n" +
+                                    "This operator will no longer be able to log in.\n\n" +
+                                    "Do you want to continue?"
+                                );
+
+
+                            if (
+                                !confirmDeactivate
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            try {
+
+                                await updateDoc(
+                                    doc(
+                                        db,
+                                        "operators",
+                                        operatorDoc.id
+                                    ),
+                                    {
+                                        active:
+                                            false
+                                    }
+                                );
+
+
+                                alert(
+                                    "Operator deactivated successfully."
+                                );
+
+
+                                await loadOperators();
+
+                            }
+                            catch (error) {
+
+                                console.error(
+                                    "Unable to deactivate operator:",
+                                    error
+                                );
+
+
+                                alert(
+                                    "Unable to deactivate operator.\n\nPlease try again."
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                // ====================================
+                // ACTIVATE BUTTON
+                // ====================================
+
+                const activateButton =
+                    card.querySelector(
+                        ".activate-operator-btn"
+                    );
+
+
+                if (activateButton) {
+
+                    activateButton.addEventListener(
+                        "click",
+                        async () => {
+
+                            const confirmActivate =
+                                confirm(
+                                    "ACTIVATE OPERATOR?\n\n" +
+                                    "This operator will be allowed to log in again.\n\n" +
+                                    "Do you want to continue?"
+                                );
+
+
+                            if (
+                                !confirmActivate
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            try {
+
+                                await updateDoc(
+                                    doc(
+                                        db,
+                                        "operators",
+                                        operatorDoc.id
+                                    ),
+                                    {
+                                        active:
+                                            true
+                                    }
+                                );
+
+
+                                alert(
+                                    "Operator activated successfully."
+                                );
+
+
+                                await loadOperators();
+
+                            }
+                            catch (error) {
+
+                                console.error(
+                                    "Unable to activate operator:",
+                                    error
+                                );
+
+
+                                alert(
+                                    "Unable to activate operator.\n\nPlease try again."
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
 
     }
     catch (error) {
@@ -284,10 +583,7 @@ async function loadOperators() {
     }
 
 }
-// ============================================
-// OPERATORS MENU
-// ============================================
-
+    
 // ============================================
 // OPERATORS MENU
 // ============================================
