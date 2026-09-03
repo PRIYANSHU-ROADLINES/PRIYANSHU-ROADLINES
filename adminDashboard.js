@@ -99,7 +99,289 @@ async function checkAdminAccess(user) {
         return;
     }
 
+    // ============================================
+// OPERATORS MANAGEMENT
+// ============================================
 
+async function loadOperators() {
+
+    const operatorsContainer =
+        document.getElementById("operatorsContainer");
+
+    if (!operatorsContainer) {
+        return;
+    }
+
+    operatorsContainer.innerHTML = `
+        <div class="no-alerts">
+            <div class="icon">👤</div>
+            <p>Loading operators...</p>
+        </div>
+    `;
+
+
+    try {
+
+        const operatorsSnapshot =
+            await getDocs(
+                collection(db, "operators")
+            );
+
+
+        if (operatorsSnapshot.empty) {
+
+            operatorsContainer.innerHTML = `
+                <div class="no-alerts">
+
+                    <div class="icon">
+                        👤
+                    </div>
+
+                    <p>
+                        No operators found.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        operatorsContainer.innerHTML = "";
+
+
+        operatorsSnapshot.forEach((operatorDoc) => {
+
+            const operator =
+                operatorDoc.data();
+
+
+            const status =
+                operator.active === true
+                    ? "Active"
+                    : "Inactive";
+
+
+            const statusClass =
+                operator.active === true
+                    ? "reviewed"
+                    : "new";
+
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "security-alert-card";
+
+
+            card.style.borderLeft =
+                operator.active === true
+                    ? "5px solid #168a16"
+                    : "5px solid #777";
+
+
+            card.innerHTML = `
+
+                <div class="alert-card-header">
+
+                    <strong>
+                        👤 ${operator.fullName || "Unknown Operator"}
+                    </strong>
+
+                    <span class="alert-status ${statusClass}">
+                        ${status}
+                    </span>
+
+                </div>
+
+
+                <div class="alert-card-body">
+
+                    <p>
+                        <strong>Email:</strong>
+                        ${operator.email || "Not available"}
+                    </p>
+
+                    <p>
+                        <strong>Mobile:</strong>
+                        ${operator.mobile || "Not available"}
+                    </p>
+
+                    <p>
+                        <strong>Designation:</strong>
+                        ${operator.designation || "Not specified"}
+                    </p>
+
+                    <p>
+                        <strong>Role:</strong>
+                        ${operator.role || "Not specified"}
+                    </p>
+
+                    <p>
+                        <strong>Unique Code:</strong>
+                        ${operator.uniqueCode || operatorDoc.id}
+                    </p>
+
+                    <p>
+                        <strong>Authentication UID:</strong>
+                        ${operator.authUid || "Not available"}
+                    </p>
+
+                </div>
+
+            `;
+
+
+            operatorsContainer.appendChild(card);
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to load operators:",
+            error
+        );
+
+
+        operatorsContainer.innerHTML = `
+
+            <div class="no-alerts">
+
+                <div class="icon">
+                    ⚠️
+                </div>
+
+                <p>
+                    Unable to load operators.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+// ============================================
+// OPERATORS MENU
+// ============================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const operatorsMenuBtn =
+            document.getElementById(
+                "operatorsMenuBtn"
+            );
+
+
+        const operatorsPanel =
+            document.getElementById(
+                "operatorsPanel"
+            );
+
+
+        const securityPanel =
+            document.querySelector(
+                ".main .panel"
+            );
+
+
+        if (
+            !operatorsMenuBtn ||
+            !operatorsPanel
+        ) {
+            return;
+        }
+
+
+        operatorsMenuBtn.addEventListener(
+            "click",
+            async () => {
+
+                // ====================================
+                // HIDE SECURITY ALERT PANEL
+                // ====================================
+
+                if (securityPanel) {
+
+                    securityPanel.style.display =
+                        "none";
+
+                }
+
+
+                // ====================================
+                // SHOW OPERATORS PANEL
+                // ====================================
+
+                operatorsPanel.style.display =
+                    "block";
+
+
+                // ====================================
+                // UPDATE ACTIVE SIDEBAR BUTTON
+                // ====================================
+
+                document
+                    .querySelectorAll(
+                        ".sidebar button"
+                    )
+                    .forEach((button) => {
+
+                        button.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                operatorsMenuBtn.classList.add(
+                    "active"
+                );
+
+
+                // ====================================
+                // LOAD OPERATORS
+                // ====================================
+
+                await loadOperators();
+
+            }
+        );
+
+
+        // ============================================
+        // REFRESH OPERATORS
+        // ============================================
+
+        const refreshOperatorsBtn =
+            document.getElementById(
+                "refreshOperatorsBtn"
+            );
+
+
+        if (refreshOperatorsBtn) {
+
+            refreshOperatorsBtn.addEventListener(
+                "click",
+                async () => {
+
+                    await loadOperators();
+
+                }
+            );
+
+        }
+
+    }
+);
     // ============================================
     // MUST BE MAIN WEBSITE ADMIN
     // ============================================
@@ -114,6 +396,7 @@ async function checkAdminAccess(user) {
 
         return;
     }
+   
 // ============================================
 // MARK ALERT AS REVIEWED
 // ============================================
