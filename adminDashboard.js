@@ -387,6 +387,21 @@ async function loadOperators() {
 
                                 `
                             }
+                            <button
+  class="edit-operator-btn"
+  data-id="${operatorDoc.id}"
+  style="
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-left:8px;
+  "
+>
+  ✏️ Edit
+</button>
 
                         </div>
 
