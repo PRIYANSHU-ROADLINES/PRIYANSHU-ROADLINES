@@ -387,6 +387,62 @@ async function loadOperators() {
 
                                 `
                             }
+    document.querySelectorAll(".edit-operator-btn").forEach(button => {
+  button.addEventListener("click", async () => {
+
+    const operatorId = button.dataset.id;
+
+    try {
+      const operatorDoc = await getDocs(
+        query(collection(db, "operators"))
+      );
+
+      let operator = null;
+
+      operatorDoc.forEach(docSnap => {
+        if (docSnap.id === operatorId) {
+          operator = {
+            id: docSnap.id,
+            ...docSnap.data()
+          };
+        }
+      });
+
+      if (!operator) {
+        alert("Operator not found.");
+        return;
+      }
+
+      document.getElementById("editOperatorId").value =
+        operator.id;
+
+      document.getElementById("editOperatorFullName").value =
+        operator.fullName || "";
+
+      document.getElementById("editOperatorEmail").value =
+        operator.email || "";
+
+      document.getElementById("editOperatorMobile").value =
+        operator.mobile || "";
+
+      document.getElementById("editOperatorDesignation").value =
+        operator.designation || "";
+
+      document.getElementById("editOperatorRole").value =
+        operator.role || "";
+
+      document.getElementById("editOperatorUniqueCode").value =
+        operator.uniqueCode || "";
+
+      document.getElementById("editOperatorModal").style.display =
+        "flex";
+
+    } catch (error) {
+      console.error("Error loading operator:", error);
+      alert("Unable to load operator details.");
+    }
+  });
+});
                             <button
   class="edit-operator-btn"
   data-id="${operatorDoc.id}"
