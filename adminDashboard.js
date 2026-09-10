@@ -949,20 +949,17 @@ if (
 // CLOSE EDIT MODAL - CANCEL BUTTON
 // ============================================
 
-if (
-    cancelEditOperatorBtn &&
-    editOperatorModal
-) {
+// ============================================
+// CLOSE EDIT MODAL - CANCEL BUTTON
+// ============================================
 
-    cancelEditOperatorBtn.addEventListener(
-        "click",
-        () => {
+if (cancelEditOperatorBtn) {
 
-            editOperatorModal.style.display =
-                "none";
+    cancelEditOperatorBtn.onclick = function () {
 
-        }
-    );
+        editOperatorModal.style.display = "none";
+
+    };
 
 }
 
