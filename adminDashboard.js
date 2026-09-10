@@ -813,7 +813,24 @@ const closeAddOperatorBtn =
 const cancelAddOperatorBtn =
     document.getElementById("cancelAddOperatorBtn");
 
+// ============================================
+// EDIT OPERATOR MODAL
+// ============================================
 
+const editOperatorModal =
+    document.getElementById(
+        "editOperatorModal"
+    );
+
+const closeEditOperatorBtn =
+    document.getElementById(
+        "closeEditOperatorBtn"
+    );
+
+const cancelEditOperatorBtn =
+    document.getElementById(
+        "cancelEditOperatorBtn"
+    );
 // ============================================
 // OPEN MODAL
 // ============================================
@@ -905,7 +922,76 @@ if (addOperatorModal) {
     );
 
 }
+// ============================================
+// CLOSE EDIT MODAL - X BUTTON
+// ============================================
 
+if (
+    closeEditOperatorBtn &&
+    editOperatorModal
+) {
+
+    closeEditOperatorBtn.addEventListener(
+        "click",
+        () => {
+
+            editOperatorModal.style.display =
+                "none";
+
+        }
+    );
+
+}
+
+
+
+// ============================================
+// CLOSE EDIT MODAL - CANCEL BUTTON
+// ============================================
+
+if (
+    cancelEditOperatorBtn &&
+    editOperatorModal
+) {
+
+    cancelEditOperatorBtn.addEventListener(
+        "click",
+        () => {
+
+            editOperatorModal.style.display =
+                "none";
+
+        }
+    );
+
+}
+
+
+
+// ============================================
+// CLOSE EDIT MODAL - OUTSIDE CLICK
+// ============================================
+
+if (editOperatorModal) {
+
+    editOperatorModal.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                event.target ===
+                editOperatorModal
+            ) {
+
+                editOperatorModal.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+}
     // ============================================
 // CREATE NEW OPERATOR
 // ============================================
