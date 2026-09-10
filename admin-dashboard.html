@@ -1042,6 +1042,118 @@
     </div>
 
 </div>
+<!-- Edit Operator Modal -->
+<div id="editOperatorModal"
+     style="display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.6);
+            z-index:2000;
+            align-items:center;
+            justify-content:center;">
+
+  <div style="
+    background:white;
+    width:420px;
+    max-width:90%;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  ">
+
+    <h2 style="margin-top:0;">✏️ Edit Operator</h2>
+
+    <form id="editOperatorForm">
+
+      <input type="hidden" id="editOperatorId">
+
+      <label>Full Name</label>
+      <input
+        type="text"
+        id="editOperatorFullName"
+        required
+        style="width:100%;padding:10px;margin:6px 0 14px;"
+      >
+
+      <label>Email</label>
+      <input
+        type="email"
+        id="editOperatorEmail"
+        disabled
+        style="width:100%;padding:10px;margin:6px 0 14px;background:#eee;"
+      >
+
+      <label>Mobile</label>
+      <input
+        type="text"
+        id="editOperatorMobile"
+        required
+        style="width:100%;padding:10px;margin:6px 0 14px;"
+      >
+
+      <label>Designation</label>
+      <input
+        type="text"
+        id="editOperatorDesignation"
+        required
+        style="width:100%;padding:10px;margin:6px 0 14px;"
+      >
+
+      <label>Role</label>
+      <select
+        id="editOperatorRole"
+        required
+        style="width:100%;padding:10px;margin:6px 0 14px;"
+      >
+        <option value="">Select Role</option>
+        <option value="admin">Administrator</option>
+        <option value="staff">Staff</option>
+      </select>
+
+      <label>Unique Code</label>
+      <input
+        type="text"
+        id="editOperatorUniqueCode"
+        required
+        style="width:100%;padding:10px;margin:6px 0 20px;"
+      >
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+
+        <button
+          type="button"
+          id="cancelEditOperatorBtn"
+          style="
+            padding:9px 16px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+          "
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          id="updateOperatorBtn"
+          style="
+            background:#2563eb;
+            color:white;
+            padding:9px 16px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+          "
+        >
+          💾 Save Changes
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
 </section>
         
     </main>
