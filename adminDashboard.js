@@ -989,6 +989,279 @@ if (editOperatorModal) {
     );
 
 }
+// ============================================
+// UPDATE OPERATOR — SAVE CHANGES
+// ============================================
+
+const editOperatorForm =
+    document.getElementById("editOperatorForm");
+
+if (editOperatorForm) {
+
+    editOperatorForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+            // ========================================
+            // GET OPERATOR ID
+            // ========================================
+
+            const operatorId =
+                document.getElementById(
+                    "editOperatorId"
+                ).value.trim();
+
+            if (!operatorId) {
+
+                alert(
+                    "Operator ID is missing."
+                );
+
+                return;
+
+            }
+
+            // ========================================
+            // GET UPDATED VALUES
+            // ========================================
+
+            const fullName =
+                document.getElementById(
+                    "editOperatorFullName"
+                ).value.trim();
+
+            const mobile =
+                document.getElementById(
+                    "editOperatorMobile"
+                ).value.trim();
+
+            const designation =
+                document.getElementById(
+                    "editOperatorDesignation"
+                ).value.trim();
+
+            const role =
+                document.getElementById(
+                    "editOperatorRole"
+                ).value.trim();
+
+            const uniqueCode =
+                document.getElementById(
+                    "editOperatorUniqueCode"
+                ).value.trim();
+
+            // ========================================
+            // BASIC VALIDATION
+            // ========================================
+
+            if (
+                !fullName ||
+                !mobile ||
+                !designation ||
+                !role ||
+                !uniqueCode
+            ) {
+
+                alert(
+                    "Please fill all operator details."
+                );
+
+                return;
+
+            }
+
+            // ========================================
+            // UNIQUE CODE VALIDATION
+            // ========================================
+
+            if (uniqueCode.length < 6) {
+
+                alert(
+                    "Unique Code must contain at least 6 characters."
+                );
+
+                return;
+
+            }
+
+            // ========================================
+            // DISABLE SAVE BUTTON
+            // ========================================
+
+            const updateOperatorBtn =
+                document.getElementById(
+                    "updateOperatorBtn"
+                );
+
+            if (updateOperatorBtn) {
+
+                updateOperatorBtn.disabled = true;
+
+                updateOperatorBtn.textContent =
+                    "Saving...";
+
+            }
+
+            try {
+
+                // ====================================
+                // CHECK FOR DUPLICATE MOBILE / CODE
+                // ====================================
+
+                const operatorsSnapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "operators"
+                        )
+                    );
+
+                let mobileExists = false;
+                let codeExists = false;
+
+                operatorsSnapshot.forEach(
+                    (operatorDoc) => {
+
+                        // Skip the operator currently being edited
+
+                        if (
+                            operatorDoc.id ===
+                            operatorId
+                        ) {
+
+                            return;
+
+                        }
+
+                        const operator =
+                            operatorDoc.data();
+
+                        if (
+                            operator.mobile ===
+                            mobile
+                        ) {
+
+                            mobileExists = true;
+
+                        }
+
+                        if (
+                            operator.uniqueCode ===
+                            uniqueCode
+                        ) {
+
+                            codeExists = true;
+
+                        }
+
+                    }
+                );
+
+                // ====================================
+                // DUPLICATE MOBILE
+                // ====================================
+
+                if (mobileExists) {
+
+                    alert(
+                        "Another operator already uses this mobile number."
+                    );
+
+                    return;
+
+                }
+
+                // ====================================
+                // DUPLICATE UNIQUE CODE
+                // ====================================
+
+                if (codeExists) {
+
+                    alert(
+                        "This Unique Code is already in use by another operator."
+                    );
+
+                    return;
+
+                }
+
+                // ====================================
+                // UPDATE FIRESTORE
+                // ====================================
+
+                await updateDoc(
+                    doc(
+                        db,
+                        "operators",
+                        operatorId
+                    ),
+                    {
+                        fullName: fullName,
+                        mobile: mobile,
+                        designation: designation,
+                        role: role,
+                        uniqueCode: uniqueCode
+                    }
+                );
+
+                // ====================================
+                // SUCCESS
+                // ====================================
+
+                alert(
+                    "Operator details updated successfully."
+                );
+
+                // ====================================
+                // CLOSE EDIT MODAL
+                // ====================================
+
+                editOperatorModal.style.display =
+                    "none";
+
+                // ====================================
+                // RELOAD OPERATORS
+                // ====================================
+
+                await loadOperators();
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Unable to update operator:",
+                    error
+                );
+
+                alert(
+                    "Unable to update operator.\n\nPlease try again."
+                );
+
+            }
+            finally {
+
+                // ====================================
+                // ENABLE SAVE BUTTON
+                // ====================================
+
+                if (updateOperatorBtn) {
+
+                    updateOperatorBtn.disabled =
+                        false;
+
+                    updateOperatorBtn.textContent =
+                        "💾 Save Changes";
+
+                }
+
+            }
+
+        }
+    );
+
+}
     // ============================================
 // CREATE NEW OPERATOR
 // ============================================
