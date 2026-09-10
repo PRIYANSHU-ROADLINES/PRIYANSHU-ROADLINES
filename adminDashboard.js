@@ -568,41 +568,7 @@ async function loadOperators() {
                     );
 
                 }
-
-            }
-        );
-
-
-    }
-    catch (error) {
-
-        console.error(
-            "Unable to load operators:",
-            error
-        );
-
-
-        operatorsContainer.innerHTML = `
-
-            <div class="no-alerts">
-
-                <div class="icon">
-                    ⚠️
-                </div>
-
-                <p>
-                    Unable to load operators.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-}
-
- document.querySelectorAll(".edit-operator-btn").forEach(button => {
+                 document.querySelectorAll(".edit-operator-btn").forEach(button => {
   button.addEventListener("click", async () => {
 
     const operatorId = button.dataset.id;
@@ -658,6 +624,41 @@ async function loadOperators() {
     }
   });
 });
+
+            }
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to load operators:",
+            error
+        );
+
+
+        operatorsContainer.innerHTML = `
+
+            <div class="no-alerts">
+
+                <div class="icon">
+                    ⚠️
+                </div>
+
+                <p>
+                    Unable to load operators.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
 // ============================================
 // OPERATORS MENU
 // ============================================
