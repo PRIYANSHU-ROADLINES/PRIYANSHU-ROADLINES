@@ -363,6 +363,13 @@
 
 
     // =========================================================
+// CLOUDINARY
+// =========================================================
+
+const CLOUD_NAME = "de3ipfolr";
+const UPLOAD_PRESET = "pod_upload";
+
+    // =========================================================
     // ELEMENTS
     // =========================================================
 
@@ -505,7 +512,184 @@
 
     }
 
+// =========================================================
+// COMPRESS POD IMAGE
+// =========================================================
 
+async function compressImage(file) {
+
+    return new Promise((resolve, reject) => {
+
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+
+            const img = new Image();
+
+            img.onload = function() {
+
+                const canvas =
+                    document.createElement("canvas");
+
+                const MAX_WIDTH = 1200;
+
+                let width = img.width;
+                let height = img.height;
+
+
+                if (width > MAX_WIDTH) {
+
+                    height =
+                        height *
+                        (MAX_WIDTH / width);
+
+                    width = MAX_WIDTH;
+
+                }
+
+
+                canvas.width = width;
+                canvas.height = height;
+
+
+                const ctx =
+                    canvas.getContext("2d");
+
+
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    width,
+                    height
+                );
+
+
+                canvas.toBlob(
+                    (blob) => {
+
+                        if (!blob) {
+
+                            reject(
+                                new Error(
+                                    "IMAGE_COMPRESSION_FAILED"
+                                )
+                            );
+
+                            return;
+
+                        }
+
+                        resolve(blob);
+
+                    },
+                    "image/jpeg",
+                    0.7
+                );
+
+            };
+
+
+            img.onerror = function() {
+
+                reject(
+                    new Error(
+                        "INVALID_IMAGE"
+                    )
+                );
+
+            };
+
+
+            img.src =
+                event.target.result;
+
+        };
+
+
+        reader.onerror = function() {
+
+            reject(
+                new Error(
+                    "IMAGE_READ_FAILED"
+                )
+            );
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+        // =========================================================
+// UPLOAD POD IMAGE TO CLOUDINARY
+// =========================================================
+
+async function uploadToCloudinary(file) {
+
+    const compressedFile =
+        await compressImage(file);
+
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "file",
+        compressedFile,
+        "pod.jpg"
+    );
+
+
+    formData.append(
+        "upload_preset",
+        UPLOAD_PRESET
+    );
+
+
+    const response =
+        await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    if (!response.ok) {
+
+        console.error(
+            "Cloudinary upload error:",
+            data
+        );
+
+        throw new Error(
+            "CLOUDINARY_UPLOAD_FAILED"
+        );
+
+    }
+
+
+    if (!data.secure_url) {
+
+        throw new Error(
+            "CLOUDINARY_URL_MISSING"
+        );
+
+    }
+
+
+    return data.secure_url;
+
+}
     // =========================================================
     // CHECK GR / LR
     //
@@ -518,11 +702,16 @@
     // same GR from being created at the same time.
     // =========================================================
 
-   async function createPodRequest(
+   // =========================================================
+// CREATE PENDING POD REQUEST
+// =========================================================
+
+async function createPodRequest(
     grNo,
     vehicleNo,
     driverName,
-    deviceId
+    deviceId,
+    imageUrl
 ) {
 
     const requestRef =
@@ -549,6 +738,9 @@
             deviceId:
                 deviceId,
 
+            imageUrl:
+                imageUrl,
+
             status:
                 "Pending",
 
@@ -562,7 +754,6 @@
     );
 
 }
-               
 
     // =========================================================
     // FORM SUBMISSION
@@ -743,20 +934,35 @@
                 }
 
 
-                // -----------------------------------------
-                // CREATE PENDING REQUEST
-                // -----------------------------------------
+               // ---------------------------------------------
+// UPLOAD POD IMAGE
+// ---------------------------------------------
 
-                submitBtn.textContent =
-                    "Submitting...";
+submitBtn.textContent =
+    "Uploading POD...";
 
 
-                await createPodRequest(
-                    grNo,
-                    vehicleNo,
-                    driverName,
-                    deviceId
-                );
+const imageUrl =
+    await uploadToCloudinary(
+        imageFile
+    );
+
+
+// ---------------------------------------------
+// CREATE PENDING REQUEST
+// ---------------------------------------------
+
+submitBtn.textContent =
+    "Saving Request...";
+
+
+await createPodRequest(
+    grNo,
+    vehicleNo,
+    driverName,
+    deviceId,
+    imageUrl
+);
 
 
                 // -----------------------------------------
@@ -800,6 +1006,46 @@
                     );
 
                 }
+                else if (
+    error.message ===
+    "CLOUDINARY_UPLOAD_FAILED"
+) {
+
+    showError(
+        "POD image upload failed. Please try again."
+    );
+
+}
+else if (
+    error.message ===
+    "CLOUDINARY_URL_MISSING"
+) {
+
+    showError(
+        "POD image upload failed. Please try again."
+    );
+
+}
+else if (
+    error.message ===
+    "IMAGE_COMPRESSION_FAILED"
+) {
+
+    showError(
+        "Unable to process the POD image. Please select another image."
+    );
+
+}
+else if (
+    error.message ===
+    "INVALID_IMAGE"
+) {
+
+    showError(
+        "The selected POD image could not be read."
+    );
+
+}
                 else {
 
                     showError(
