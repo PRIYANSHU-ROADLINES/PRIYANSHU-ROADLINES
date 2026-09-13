@@ -3190,6 +3190,168 @@ window.rejectPodRequest = async function (requestId) {
 
 };
 // ------------------------------------------------------------
+// BLOCK DRIVER DEVICE
+// ------------------------------------------------------------
+
+window.blockDriverDevice = async function () {
+
+    try {
+
+        const input =
+            document.getElementById(
+                "driverDeviceIdInput"
+            );
+
+        const deviceId =
+            input
+                ? input.value.trim()
+                : "";
+
+        if (!deviceId) {
+
+            alert(
+                "Please enter a Driver Device ID."
+            );
+
+            return;
+        }
+
+
+        const confirmation =
+            confirm(
+                "Are you sure you want to BLOCK this driver device?\n\n" +
+                "Device ID:\n" +
+                deviceId
+            );
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        await setDoc(
+            doc(
+                db,
+                "blockedDevices",
+                deviceId
+            ),
+            {
+
+                deviceId:
+                    deviceId,
+
+                blocked:
+                    true,
+
+                blockedAt:
+                    serverTimestamp(),
+
+                reason:
+                    "Blocked by Administrator",
+
+                source:
+                    "driver_portal"
+
+            }
+        );
+
+
+        alert(
+            "🔴 Driver device blocked successfully.\n\n" +
+            "Device ID: " +
+            deviceId
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to block driver device:",
+            error
+        );
+
+        alert(
+            "Unable to block driver device:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+// ------------------------------------------------------------
+// UNBLOCK DRIVER DEVICE
+// ------------------------------------------------------------
+
+window.unblockDriverDevice = async function () {
+
+    try {
+
+        const input =
+            document.getElementById(
+                "driverDeviceIdInput"
+            );
+
+        const deviceId =
+            input
+                ? input.value.trim()
+                : "";
+
+        if (!deviceId) {
+
+            alert(
+                "Please enter a Driver Device ID."
+            );
+
+            return;
+        }
+
+
+        const confirmation =
+            confirm(
+                "Are you sure you want to UNBLOCK this driver device?\n\n" +
+                "Device ID:\n" +
+                deviceId
+            );
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        await deleteDoc(
+            doc(
+                db,
+                "blockedDevices",
+                deviceId
+            )
+        );
+
+
+        alert(
+            "🟢 Driver device unblocked successfully.\n\n" +
+            "Device ID: " +
+            deviceId
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to unblock driver device:",
+            error
+        );
+
+        alert(
+            "Unable to unblock driver device:\n\n" +
+            error.message
+        );
+
+    }
+
+};
+// ------------------------------------------------------------
 // OPEN POD REQUESTS PANEL
 // ------------------------------------------------------------
 
