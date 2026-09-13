@@ -319,13 +319,12 @@
     } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
     import {
-        getFirestore,
-        doc,
-        getDoc,
-        setDoc,
-        runTransaction,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 
     // =========================================================
@@ -519,112 +518,51 @@
     // same GR from being created at the same time.
     // =========================================================
 
-    async function createPodRequest(
-        grNo,
-        vehicleNo,
-        driverName,
-        deviceId
-    ) {
+   async function createPodRequest(
+    grNo,
+    vehicleNo,
+    driverName,
+    deviceId
+) {
 
-        const podRef =
-            doc(
-                db,
-                "pods",
-                grNo
-            );
-
-
-        const requestRef =
-            doc(
-                db,
-                "podUploadRequests",
-                grNo
-            );
-
-
-        await runTransaction(
+    const requestRef =
+        doc(
             db,
-            async (transaction) => {
-
-                const podSnapshot =
-                    await transaction.get(
-                        podRef
-                    );
-
-
-                const requestSnapshot =
-                    await transaction.get(
-                        requestRef
-                    );
-
-
-                // ---------------------------------------------
-                // GR ALREADY EXISTS IN OFFICIAL PODS
-                // ---------------------------------------------
-
-                if (
-                    podSnapshot.exists()
-                ) {
-
-                    throw new Error(
-                        "GR_ALREADY_EXISTS"
-                    );
-
-                }
-
-
-                // ---------------------------------------------
-                // GR ALREADY HAS A PENDING REQUEST
-                // ---------------------------------------------
-
-                if (
-                    requestSnapshot.exists()
-                ) {
-
-                    throw new Error(
-                        "REQUEST_ALREADY_EXISTS"
-                    );
-
-                }
-
-
-                // ---------------------------------------------
-                // CREATE PENDING REQUEST
-                // ---------------------------------------------
-
-                transaction.set(
-                    requestRef,
-                    {
-
-                        grNo:
-                            grNo,
-
-                        vehicleNo:
-                            vehicleNo,
-
-                        driverName:
-                            driverName,
-
-                        deviceId:
-                            deviceId,
-
-                        status:
-                            "Pending",
-
-                        source:
-                            "driver_portal",
-
-                        submittedAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-            }
+            "podUploadRequests",
+            grNo
         );
 
-    }
 
+    await setDoc(
+        requestRef,
+        {
+
+            grNo:
+                grNo,
+
+            vehicleNo:
+                vehicleNo,
+
+            driverName:
+                driverName,
+
+            deviceId:
+                deviceId,
+
+            status:
+                "Pending",
+
+            source:
+                "driver_portal",
+
+            submittedAt:
+                serverTimestamp()
+
+        }
+    );
+
+}
+               
 
     // =========================================================
     // FORM SUBMISSION
