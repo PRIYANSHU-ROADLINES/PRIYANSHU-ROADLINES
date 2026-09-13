@@ -2696,8 +2696,7 @@ async function loadPodRequests() {
         // CREATE REQUEST CARDS
         // ----------------------------------------------------
 
-      requests.forEach(
-    async (request) => {
+      for (const request of requests) {
 
                 const card =
                     document.createElement(
@@ -2992,7 +2991,7 @@ const driverDeviceStatus =
                     card
                 ); 
            }
-       );
+       
 
 
     }
