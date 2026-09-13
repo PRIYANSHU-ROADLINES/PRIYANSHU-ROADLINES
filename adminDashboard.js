@@ -2888,19 +2888,19 @@ async function loadPodRequests() {
 
 
                         <button
-                            disabled
-                            style="
-                                border:none;
-                                padding:10px 18px;
-                                border-radius:6px;
-                                background:#999;
-                                color:white;
-                                font-weight:bold;
-                                cursor:not-allowed;
-                            "
-                        >
-                            ❌ Reject
-                        </button>
+    onclick="rejectPodRequest('${request.id}')"
+    style="
+        border:none;
+        padding:10px 18px;
+        border-radius:6px;
+        background:#cc0000;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+    "
+>
+    ❌ REJECT
+</button>
 
                     </div>
 
@@ -3111,7 +3111,84 @@ window.approvePodRequest = async function (requestId) {
     }
 
 };
+// ------------------------------------------------------------
+// REJECT DRIVER POD REQUEST
+// ------------------------------------------------------------
 
+window.rejectPodRequest = async function (requestId) {
+
+    try {
+
+        if (!requestId) {
+            alert("Invalid POD request.");
+            return;
+        }
+
+        const confirmReject =
+            confirm(
+                "Are you sure you want to reject this POD request?"
+            );
+
+        if (!confirmReject) {
+            return;
+        }
+
+
+        // Reference to pending request
+        const requestRef =
+            doc(
+                db,
+                "podUploadRequests",
+                requestId
+            );
+
+
+        // Check that request still exists
+        const requestSnap =
+            await getDoc(requestRef);
+
+
+        if (!requestSnap.exists()) {
+
+            alert(
+                "POD request no longer exists."
+            );
+
+            await loadPodRequests();
+
+            return;
+        }
+
+
+        // Delete pending request
+        await deleteDoc(requestRef);
+
+
+        alert(
+            "❌ POD request rejected."
+        );
+
+
+        // Refresh the POD Requests panel
+        await loadPodRequests();
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to reject POD request:",
+            error
+        );
+
+        alert(
+            "Unable to reject POD request: " +
+            error.message
+        );
+
+    }
+
+};
 // ------------------------------------------------------------
 // OPEN POD REQUESTS PANEL
 // ------------------------------------------------------------
