@@ -2991,8 +2991,8 @@ const driverDeviceStatus =
                     card
                 );
 
-            }
-    );
+            
+        });
 
 
     }
