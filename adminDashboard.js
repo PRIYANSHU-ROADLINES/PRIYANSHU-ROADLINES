@@ -2992,7 +2992,7 @@ const driverDeviceStatus =
                 );
 
             }
-        );
+    }
 
 
     }
