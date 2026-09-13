@@ -2478,3 +2478,557 @@ if (unblockButton) {
     }
 
 }
+// ============================================================
+// POD REQUESTS MANAGEMENT
+// ============================================================
+
+
+// ------------------------------------------------------------
+// ELEMENTS
+// ------------------------------------------------------------
+
+const podRequestsMenuBtn =
+    document.getElementById(
+        "podRequestsMenuBtn"
+    );
+
+
+const podRequestsPanel =
+    document.getElementById(
+        "podRequestsPanel"
+    );
+
+
+const podRequestsContainer =
+    document.getElementById(
+        "podRequestsContainer"
+    );
+
+
+const podRequestsCount =
+    document.getElementById(
+        "podRequestsCount"
+    );
+
+
+const refreshPodRequestsBtn =
+    document.getElementById(
+        "refreshPodRequestsBtn"
+    );
+
+
+// ------------------------------------------------------------
+// LOAD POD REQUESTS
+// ------------------------------------------------------------
+
+async function loadPodRequests() {
+
+    if (!podRequestsContainer) {
+        return;
+    }
+
+
+    podRequestsContainer.innerHTML = `
+
+        <div class="no-alerts">
+
+            <div class="icon">
+                ⏳
+            </div>
+
+            <p>
+                Loading POD requests...
+            </p>
+
+        </div>
+
+    `;
+
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "podUploadRequests"
+                )
+            );
+
+
+        const requests = [];
+
+
+        snapshot.forEach(
+            (requestDoc) => {
+
+                const data =
+                    requestDoc.data();
+
+
+                // ONLY SHOW PENDING REQUESTS
+
+                if (
+                    data.status ===
+                    "Pending"
+                ) {
+
+                    requests.push({
+
+                        id:
+                            requestDoc.id,
+
+                        ...data
+
+                    });
+
+                }
+
+            }
+        );
+
+
+        // ----------------------------------------------------
+        // SORT NEWEST FIRST
+        // ----------------------------------------------------
+
+        requests.sort(
+            (a, b) => {
+
+                const timeA =
+                    a.submittedAt
+                        ? a.submittedAt.toMillis()
+                        : 0;
+
+
+                const timeB =
+                    b.submittedAt
+                        ? b.submittedAt.toMillis()
+                        : 0;
+
+
+                return timeB - timeA;
+
+            }
+        );
+
+
+        podRequestsCount.textContent =
+            requests.length;
+
+
+        // ----------------------------------------------------
+        // NO REQUESTS
+        // ----------------------------------------------------
+
+        if (requests.length === 0) {
+
+            podRequestsContainer.innerHTML = `
+
+                <div class="no-alerts">
+
+                    <div class="icon">
+                        📭
+                    </div>
+
+                    <p>
+                        No pending POD requests.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        podRequestsContainer.innerHTML =
+            "";
+
+
+        // ----------------------------------------------------
+        // CREATE REQUEST CARDS
+        // ----------------------------------------------------
+
+        requests.forEach(
+            (request) => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.style.cssText = `
+
+                    border:1px solid #ddd;
+
+                    border-left:
+                        5px solid #e00000;
+
+                    border-radius:8px;
+
+                    margin-bottom:15px;
+
+                    padding:18px;
+
+                    background:white;
+
+                    box-shadow:
+                        0 2px 8px
+                        rgba(0,0,0,0.06);
+
+                `;
+
+
+                const submittedTime =
+                    request.submittedAt
+                        ? request.submittedAt
+                            .toDate()
+                            .toLocaleString(
+                                "en-IN"
+                            )
+                        : "-";
+
+
+                card.innerHTML = `
+
+                    <div
+                        style="
+                            display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                            gap:10px;
+                            flex-wrap:wrap;
+                            margin-bottom:15px;
+                        "
+                    >
+
+                        <strong
+                            style="
+                                font-size:18px;
+                            "
+                        >
+                            📦 GR / LR:
+                            ${request.grNo || request.id}
+                        </strong>
+
+
+                        <span
+                            style="
+                                background:#fff1d6;
+                                color:#b56700;
+                                padding:6px 12px;
+                                border-radius:20px;
+                                font-size:12px;
+                                font-weight:bold;
+                            "
+                        >
+                            PENDING
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            line-height:1.8;
+                            font-size:14px;
+                        "
+                    >
+
+                        <p>
+                            <b>Vehicle:</b>
+                            ${request.vehicleNo || "-"}
+                        </p>
+
+
+                        <p>
+                            <b>Driver:</b>
+                            ${request.driverName || "-"}
+                        </p>
+
+
+                        <p>
+                            <b>Device ID:</b>
+                            ${request.deviceId || "-"}
+                        </p>
+
+
+                        <p>
+                            <b>Submitted:</b>
+                            ${submittedTime}
+                        </p>
+
+
+                        <p>
+
+                            <b>Source:</b>
+
+                            <span
+                                style="
+                                    display:inline-block;
+                                    margin-left:5px;
+                                    padding:4px 8px;
+                                    border-radius:4px;
+                                    background:#eeeeee;
+                                    color:#555;
+                                    font-size:11px;
+                                    font-weight:bold;
+                                "
+                            >
+                                DRIVER PORTAL UPLOAD
+                            </span>
+
+                        </p>
+
+                    </div>
+
+
+                    ${
+                        request.imageUrl
+
+                        ?
+
+                        `
+
+                        <div
+                            style="
+                                margin-top:15px;
+                                text-align:center;
+                            "
+                        >
+
+                            <img
+                                src="${request.imageUrl}"
+                                alt="POD - ${request.grNo || request.id}"
+                                style="
+                                    max-width:100%;
+                                    max-height:500px;
+                                    border:1px solid #ddd;
+                                    border-radius:7px;
+                                    object-fit:contain;
+                                "
+                            >
+
+                            <br>
+
+
+                            <a
+                                href="${request.imageUrl}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style="
+                                    display:inline-block;
+                                    margin-top:10px;
+                                    padding:8px 14px;
+                                    background:#333;
+                                    color:white;
+                                    text-decoration:none;
+                                    border-radius:5px;
+                                    font-size:12px;
+                                    font-weight:bold;
+                                "
+                            >
+                                🔍 View Full POD
+                            </a>
+
+                        </div>
+
+                        `
+
+                        :
+
+                        `
+
+                        <div
+                            style="
+                                margin-top:15px;
+                                padding:12px;
+                                background:#fff0f0;
+                                color:#b00000;
+                                border-radius:6px;
+                                text-align:center;
+                            "
+                        >
+                            ⚠️ POD image not available.
+                        </div>
+
+                        `
+
+                    }
+
+
+                    <div
+                        style="
+                            margin-top:18px;
+                            display:flex;
+                            gap:10px;
+                            flex-wrap:wrap;
+                        "
+                    >
+
+                        <button
+                            disabled
+                            style="
+                                border:none;
+                                padding:10px 18px;
+                                border-radius:6px;
+                                background:#999;
+                                color:white;
+                                font-weight:bold;
+                                cursor:not-allowed;
+                            "
+                        >
+                            ✅ Approve
+                        </button>
+
+
+                        <button
+                            disabled
+                            style="
+                                border:none;
+                                padding:10px 18px;
+                                border-radius:6px;
+                                background:#999;
+                                color:white;
+                                font-weight:bold;
+                                cursor:not-allowed;
+                            "
+                        >
+                            ❌ Reject
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                podRequestsContainer.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to load POD requests:",
+            error
+        );
+
+
+        podRequestsContainer.innerHTML = `
+
+            <div class="no-alerts">
+
+                <div class="icon">
+                    ⚠️
+                </div>
+
+                <p>
+                    Unable to load POD requests.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ------------------------------------------------------------
+// OPEN POD REQUESTS PANEL
+// ------------------------------------------------------------
+
+if (
+    podRequestsMenuBtn &&
+    podRequestsPanel
+) {
+
+    podRequestsMenuBtn.addEventListener(
+        "click",
+        async () => {
+
+            console.log(
+                "POD Requests button clicked."
+            );
+
+
+            // HIDE ALL CURRENT PANELS
+
+            document
+                .querySelectorAll(
+                    ".main .panel"
+                )
+                .forEach(
+                    (panel) => {
+
+                        panel.style.display =
+                            "none";
+
+                    }
+                );
+
+
+            // SHOW POD REQUESTS
+
+            podRequestsPanel.style.display =
+                "block";
+
+
+            // UPDATE SIDEBAR ACTIVE STATE
+
+            document
+                .querySelectorAll(
+                    ".sidebar button"
+                )
+                .forEach(
+                    (button) => {
+
+                        button.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+            podRequestsMenuBtn.classList.add(
+                "active"
+            );
+
+
+            // LOAD REQUESTS
+
+            await loadPodRequests();
+
+        }
+    );
+
+}
+
+
+// ------------------------------------------------------------
+// REFRESH POD REQUESTS
+// ------------------------------------------------------------
+
+if (refreshPodRequestsBtn) {
+
+    refreshPodRequestsBtn.addEventListener(
+        "click",
+        async () => {
+
+            await loadPodRequests();
+
+        }
+    );
+
+}
