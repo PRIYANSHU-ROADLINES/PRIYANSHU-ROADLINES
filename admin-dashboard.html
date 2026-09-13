@@ -1216,7 +1216,86 @@
         </span>
 
     </div>
+<!-- ============================================
+     DRIVER DEVICE CONTROL
+============================================ -->
 
+<div
+    style="
+        margin:20px;
+        padding:20px;
+        background:#f8f8f8;
+        border:1px solid #ddd;
+        border-radius:8px;
+    "
+>
+
+    <h3 style="margin-top:0;">
+        📱 Driver Device Control
+    </h3>
+
+    <p style="font-size:13px;color:#666;">
+        Enter the Driver Device ID to block or unblock that device.
+    </p>
+
+    <input
+        type="text"
+        id="driverDeviceIdInput"
+        placeholder="Enter Driver Device ID"
+        style="
+            width:100%;
+            max-width:500px;
+            padding:11px;
+            border:1px solid #ccc;
+            border-radius:6px;
+            box-sizing:border-box;
+            margin-bottom:10px;
+        "
+    >
+
+    <div
+        style="
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        "
+    >
+
+        <button
+            type="button"
+            onclick="blockDriverDevice()"
+            style="
+                border:none;
+                padding:10px 18px;
+                border-radius:6px;
+                background:#cc0000;
+                color:white;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            🔴 BLOCK DEVICE
+        </button>
+
+        <button
+            type="button"
+            onclick="unblockDriverDevice()"
+            style="
+                border:none;
+                padding:10px 18px;
+                border-radius:6px;
+                background:#008000;
+                color:white;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            🟢 UNBLOCK DEVICE
+        </button>
+
+    </div>
+
+</div>
 
     <div
         id="podRequestsContainer"
