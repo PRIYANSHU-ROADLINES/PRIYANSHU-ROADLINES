@@ -283,12 +283,14 @@
                 </label>
 
                 <input
-                    type="text"
-                    id="grNo"
-                    placeholder="Enter GR / LR Number"
-                    required
-                    autocomplete="off"
-                >
+    type="text"
+    id="grNo"
+    placeholder="Enter GR / LR Number"
+    required
+    autocomplete="off"
+    inputmode="numeric"
+    pattern="[0-9]+"
+>
 
 
                 <label for="vehicleNo">
@@ -296,26 +298,26 @@
                 </label>
 
                 <input
-                    type="text"
-                    id="vehicleNo"
-                    placeholder="Enter Vehicle Number"
-                    required
-                    autocomplete="off"
-                >
-
+    type="text"
+    id="vehicleNo"
+    placeholder="Enter Vehicle Number"
+    required
+    autocomplete="off"
+    pattern="[A-Za-z0-9]+"
+>
 
                 <label for="driverName">
                     Driver Name
                 </label>
 
                 <input
-                    type="text"
-                    id="driverName"
-                    placeholder="Enter Driver Name"
-                    required
-                    autocomplete="name"
-                >
-
+    type="text"
+    id="driverName"
+    placeholder="Enter Driver Name"
+    required
+    autocomplete="name"
+    pattern="[A-Za-z ]+"
+>
 
                 <label for="podImage">
                     POD Image
@@ -492,7 +494,45 @@ const UPLOAD_PRESET = "pod_upload";
             .replace(/\s+/g, "");
 
     }
+    // =========================================================
+// DRIVER FORM VALIDATION
+// =========================================================
 
+function isValidGR(grNo) {
+
+    return /^[0-9]+$/.test(
+        grNo
+    );
+
+}
+
+
+function isValidVehicleNumber(vehicleNo) {
+
+    return (
+        /^[A-Z0-9]+$/.test(
+            vehicleNo
+        )
+        &&
+        /[A-Z]/.test(
+            vehicleNo
+        )
+        &&
+        /[0-9]/.test(
+            vehicleNo
+        )
+    );
+
+}
+
+
+function isValidDriverName(driverName) {
+
+    return /^[A-Za-z ]+$/.test(
+        driverName
+    );
+
+}
 
     // =========================================================
     // HIDE MESSAGES
@@ -943,50 +983,85 @@ async function createPodRequest(
             // BASIC VALIDATION
             // ---------------------------------------------
 
-            if (!grNo) {
+            // ---------------------------------------------
+// BASIC VALIDATION
+// ---------------------------------------------
 
-                showError(
-                    "Please enter the GR / LR number."
-                );
+if (!grNo) {
 
-                return;
+    showError(
+        "Please enter the GR / LR number."
+    );
 
-            }
+    return;
 
-
-            if (!vehicleNo) {
-
-                showError(
-                    "Please enter the vehicle number."
-                );
-
-                return;
-
-            }
+}
 
 
-            if (!driverName) {
+if (!isValidGR(grNo)) {
 
-                showError(
-                    "Please enter the driver name."
-                );
+    showError(
+        "Invalid GR / LR number. Please enter numbers only."
+    );
 
-                return;
+    return;
 
-            }
-
-
-            if (!imageFile) {
-
-                showError(
-                    "Please select the POD image."
-                );
-
-                return;
-
-            }
+}
 
 
+if (!vehicleNo) {
+
+    showError(
+        "Please enter the vehicle number."
+    );
+
+    return;
+
+}
+
+
+if (!isValidVehicleNumber(vehicleNo)) {
+
+    showError(
+        "Invalid vehicle number. It must contain both alphabets and numbers."
+    );
+
+    return;
+
+}
+
+
+if (!driverName) {
+
+    showError(
+        "Please enter the driver name."
+    );
+
+    return;
+
+}
+
+
+if (!isValidDriverName(driverName)) {
+
+    showError(
+        "Invalid driver name. Please enter alphabets only."
+    );
+
+    return;
+
+}
+
+
+if (!imageFile) {
+
+    showError(
+        "Please select the POD image."
+    );
+
+    return;
+
+}
             // ---------------------------------------------
             // IMAGE TYPE CHECK
             // ---------------------------------------------
