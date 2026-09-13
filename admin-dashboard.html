@@ -1192,30 +1192,134 @@
     </div>
 
 
+   <div
+    style="
+        padding:15px 20px;
+        background:#fafafa;
+        border-bottom:1px solid #ddd;
+    "
+>
+
     <div
         style="
-            padding:15px 20px;
-            background:#fafafa;
-            border-bottom:1px solid #ddd;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:15px;
+            flex-wrap:wrap;
         "
     >
 
-        <strong>
-            Pending Driver POD Requests:
-        </strong>
+        <div>
 
-        <span
-            id="podRequestsCount"
+            <strong>
+                Pending Driver POD Requests:
+            </strong>
+
+            <span
+                id="podRequestsCount"
+                style="
+                    color:#e00000;
+                    font-weight:bold;
+                    margin-left:6px;
+                "
+            >
+                0
+            </span>
+
+        </div>
+
+
+        <!-- SELECT ALL -->
+
+        <label
             style="
-                color:#e00000;
+                display:flex;
+                align-items:center;
+                gap:7px;
                 font-weight:bold;
-                margin-left:6px;
+                cursor:pointer;
             "
         >
-            0
-        </span>
+
+            <input
+                type="checkbox"
+                id="selectAllPods"
+                onchange="toggleAllPods()"
+                style="
+                    width:18px;
+                    height:18px;
+                    cursor:pointer;
+                "
+            >
+
+            Select All POD
+
+        </label>
 
     </div>
+
+
+    <!-- BULK ACTION BAR -->
+
+    <div
+        style="
+            margin-top:12px;
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            align-items:center;
+        "
+    >
+
+        <span
+            id="selectedPodsCount"
+            style="
+                font-size:13px;
+                color:#666;
+                font-weight:bold;
+            "
+        >
+            0 POD selected
+        </span>
+
+
+        <button
+            type="button"
+            onclick="uploadSelectedPods()"
+            style="
+                border:none;
+                padding:9px 15px;
+                border-radius:6px;
+                background:#008000;
+                color:white;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            ✅ UPLOAD SELECTED
+        </button>
+
+
+        <button
+            type="button"
+            onclick="rejectSelectedPods()"
+            style="
+                border:none;
+                padding:9px 15px;
+                border-radius:6px;
+                background:#cc0000;
+                color:white;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            ❌ REJECT SELECTED
+        </button>
+
+    </div>
+
+</div>
 <!-- ============================================
      DRIVER DEVICE CONTROL
 ============================================ -->
