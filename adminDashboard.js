@@ -2948,6 +2948,10 @@ async function loadPodRequests() {
 // APPROVE / UPLOAD DRIVER POD REQUEST
 // ------------------------------------------------------------
 
+// ------------------------------------------------------------
+// APPROVE / UPLOAD DRIVER POD REQUEST
+// ------------------------------------------------------------
+
 window.approvePodRequest = async function (requestId) {
 
     try {
@@ -2965,8 +2969,11 @@ window.approvePodRequest = async function (requestId) {
             await getDoc(requestRef);
 
         if (!requestSnap.exists()) {
+
             alert("POD request no longer exists.");
+
             await loadPodRequests();
+
             return;
         }
 
@@ -2986,37 +2993,19 @@ window.approvePodRequest = async function (requestId) {
             return;
         }
 
-        // ----------------------------------------------------
-        // CHECK WHETHER OFFICIAL POD ALREADY EXISTS
-        // ----------------------------------------------------
-
-        const podRef =
-            doc(db, "pods", grNo);
-
-        const existingPod =
-            await getDoc(podRef);
-
-        if (existingPod.exists()) {
-
-            alert(
-                "This GR Number already has an official POD."
-            );
-
-            return;
-        }
 
         // ----------------------------------------------------
         // CURRENT ADMIN
         // ----------------------------------------------------
 
         const adminEmail =
-            podAuth.currentUser
-                ? podAuth.currentUser.email
+            auth.currentUser
+                ? auth.currentUser.email
                 : "";
+
 
         // ----------------------------------------------------
         // DATE + TIME
-        // SAME FORMAT AS EXISTING POD.JS
         // ----------------------------------------------------
 
         const now = new Date();
@@ -3035,9 +3024,14 @@ window.approvePodRequest = async function (requestId) {
                 hour12: true
             });
 
+
         // ----------------------------------------------------
         // CREATE OFFICIAL POD
         // ----------------------------------------------------
+
+        const podRef =
+            doc(db, "pods", grNo);
+
 
         await setDoc(podRef, {
 
@@ -3081,21 +3075,25 @@ window.approvePodRequest = async function (requestId) {
 
         });
 
+
         // ----------------------------------------------------
         // REMOVE PENDING REQUEST
         // ----------------------------------------------------
 
         await deleteDoc(requestRef);
 
+
         alert(
             "POD uploaded successfully."
         );
+
 
         // ----------------------------------------------------
         // REFRESH POD REQUESTS
         // ----------------------------------------------------
 
         await loadPodRequests();
+
 
     }
     catch (error) {
