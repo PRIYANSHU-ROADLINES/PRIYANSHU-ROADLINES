@@ -3588,7 +3588,31 @@ window.updatePodSelection = function () {
         document.getElementById(
             "selectedPodsCount"
         );
+    // --------------------------------------------------------
+    // SHOW / HIDE BULK ACTION BAR
+    // --------------------------------------------------------
 
+    const bulkActionBar =
+        document.getElementById(
+            "podBulkActionBar"
+        );
+
+    if (bulkActionBar) {
+
+        if (selectedPodRequests.size > 0) {
+
+            bulkActionBar.style.display =
+                "flex";
+
+        }
+        else {
+
+            bulkActionBar.style.display =
+                "none";
+
+        }
+
+    }
     if (selectedCount) {
 
         selectedCount.textContent =
@@ -3705,7 +3729,17 @@ window.clearPodSelection = function () {
 
 };
 
+    const bulkActionBar =
+        document.getElementById(
+            "podBulkActionBar"
+        );
 
+    if (bulkActionBar) {
+
+        bulkActionBar.style.display =
+            "none";
+
+    }
 // ============================================================
 // BULK REJECT
 // ============================================================
