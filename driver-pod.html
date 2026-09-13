@@ -314,14 +314,581 @@
 
     <script type="module">
 
-        // Driver POD functionality will be added
-        // in the next step.
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-        console.log(
-            "Driver POD Portal loaded."
+    import {
+        getFirestore,
+        doc,
+        getDoc,
+        setDoc,
+        runTransaction,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+
+    // =========================================================
+    // FIREBASE CONFIG
+    // =========================================================
+
+    const firebaseConfig = {
+
+        apiKey: "AIzaSyBQZREq5abr_oLzt6ksMGb-1jhlnKc92pU",
+
+        authDomain:
+            "priyanshu-roadlines-pod.firebaseapp.com",
+
+        projectId:
+            "priyanshu-roadlines-pod",
+
+        storageBucket:
+            "priyanshu-roadlines-pod.firebasestorage.app",
+
+        messagingSenderId:
+            "735411516260",
+
+        appId:
+            "1:735411516260:web:397d6a80141f032c0a0071"
+
+    };
+
+
+    // =========================================================
+    // INITIALIZE FIREBASE
+    // =========================================================
+
+    const app = initializeApp(firebaseConfig);
+
+    const db = getFirestore(app);
+
+
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
+
+    const form =
+        document.getElementById("driverPodForm");
+
+    const submitBtn =
+        document.getElementById("submitPodBtn");
+
+    const successMessage =
+        document.getElementById("successMessage");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    // =========================================================
+    // DEVICE ID
+    //
+    // This is a browser-generated identifier.
+    // It is NOT a permanent hardware serial number.
+    // =========================================================
+
+    function getDeviceId() {
+
+        let deviceId =
+            localStorage.getItem("driverPodDeviceId");
+
+
+        if (!deviceId) {
+
+            deviceId =
+                "DRV-" +
+                crypto.randomUUID();
+
+            localStorage.setItem(
+                "driverPodDeviceId",
+                deviceId
+            );
+
+        }
+
+
+        return deviceId;
+
+    }
+
+
+    // =========================================================
+    // NORMALIZE GR / LR
+    // =========================================================
+
+    function normalizeGR(value) {
+
+        return value
+            .trim()
+            .toUpperCase()
+            .replace(/\s+/g, "");
+
+    }
+
+
+    // =========================================================
+    // HIDE MESSAGES
+    // =========================================================
+
+    function hideMessages() {
+
+        successMessage.style.display = "none";
+
+        errorMessage.style.display = "none";
+
+        successMessage.textContent = "";
+
+        errorMessage.textContent = "";
+
+    }
+
+
+    // =========================================================
+    // SHOW ERROR
+    // =========================================================
+
+    function showError(message) {
+
+        errorMessage.textContent = message;
+
+        errorMessage.style.display = "block";
+
+        successMessage.style.display = "none";
+
+    }
+
+
+    // =========================================================
+    // SHOW SUCCESS
+    // =========================================================
+
+    function showSuccess(message) {
+
+        successMessage.textContent = message;
+
+        successMessage.style.display = "block";
+
+        errorMessage.style.display = "none";
+
+    }
+
+
+    // =========================================================
+    // CHECK BLOCKED DEVICE
+    // =========================================================
+
+    async function checkBlockedDevice(deviceId) {
+
+        const deviceRef =
+            doc(
+                db,
+                "blockedDevices",
+                deviceId
+            );
+
+
+        const deviceSnapshot =
+            await getDoc(deviceRef);
+
+
+        if (!deviceSnapshot.exists()) {
+
+            return false;
+
+        }
+
+
+        const data =
+            deviceSnapshot.data();
+
+
+        return data.blocked === true;
+
+    }
+
+
+    // =========================================================
+    // CHECK GR / LR
+    //
+    // Checks both:
+    //
+    // pods/{GR}
+    // podUploadRequests/{GR}
+    //
+    // The transaction prevents two requests for the
+    // same GR from being created at the same time.
+    // =========================================================
+
+    async function createPodRequest(
+        grNo,
+        vehicleNo,
+        driverName,
+        deviceId
+    ) {
+
+        const podRef =
+            doc(
+                db,
+                "pods",
+                grNo
+            );
+
+
+        const requestRef =
+            doc(
+                db,
+                "podUploadRequests",
+                grNo
+            );
+
+
+        await runTransaction(
+            db,
+            async (transaction) => {
+
+                const podSnapshot =
+                    await transaction.get(
+                        podRef
+                    );
+
+
+                const requestSnapshot =
+                    await transaction.get(
+                        requestRef
+                    );
+
+
+                // ---------------------------------------------
+                // GR ALREADY EXISTS IN OFFICIAL PODS
+                // ---------------------------------------------
+
+                if (
+                    podSnapshot.exists()
+                ) {
+
+                    throw new Error(
+                        "GR_ALREADY_EXISTS"
+                    );
+
+                }
+
+
+                // ---------------------------------------------
+                // GR ALREADY HAS A PENDING REQUEST
+                // ---------------------------------------------
+
+                if (
+                    requestSnapshot.exists()
+                ) {
+
+                    throw new Error(
+                        "REQUEST_ALREADY_EXISTS"
+                    );
+
+                }
+
+
+                // ---------------------------------------------
+                // CREATE PENDING REQUEST
+                // ---------------------------------------------
+
+                transaction.set(
+                    requestRef,
+                    {
+
+                        grNo:
+                            grNo,
+
+                        vehicleNo:
+                            vehicleNo,
+
+                        driverName:
+                            driverName,
+
+                        deviceId:
+                            deviceId,
+
+                        status:
+                            "Pending",
+
+                        source:
+                            "driver_portal",
+
+                        submittedAt:
+                            serverTimestamp()
+
+                    }
+                );
+
+            }
         );
 
-    </script>
+    }
+
+
+    // =========================================================
+    // FORM SUBMISSION
+    // =========================================================
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+            hideMessages();
+
+
+            // ---------------------------------------------
+            // GET VALUES
+            // ---------------------------------------------
+
+            const grNo =
+                normalizeGR(
+                    document
+                        .getElementById("grNo")
+                        .value
+                );
+
+
+            const vehicleNo =
+                document
+                    .getElementById("vehicleNo")
+                    .value
+                    .trim()
+                    .toUpperCase();
+
+
+            const driverName =
+                document
+                    .getElementById("driverName")
+                    .value
+                    .trim();
+
+
+            const imageFile =
+                document
+                    .getElementById("podImage")
+                    .files[0];
+
+
+            const deviceId =
+                getDeviceId();
+
+
+            // ---------------------------------------------
+            // BASIC VALIDATION
+            // ---------------------------------------------
+
+            if (!grNo) {
+
+                showError(
+                    "Please enter the GR / LR number."
+                );
+
+                return;
+
+            }
+
+
+            if (!vehicleNo) {
+
+                showError(
+                    "Please enter the vehicle number."
+                );
+
+                return;
+
+            }
+
+
+            if (!driverName) {
+
+                showError(
+                    "Please enter the driver name."
+                );
+
+                return;
+
+            }
+
+
+            if (!imageFile) {
+
+                showError(
+                    "Please select the POD image."
+                );
+
+                return;
+
+            }
+
+
+            // ---------------------------------------------
+            // IMAGE TYPE CHECK
+            // ---------------------------------------------
+
+            const allowedTypes = [
+
+                "image/jpeg",
+
+                "image/png",
+
+                "image/webp"
+
+            ];
+
+
+            if (
+                !allowedTypes.includes(
+                    imageFile.type
+                )
+            ) {
+
+                showError(
+                    "Only JPG, PNG or WebP images are allowed."
+                );
+
+                return;
+
+            }
+
+
+            // ---------------------------------------------
+            // IMAGE SIZE CHECK
+            // ---------------------------------------------
+
+            if (
+                imageFile.size >
+                10 * 1024 * 1024
+            ) {
+
+                showError(
+                    "POD image must be smaller than 10 MB."
+                );
+
+                return;
+
+            }
+
+
+            // ---------------------------------------------
+            // DISABLE BUTTON
+            // ---------------------------------------------
+
+            submitBtn.disabled = true;
+
+            submitBtn.textContent =
+                "Checking...";
+
+
+            try {
+
+                // -----------------------------------------
+                // CHECK DEVICE BLOCK
+                // -----------------------------------------
+
+                const blocked =
+                    await checkBlockedDevice(
+                        deviceId
+                    );
+
+
+                if (blocked) {
+
+                    showError(
+                        "This device is blocked from submitting POD requests."
+                    );
+
+                    return;
+
+                }
+
+
+                // -----------------------------------------
+                // CREATE PENDING REQUEST
+                // -----------------------------------------
+
+                submitBtn.textContent =
+                    "Submitting...";
+
+
+                await createPodRequest(
+                    grNo,
+                    vehicleNo,
+                    driverName,
+                    deviceId
+                );
+
+
+                // -----------------------------------------
+                // SUCCESS
+                // -----------------------------------------
+
+                showSuccess(
+                    "POD request submitted successfully. It will be reviewed by PRIYANSHU ROADLINES."
+                );
+
+
+                form.reset();
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Driver POD submission error:",
+                    error
+                );
+
+
+                if (
+                    error.message ===
+                    "GR_ALREADY_EXISTS"
+                ) {
+
+                    showError(
+                        "This GR / LR already has an official POD."
+                    );
+
+                }
+                else if (
+                    error.message ===
+                    "REQUEST_ALREADY_EXISTS"
+                ) {
+
+                    showError(
+                        "A POD request for this GR / LR is already pending."
+                    );
+
+                }
+                else {
+
+                    showError(
+                        "Unable to submit the POD request. Please try again."
+                    );
+
+                }
+
+            }
+            finally {
+
+                submitBtn.disabled = false;
+
+                submitBtn.textContent =
+                    "⬆ Submit POD";
+
+            }
+
+        }
+    );
+
+
+    console.log(
+        "Driver POD Portal Firebase initialized."
+    );
+
+</script>
 
 </body>
 
