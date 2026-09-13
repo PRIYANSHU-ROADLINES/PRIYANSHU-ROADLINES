@@ -2517,7 +2517,50 @@ const refreshPodRequestsBtn =
         "refreshPodRequestsBtn"
     );
 
+// ============================================================
+// CHECK DRIVER DEVICE BLOCK STATUS
+// ============================================================
 
+async function isDriverDeviceBlocked(deviceId) {
+
+    if (!deviceId) {
+        return false;
+    }
+
+    try {
+
+        const deviceRef =
+            doc(
+                db,
+                "blockedDevices",
+                deviceId
+            );
+
+        const deviceSnapshot =
+            await getDoc(deviceRef);
+
+        if (!deviceSnapshot.exists()) {
+            return false;
+        }
+
+        const data =
+            deviceSnapshot.data();
+
+        return data.blocked === true;
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to check driver device status:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
 // ------------------------------------------------------------
 // LOAD POD REQUESTS
 // ------------------------------------------------------------
@@ -2653,8 +2696,7 @@ async function loadPodRequests() {
         // CREATE REQUEST CARDS
         // ----------------------------------------------------
 
-        requests.forEach(
-            (request) => {
+        for (const request of requests) {
 
                 const card =
                     document.createElement(
@@ -2693,7 +2735,45 @@ async function loadPodRequests() {
                             )
                         : "-";
 
+const driverDeviceBlocked =
+    await isDriverDeviceBlocked(
+        request.deviceId
+    );
 
+const driverDeviceStatus =
+    driverDeviceBlocked
+        ? `
+            <span
+                style="
+                    display:inline-block;
+                    margin-left:8px;
+                    padding:4px 8px;
+                    border-radius:5px;
+                    background:#ffe5e5;
+                    color:#cc0000;
+                    font-size:11px;
+                    font-weight:bold;
+                "
+            >
+                🚫 BLOCKED DEVICE
+            </span>
+        `
+        : `
+            <span
+                style="
+                    display:inline-block;
+                    margin-left:8px;
+                    padding:4px 8px;
+                    border-radius:5px;
+                    background:#e5f7e5;
+                    color:#008000;
+                    font-size:11px;
+                    font-weight:bold;
+                "
+            >
+                🟢 NOT BLOCKED
+            </span>
+        `;
                 card.innerHTML = `
 
                     <div
@@ -2753,10 +2833,10 @@ async function loadPodRequests() {
 
 
                         <p>
-                            <b>Device ID:</b>
-                            ${request.deviceId || "-"}
-                        </p>
-
+    <b>Device ID:</b>
+    ${request.deviceId || "-"}
+    ${driverDeviceStatus}
+</p>
 
                         <p>
                             <b>Submitted:</b>
