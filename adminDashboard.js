@@ -2,15 +2,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/fireba
 
 import {
     getFirestore,
-    collection,
-    getDocs,
-    query,
-    orderBy,
-    doc,
-    updateDoc,
-    setDoc,
-    deleteDoc,
-    serverTimestamp
+collection,
+getDocs,
+getDoc,
+query,
+orderBy,
+doc,
+updateDoc,
+setDoc,
+deleteDoc,
+serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -2871,19 +2872,19 @@ async function loadPodRequests() {
                     >
 
                         <button
-                            disabled
-                            style="
-                                border:none;
-                                padding:10px 18px;
-                                border-radius:6px;
-                                background:#999;
-                                color:white;
-                                font-weight:bold;
-                                cursor:not-allowed;
-                            "
-                        >
-                            ✅ Approve
-                        </button>
+    onclick="approvePodRequest('${request.id}')"
+    style="
+        border:none;
+        padding:10px 18px;
+        border-radius:6px;
+        background:#008000;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+    "
+>
+    ✅ UPLOAD
+</button>
 
 
                         <button
@@ -2943,6 +2944,175 @@ async function loadPodRequests() {
 
 }
 
+// ------------------------------------------------------------
+// APPROVE / UPLOAD DRIVER POD REQUEST
+// ------------------------------------------------------------
+
+window.approvePodRequest = async function (requestId) {
+
+    try {
+
+        if (!requestId) {
+            alert("Invalid POD request.");
+            return;
+        }
+
+        // Get pending request
+        const requestRef =
+            doc(db, "podUploadRequests", requestId);
+
+        const requestSnap =
+            await getDoc(requestRef);
+
+        if (!requestSnap.exists()) {
+            alert("POD request no longer exists.");
+            await loadPodRequests();
+            return;
+        }
+
+        const request =
+            requestSnap.data();
+
+        const grNo =
+            String(request.grNo || "").trim();
+
+        if (!grNo) {
+            alert("GR Number is missing.");
+            return;
+        }
+
+        if (!request.imageUrl) {
+            alert("POD image is missing.");
+            return;
+        }
+
+        // ----------------------------------------------------
+        // CHECK WHETHER OFFICIAL POD ALREADY EXISTS
+        // ----------------------------------------------------
+
+        const podRef =
+            doc(db, "pods", grNo);
+
+        const existingPod =
+            await getDoc(podRef);
+
+        if (existingPod.exists()) {
+
+            alert(
+                "This GR Number already has an official POD."
+            );
+
+            return;
+        }
+
+        // ----------------------------------------------------
+        // CURRENT ADMIN
+        // ----------------------------------------------------
+
+        const adminEmail =
+            podAuth.currentUser
+                ? podAuth.currentUser.email
+                : "";
+
+        // ----------------------------------------------------
+        // DATE + TIME
+        // SAME FORMAT AS EXISTING POD.JS
+        // ----------------------------------------------------
+
+        const now = new Date();
+
+        const uploadDate =
+            String(now.getDate()).padStart(2, "0") +
+            "-" +
+            String(now.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            now.getFullYear();
+
+        const uploadTime =
+            now.toLocaleTimeString("en-IN", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true
+            });
+
+        // ----------------------------------------------------
+        // CREATE OFFICIAL POD
+        // ----------------------------------------------------
+
+        await setDoc(podRef, {
+
+            grNo: grNo,
+
+            vehicleNo:
+                request.vehicleNo || "",
+
+            driverName:
+                request.driverName || "",
+
+            driverMobile:
+                request.driverMobile || "",
+
+            partyName:
+                request.partyName || "",
+
+            deliveryDate:
+                request.deliveryDate || "",
+
+            remarks:
+                request.remarks || "",
+
+            status:
+                request.status || "Delivered",
+
+            imageUrl:
+                request.imageUrl,
+
+            createdAt:
+                serverTimestamp(),
+
+            uploadDate:
+                uploadDate,
+
+            uploadTime:
+                uploadTime,
+
+            uploadedBy:
+                adminEmail || "Main Website Admin"
+
+        });
+
+        // ----------------------------------------------------
+        // REMOVE PENDING REQUEST
+        // ----------------------------------------------------
+
+        await deleteDoc(requestRef);
+
+        alert(
+            "POD uploaded successfully."
+        );
+
+        // ----------------------------------------------------
+        // REFRESH POD REQUESTS
+        // ----------------------------------------------------
+
+        await loadPodRequests();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to approve POD request:",
+            error
+        );
+
+        alert(
+            "Unable to upload POD: " +
+            error.message
+        );
+
+    }
+
+};
 
 // ------------------------------------------------------------
 // OPEN POD REQUESTS PANEL
