@@ -2696,8 +2696,8 @@ async function loadPodRequests() {
         // CREATE REQUEST CARDS
         // ----------------------------------------------------
 
-       requests.forEach(
-    (request) => {
+      requests.forEach(
+    async (request) => {
 
                 const card =
                     document.createElement(
