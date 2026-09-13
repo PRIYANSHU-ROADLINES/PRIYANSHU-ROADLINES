@@ -208,6 +208,64 @@
 
 
     <main class="container">
+        <!-- ============================================
+     DRIVER DEVICE BLOCK SCREEN
+============================================ -->
+
+<div
+    id="deviceBlockedScreen"
+    style="
+        display:none;
+        background:#fff;
+        padding:30px 20px;
+        border-radius:12px;
+        box-shadow:0 3px 15px rgba(0,0,0,0.12);
+        text-align:center;
+        border-top:6px solid #cc0000;
+    "
+>
+
+    <div
+        style="
+            font-size:55px;
+            margin-bottom:15px;
+        "
+    >
+        🚫
+    </div>
+
+    <h2
+        style="
+            color:#cc0000;
+            margin:0 0 12px;
+        "
+    >
+        DEVICE BLOCKED
+    </h2>
+
+    <p
+        style="
+            color:#555;
+            line-height:1.6;
+            margin:0;
+        "
+    >
+        This device has been blocked from submitting
+        POD requests by PRIYANSHU ROADLINES.
+    </p>
+
+    <p
+        style="
+            color:#777;
+            font-size:13px;
+            margin-top:15px;
+        "
+    >
+        Please contact the administrator if you believe
+        this block was made by mistake.
+    </p>
+
+</div>
 
         <div class="card">
 
@@ -384,6 +442,10 @@ const UPLOAD_PRESET = "pod_upload";
 
     const errorMessage =
         document.getElementById("errorMessage");
+    const deviceBlockedScreen =
+    document.getElementById(
+        "deviceBlockedScreen"
+    );
 
 
     // =========================================================
@@ -511,7 +573,79 @@ const UPLOAD_PRESET = "pod_upload";
         return data.blocked === true;
 
     }
+// =========================================================
+// CHECK DEVICE BEFORE SHOWING POD FORM
+// =========================================================
 
+async function checkDeviceBeforeForm() {
+
+    const deviceId =
+        getDeviceId();
+
+    try {
+
+        const blocked =
+            await checkBlockedDevice(
+                deviceId
+            );
+
+
+        if (blocked) {
+
+            // Hide the complete upload card
+            const uploadCard =
+                document.querySelector(
+                    ".card"
+                );
+
+            if (uploadCard) {
+
+                uploadCard.style.display =
+                    "none";
+
+            }
+
+
+            // Show blocked screen
+            if (deviceBlockedScreen) {
+
+                deviceBlockedScreen.style.display =
+                    "block";
+
+            }
+
+
+            alert(
+                "🚫 DEVICE BLOCKED\n\n" +
+                "This device has been blocked from submitting POD requests.\n\n" +
+                "Please contact PRIYANSHU ROADLINES administrator."
+            );
+
+
+            return true;
+
+        }
+
+
+        return false;
+
+    }
+    catch (error) {
+
+        console.error(
+            "Unable to check driver device:",
+            error
+        );
+
+
+        // IMPORTANT:
+        // If the block check fails, do not
+        // automatically block a genuine driver.
+        return false;
+
+    }
+
+}
 // =========================================================
 // COMPRESS POD IMAGE
 // =========================================================
@@ -1068,9 +1202,16 @@ else if (
     );
 
 
-    console.log(
-        "Driver POD Portal Firebase initialized."
-    );
+    // =========================================================
+// INITIAL DRIVER DEVICE CHECK
+// =========================================================
+
+const deviceIsBlocked =
+    await checkDeviceBeforeForm();
+
+console.log(
+    "Driver POD Portal Firebase initialized."
+);
 
 </script>
 
