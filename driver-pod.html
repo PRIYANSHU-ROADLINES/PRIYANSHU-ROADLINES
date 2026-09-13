@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PRIYANSHU ROADLINES - POD Upload</title>
+
+    <link
+        rel="icon"
+        href="images/logo.png"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        .header {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 18px 15px;
+        }
+
+        .header img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .header h1 {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            color: #fff;
+            font-size: 25px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            margin: 35px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 16px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #e00000;
+        }
+
+        .upload-box {
+            border: 2px dashed #bbb;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
+        .upload-box input {
+            border: none;
+            padding: 0;
+        }
+
+        .upload-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #e00000;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .upload-button:hover {
+            background: #c00000;
+        }
+
+        .upload-button:disabled {
+            background: #888;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 7px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success {
+            background: #e8f7e8;
+            color: #167016;
+        }
+
+        .error {
+            background: #fdeaea;
+            color: #b00000;
+        }
+
+        .info {
+            margin-top: 20px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 7px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+
+            .header h1 {
+                display: block;
+                margin-top: 8px;
+                font-size: 22px;
+            }
+
+            .header img {
+                margin-right: 0;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <img
+            src="images/logo.png"
+            alt="PRIYANSHU ROADLINES"
+        >
+
+        <h1>PRIYANSHU ROADLINES</h1>
+
+        <p>DRIVER POD UPLOAD PORTAL</p>
+
+    </header>
+
+
+    <main class="container">
+
+        <div class="card">
+
+            <h2>📦 Upload POD</h2>
+
+            <p class="subtitle">
+                Submit the POD for your delivered GR/LR.
+            </p>
+
+
+            <form id="driverPodForm">
+
+                <label for="grNo">
+                    GR / LR Number
+                </label>
+
+                <input
+                    type="text"
+                    id="grNo"
+                    placeholder="Enter GR / LR Number"
+                    required
+                    autocomplete="off"
+                >
+
+
+                <label for="vehicleNo">
+                    Vehicle Number
+                </label>
+
+                <input
+                    type="text"
+                    id="vehicleNo"
+                    placeholder="Enter Vehicle Number"
+                    required
+                    autocomplete="off"
+                >
+
+
+                <label for="driverName">
+                    Driver Name
+                </label>
+
+                <input
+                    type="text"
+                    id="driverName"
+                    placeholder="Enter Driver Name"
+                    required
+                    autocomplete="name"
+                >
+
+
+                <label for="podImage">
+                    POD Image
+                </label>
+
+                <div class="upload-box">
+
+                    <input
+                        type="file"
+                        id="podImage"
+                        accept="image/jpeg,image/png,image/webp"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="submitPodBtn"
+                    class="upload-button"
+                >
+                    ⬆ Submit POD
+                </button>
+
+            </form>
+
+
+            <div
+                id="successMessage"
+                class="message success"
+            ></div>
+
+
+            <div
+                id="errorMessage"
+                class="message error"
+            ></div>
+
+
+            <div class="info">
+
+                ⚠️ Each GR / LR can have only one POD request.
+                <br>
+                Your upload will be reviewed by PRIYANSHU ROADLINES
+                before becoming an official POD.
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script type="module">
+
+        // Driver POD functionality will be added
+        // in the next step.
+
+        console.log(
+            "Driver POD Portal loaded."
+        );
+
+    </script>
+
+</body>
+
+</html>
