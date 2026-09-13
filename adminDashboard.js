@@ -2571,7 +2571,7 @@ async function loadPodRequests() {
         return;
     }
 
-
+        clearPodSelection();
     podRequestsContainer.innerHTML = `
 
         <div class="no-alerts">
@@ -2786,7 +2786,32 @@ const driverDeviceStatus =
                             margin-bottom:15px;
                         "
                     >
+                                            <label
+                            style="
+                                display:flex;
+                                align-items:center;
+                                gap:7px;
+                                font-weight:bold;
+                                cursor:pointer;
+                                font-size:13px;
+                            "
+                        >
 
+                            <input
+                                type="checkbox"
+                                class="pod-select-checkbox"
+                                data-request-id="${request.id}"
+                                onchange="updatePodSelection()"
+                                style="
+                                    width:18px;
+                                    height:18px;
+                                    cursor:pointer;
+                                "
+                            >
+
+                            SELECT
+
+                        </label>
                         <strong
                             style="
                                 font-size:18px;
@@ -3518,3 +3543,504 @@ if (refreshPodRequestsBtn) {
     );
 
 }
+// ============================================================
+// POD MULTI-SELECTION SYSTEM
+// ============================================================
+
+let selectedPodRequests = new Set();
+
+
+// ------------------------------------------------------------
+// UPDATE SELECTED COUNT
+// ------------------------------------------------------------
+
+window.updatePodSelection = function () {
+
+    const checkboxes =
+        document.querySelectorAll(
+            ".pod-select-checkbox"
+        );
+
+    const selectAllBox =
+        document.getElementById(
+            "selectAllPods"
+        );
+
+    selectedPodRequests.clear();
+
+
+    checkboxes.forEach(
+        (checkbox) => {
+
+            if (checkbox.checked) {
+
+                selectedPodRequests.add(
+                    checkbox.dataset.requestId
+                );
+
+            }
+
+        }
+    );
+
+
+    const selectedCount =
+        document.getElementById(
+            "selectedPodsCount"
+        );
+
+    if (selectedCount) {
+
+        selectedCount.textContent =
+            selectedPodRequests.size +
+            (
+                selectedPodRequests.size === 1
+                    ? " POD selected"
+                    : " PODs selected"
+            );
+
+    }
+
+
+    // UPDATE SELECT ALL STATE
+
+    if (selectAllBox) {
+
+        selectAllBox.checked =
+            checkboxes.length > 0 &&
+            selectedPodRequests.size ===
+            checkboxes.length;
+
+    }
+
+};
+
+
+// ------------------------------------------------------------
+// SELECT / DESELECT ALL POD
+// ------------------------------------------------------------
+
+window.toggleAllPods = function () {
+
+    const selectAllBox =
+        document.getElementById(
+            "selectAllPods"
+        );
+
+    const checkboxes =
+        document.querySelectorAll(
+            ".pod-select-checkbox"
+        );
+
+
+    if (!selectAllBox) {
+        return;
+    }
+
+
+    checkboxes.forEach(
+        (checkbox) => {
+
+            checkbox.checked =
+                selectAllBox.checked;
+
+        }
+    );
+
+
+    updatePodSelection();
+
+};
+
+
+// ------------------------------------------------------------
+// CLEAR POD SELECTION
+// ------------------------------------------------------------
+
+window.clearPodSelection = function () {
+
+    selectedPodRequests.clear();
+
+
+    const checkboxes =
+        document.querySelectorAll(
+            ".pod-select-checkbox"
+        );
+
+
+    checkboxes.forEach(
+        (checkbox) => {
+
+            checkbox.checked = false;
+
+        }
+    );
+
+
+    const selectAllBox =
+        document.getElementById(
+            "selectAllPods"
+        );
+
+
+    if (selectAllBox) {
+
+        selectAllBox.checked = false;
+
+    }
+
+
+    const selectedCount =
+        document.getElementById(
+            "selectedPodsCount"
+        );
+
+
+    if (selectedCount) {
+
+        selectedCount.textContent =
+            "0 POD selected";
+
+    }
+
+};
+
+
+// ============================================================
+// BULK REJECT
+// ============================================================
+
+window.rejectSelectedPods = async function () {
+
+    const selectedIds =
+        Array.from(
+            selectedPodRequests
+        );
+
+
+    if (selectedIds.length === 0) {
+
+        alert(
+            "Please select at least one POD."
+        );
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+            "Are you sure you want to REJECT " +
+            selectedIds.length +
+            " selected POD request(s)?"
+        );
+
+
+    if (!confirmation) {
+        return;
+    }
+
+
+    try {
+
+        let rejectedCount = 0;
+
+
+        for (const requestId of selectedIds) {
+
+            const requestRef =
+                doc(
+                    db,
+                    "podUploadRequests",
+                    requestId
+                );
+
+
+            const requestSnap =
+                await getDoc(requestRef);
+
+
+            if (!requestSnap.exists()) {
+                continue;
+            }
+
+
+            await deleteDoc(
+                requestRef
+            );
+
+
+            rejectedCount++;
+
+        }
+
+
+        clearPodSelection();
+
+
+        alert(
+            "❌ " +
+            rejectedCount +
+            " POD request(s) rejected successfully."
+        );
+
+
+        await loadPodRequests();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Bulk POD rejection error:",
+            error
+        );
+
+
+        alert(
+            "Unable to reject selected POD requests.\n\n" +
+            error.message
+        );
+
+    }
+
+};
+
+
+// ============================================================
+// BULK UPLOAD
+// ============================================================
+
+window.uploadSelectedPods = async function () {
+
+    const selectedIds =
+        Array.from(
+            selectedPodRequests
+        );
+
+
+    if (selectedIds.length === 0) {
+
+        alert(
+            "Please select at least one POD."
+        );
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+            "Are you sure you want to UPLOAD " +
+            selectedIds.length +
+            " selected POD request(s)?"
+        );
+
+
+    if (!confirmation) {
+        return;
+    }
+
+
+    try {
+
+        let uploadedCount = 0;
+        let skippedCount = 0;
+
+
+        const adminEmail =
+            auth.currentUser
+                ? auth.currentUser.email
+                : "";
+
+
+        for (const requestId of selectedIds) {
+
+            const requestRef =
+                doc(
+                    db,
+                    "podUploadRequests",
+                    requestId
+                );
+
+
+            const requestSnap =
+                await getDoc(requestRef);
+
+
+            if (!requestSnap.exists()) {
+
+                skippedCount++;
+
+                continue;
+
+            }
+
+
+            const request =
+                requestSnap.data();
+
+
+            const grNo =
+                String(
+                    request.grNo || ""
+                ).trim();
+
+
+            if (!grNo || !request.imageUrl) {
+
+                skippedCount++;
+
+                continue;
+
+            }
+
+
+            // --------------------------------------------
+            // DATE + TIME
+            // --------------------------------------------
+
+            const now =
+                new Date();
+
+
+            const uploadDate =
+                String(
+                    now.getDate()
+                ).padStart(2, "0") +
+                "-" +
+                String(
+                    now.getMonth() + 1
+                ).padStart(2, "0") +
+                "-" +
+                now.getFullYear();
+
+
+            const uploadTime =
+                now.toLocaleTimeString(
+                    "en-IN",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true
+                    }
+                );
+
+
+            // --------------------------------------------
+            // CREATE OFFICIAL POD
+            // --------------------------------------------
+
+            const podRef =
+                doc(
+                    db,
+                    "pods",
+                    grNo
+                );
+
+
+            await setDoc(
+                podRef,
+                {
+
+                    grNo:
+                        grNo,
+
+                    vehicleNo:
+                        request.vehicleNo || "",
+
+                    driverName:
+                        request.driverName || "",
+
+                    driverMobile:
+                        request.driverMobile || "",
+
+                    partyName:
+                        request.partyName || "",
+
+                    deliveryDate:
+                        request.deliveryDate || "",
+
+                    remarks:
+                        request.remarks || "",
+
+                    status:
+                        request.status ||
+                        "Delivered",
+
+                    imageUrl:
+                        request.imageUrl,
+
+                    createdAt:
+                        serverTimestamp(),
+
+                    uploadDate:
+                        uploadDate,
+
+                    uploadTime:
+                        uploadTime,
+
+                    uploadedBy:
+                        adminEmail ||
+                        "Main Website Admin"
+
+                }
+            );
+
+
+            // --------------------------------------------
+            // REMOVE PENDING REQUEST
+            // --------------------------------------------
+
+            await deleteDoc(
+                requestRef
+            );
+
+
+            uploadedCount++;
+
+        }
+
+
+        clearPodSelection();
+
+
+        let message =
+            "✅ " +
+            uploadedCount +
+            " POD request(s) uploaded successfully.";
+
+
+        if (skippedCount > 0) {
+
+            message +=
+                "\n\n⚠️ " +
+                skippedCount +
+                " request(s) were skipped because they no longer existed or had missing data.";
+
+        }
+
+
+        alert(message);
+
+
+        await loadPodRequests();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Bulk POD upload error:",
+            error
+        );
+
+
+        alert(
+            "Unable to upload selected POD requests.\n\n" +
+            error.message
+        );
+
+    }
+
+};
