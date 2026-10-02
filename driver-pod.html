@@ -325,13 +325,69 @@
 
                 <div class="upload-box">
 
-                    <input
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+    <button
+        type="button"
+        onclick="openCamera()"
+        style="
+            padding:10px 15px;
+            border:none;
+            border-radius:6px;
+            background:#222;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+        "
+    >
+        📷 Take Photo
+    </button>
+
+    <button
+        type="button"
+        onclick="openGallery()"
+        style="
+            padding:10px 15px;
+            border:none;
+            border-radius:6px;
+            background:#e60000;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+        "
+    >
+        🖼️ Choose Photo
+    </button>
+
+</div>
+
+<input
     type="file"
-    id="podImage"
+    id="cameraInput"
     accept="image/*"
     capture="environment"
-    required
+    style="display:none;"
 >
+
+<input
+    type="file"
+    id="galleryInput"
+    accept="image/*"
+    style="display:none;"
+>
+
+<p
+    id="selectedImageName"
+    style="
+        margin-top:10px;
+        font-size:13px;
+        color:#666;
+    "
+>
+    No image selected
+</p>
+
+                    
 
                 </div>
 
@@ -798,6 +854,59 @@ async function compressImage(file) {
     });
 
 }
+let selectedPodImageFile = null;
+
+window.openCamera = function () {
+
+    const cameraInput =
+        document.getElementById("cameraInput");
+
+    cameraInput.click();
+};
+
+window.openGallery = function () {
+
+    const galleryInput =
+        document.getElementById("galleryInput");
+
+    galleryInput.click();
+};
+
+
+document
+    .getElementById("cameraInput")
+    .addEventListener("change", function () {
+
+        if (this.files && this.files.length > 0) {
+
+            selectedPodImageFile =
+                this.files[0];
+
+            document.getElementById(
+                "selectedImageName"
+            ).textContent =
+                "📷 " +
+                selectedPodImageFile.name;
+        }
+    });
+
+
+document
+    .getElementById("galleryInput")
+    .addEventListener("change", function () {
+
+        if (this.files && this.files.length > 0) {
+
+            selectedPodImageFile =
+                this.files[0];
+
+            document.getElementById(
+                "selectedImageName"
+            ).textContent =
+                "🖼️ " +
+                selectedPodImageFile.name;
+        }
+    });
         // =========================================================
 // UPLOAD POD IMAGE TO CLOUDINARY
 // =========================================================
@@ -970,10 +1079,7 @@ async function createPodRequest(
                     .trim();
 
 
-            const imageFile =
-                document
-                    .getElementById("podImage")
-                    .files[0];
+           const imageFile = selectedPodImageFile;
 
 
             const deviceId =
