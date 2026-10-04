@@ -167,6 +167,52 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const auth = getAuth(app);
+
+let trackingUser = null;
+
+onAuthStateChanged(auth, (user) => {
+
+    trackingUser = user;
+
+    const card =
+        document.querySelector(".card");
+
+    if (!user) {
+
+        card.innerHTML = `
+            <h2>Track GR</h2>
+
+            <div class="notfound">
+
+                <h3>🔒 Sign In Required</h3>
+
+                <p>
+                    Please sign in to your Priyanshu Roadlines
+                    account to track a shipment.
+                </p>
+
+                <button
+                    type="button"
+                    onclick="window.location.href='signin.html'"
+                    style="
+                        margin-top:10px;
+                        background:red;
+                    "
+                >
+                    SIGN IN
+                </button>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    // User is authenticated.
+    // Existing Track GR form remains available.
+});
+
 window.trackGR = async function(){
 
     const grNo =
