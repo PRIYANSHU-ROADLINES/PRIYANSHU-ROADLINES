@@ -215,6 +215,15 @@ onAuthStateChanged(auth, (user) => {
 
 window.trackGR = async function(){
 
+    if (!trackingUser) {
+
+    alert(
+        "Please sign in before tracking a GR."
+    );
+
+    return;
+}
+
     const grNo =
     document.getElementById("grNumber").value.trim();
 
